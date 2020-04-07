@@ -1,0 +1,47 @@
+:global {
+    .z-layout {
+        .z-main-nav {
+            &.is-dark {
+                background: #1c4480;
+                .ant-menu-item {
+                    border-radius: 0;
+                    padding-left: 20px !important;
+                    border-left: 4px solid transparent;
+                    box-sizing: border-box;
+                   &.ant-menu-item-selected {
+                        background: #132e59;
+                        border-left: 4px solid #3988ff;
+                    }
+                }
+                .ant-menu-dark {
+                    .ant-menu-sub {
+                        background: transparent;
+                    }
+                    .ant-menu-item-selected {
+                        .anticon {
+                            & + span {
+                                color: #3988ff;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .ant-menu {
+        .ant-menu-submenu-selected {
+            .ant-menu-submenu-title {
+                color: #3988ff;
+            }
+            &.ant-menu-submenu-inline {
+                > .ant-menu-submenu-title {
+                    .ant-menu-submenu-arrow:after,
+                    .ant-menu-submenu-arrow:before {
+                        background: #3988ff;
+                    }
+                }
+            }
+        }
+        
+    }
+}
