@@ -96,7 +96,9 @@ export default ZmainHOC(connect(mapStateToProps)(Main), callback => {
             {
                 permUrl: 'clueDiscoveryCopy',
                 permName: '我的线索',
-                permIconUrl: logo,
+                permIconUrl: ()=>{
+                    return (<Icon type="mail" />)
+                },
                 children: [
                     {
                         permUrl: 'byClue1',
