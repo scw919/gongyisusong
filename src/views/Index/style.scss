@@ -14,3 +14,13 @@
     background: transparent !important;
     color: #fff;
 }
+:global{
+    .layout-container{
+        padding: 0 80px;
+    }
+    .bread-crumb{
+        height: 48px !important;
+        display: flex;
+        align-items: center;
+    }
+}

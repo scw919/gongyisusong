@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 // zerod
-import { Zlayout, ZmainHOC } from 'zerod';
+import { Zlayout, ZmainHOC, ZpageHeader } from 'zerod';
 import GlobalLoading from 'zerod/lazyLoad/Loading.jsx';
 // 路由组件
 import mainRoutes from './load-child-routes.js';
@@ -11,11 +11,11 @@ import mainRoutes from './load-child-routes.js';
 import compnents from '@/components/load-components.js';
 const { ApageHeader, } = compnents;
 // ant ui
-import { Icon, Dropdown, Menu, Button } from 'antd';
+import { Icon, Dropdown, Menu, Button, Breadcrumb } from 'antd';
 // img
 import logo from '@/assets/images/logo.png';
 // 样式类
-import cssClass from './style.scss';
+import './style.scss';
 
 // import { withRouter } from 'react-router-dom';
 // import mainRoutes from '@/Main/load-child-routes.js';
@@ -38,19 +38,33 @@ class Main extends React.Component {
         return (
             <Zlayout>
                 <ApageHeader history={history} />
-                <Zlayout.Zbody scroll={false}>
-                    <Zlayout flexRow>
-                        {userName === 1
-                            ? (<Zlayout width={this.ToggleSiderWidth()}>
-                                {this.props.getSideMenuTemplate({
-                                    theme: 'dark',
-                                    isCollapse: collapsed,
-                                    openAllSubmenu: true,
-                                })}
-                            </Zlayout>)
-                            : null
-                        }
-                        <Zlayout>{this.props.getMaimRouteTemplate()}</Zlayout>
+                <Zlayout.Zbody scroll={false} className="layout-container">
+                    <Zlayout flexRow >
+                        <Zlayout.Zheader className="bread-crumb">
+                            <Breadcrumb>
+                                <Breadcrumb.Item>Home</Breadcrumb.Item>
+                                <Breadcrumb.Item>
+                                    <a href="">Application Center</a>
+                                </Breadcrumb.Item>
+                                <Breadcrumb.Item>
+                                    <a href="">Application List</a>
+                                </Breadcrumb.Item>
+                                <Breadcrumb.Item>An Application</Breadcrumb.Item>
+                            </Breadcrumb>
+                        </Zlayout.Zheader>
+                        <Zlayout.Zbody>
+                            {userName === 1
+                                ? (<Zlayout width={this.ToggleSiderWidth()}>
+                                    {this.props.getSideMenuTemplate({
+                                        theme: 'dark',
+                                        isCollapse: collapsed,
+                                        openAllSubmenu: true,
+                                    })}
+                                </Zlayout>)
+                                : null
+                            }
+                            <Zlayout>{this.props.getMaimRouteTemplate()}</Zlayout>
+                        </Zlayout.Zbody>
                     </Zlayout>
                 </Zlayout.Zbody>
             </Zlayout>
