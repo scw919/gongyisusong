@@ -76,49 +76,50 @@ class Main extends React.Component {
         return this.props.collapsed ? '80px' : '200px';
     }
 }
-export default ZmainHOC(connect(mapStateToProps)(Main), callback => {
-    //同pageConfig的componentDidMount函数
-    callback(
-        //保存的用户信息
-        {},
-        //侧边导航数据
-        [
-            {
-                permUrl: 'clueDiscovery',
-                permName: '线索发现',
-                permIconUrl: 'compass',
-                children: [
-                    {
-                        permUrl: 'byClue',
-                        permName: '按线索',
-                        permIconUrl: '11',
-                    }
-                ]
-            },
-            {
-                permUrl: 'clueDiscoveryCopy',
-                permName: '我的线索',
-                permIconUrl: () => {
-                    return (<IconFont type="icon-integral" />)
+export default ZmainHOC(connect(mapStateToProps)(Main),
+    callback => {
+        //同pageConfig的componentDidMount函数
+        callback(
+            //保存的用户信息
+            {},
+            //侧边导航数据
+            [
+                {
+                    permUrl: 'clueDiscovery',
+                    permName: '线索发现',
+                    permIconUrl: 'compass',
+                    children: [
+                        {
+                            permUrl: 'byClue',
+                            permName: '按线索',
+                            permIconUrl: '11',
+                        }
+                    ]
                 },
-                children: [
-                    {
-                        permUrl: 'byClue1',
-                        permName: '线索搜录',
-                        permIconUrl: '11',
+                {
+                    permUrl: 'clueDiscoveryCopy',
+                    permName: '我的线索',
+                    permIconUrl: () => {
+                        return (<IconFont type="icon-integral" />)
                     },
-                    {
-                        permUrl: 'byClue2',
-                        permName: '线索处置',
-                        permIconUrl: '11',
-                    }
-                ]
-            }
-        ],
-        //mapKeys
-        { iconClass: 'permIconUrl', path: 'permUrl', name: 'permName', children: 'children' },
-        //路由配置数据
-        mainRoutes,
-    );
-});
+                    children: [
+                        {
+                            permUrl: 'byClue1',
+                            permName: '线索搜录',
+                            permIconUrl: '11',
+                        },
+                        {
+                            permUrl: 'byClue2',
+                            permName: '线索处置',
+                            permIconUrl: '11',
+                        }
+                    ]
+                }
+            ],
+            //mapKeys
+            { iconClass: 'permIconUrl', path: 'permUrl', name: 'permName', children: 'children' },
+            //路由配置数据
+            mainRoutes,
+        );
+    });
 

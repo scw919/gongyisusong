@@ -19,11 +19,16 @@ const mapStateToProps = (state, ownProps) =>
     });
 
 export default connect(mapStateToProps)((props) => {
+    function getData() {
+        console.log('loadMore');
+    }
     return (
-        <div className="main-rt-container" style={{ height: '100%' }}>
-            {/* <AseamlessScroll /> */}
-            <SearchPart />
-            <SearchList />
-        </div>
+        <Zlayout.Zbody scroll={true} loadMore={getData}>
+            <div className="main-rt-container" style={{ height: '100%' }}>
+                {/* <AseamlessScroll /> */}
+                <SearchPart />
+                <SearchList />
+            </div>
+        </Zlayout.Zbody>
     )
 });

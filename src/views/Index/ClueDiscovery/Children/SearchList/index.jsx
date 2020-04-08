@@ -66,7 +66,7 @@ export default class SearchList extends React.Component {
                             {
                                 plainOptions.map((sub, subKey) => {
                                     return (
-                                        <div styleName="search-list-item">
+                                        <div styleName="search-list-item" key={subKey}>
                                             <div styleName="search-list-item-title" className="flex flex-between">
                                                 <div className="ft-18" styleName="title">
                                                     <Checkbox value={sub} id={`${sub.menuid}`} key={subKey} >{sub.name}</Checkbox >
