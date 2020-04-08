@@ -22,3 +22,11 @@ export { default as PieChart } from '@ant-design/icons/lib/outline/PieChartOutli
 
 // 线索发现
 export { default as CompassOutline } from '@ant-design/icons/lib/outline/CompassOutline';
+// 地点
+export { default as EnvironmentOutline } from '@ant-design/icons/lib/outline/EnvironmentOutline';
+// 收录
+export { default as HeartOutline } from '@ant-design/icons/lib/outline/HeartOutline';
+export { default as HeartFill } from '@ant-design/icons/lib/fill/HeartFill';
+export { default as BookOutline } from '@ant-design/icons/lib/outline/BookOutline';
+// 时间
+export { default as ClockCircleOutline } from '@ant-design/icons/lib/outline/ClockCircleOutline';

@@ -10,7 +10,7 @@ import { Icon, Dropdown, Menu, Button } from 'antd';
 import PropTypes from 'prop-types';
 import cssClass from './style.scss';
 // img
-import logo from '@/assets/images/logo.png';
+import logo from '@/assets/images/logo@2x.png';
 import avator from '@/assets/images/procurator.png';
 
 function itemRender(route, params, routes, paths) {

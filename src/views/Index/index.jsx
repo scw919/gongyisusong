@@ -12,6 +12,8 @@ import compnents from '@/components/load-components.js';
 const { ApageHeader, } = compnents;
 // ant ui
 import { Icon, Dropdown, Menu, Button, Breadcrumb } from 'antd';
+import { createFromIconfontCN } from '@ant-design/icons';
+
 // img
 import logo from '@/assets/images/logo.png';
 // 样式类
@@ -19,6 +21,10 @@ import './style.scss';
 
 // import { withRouter } from 'react-router-dom';
 // import mainRoutes from '@/Main/load-child-routes.js';
+const IconFont = Icon.createFromIconfontCN({
+    scriptUrl: '//at.alicdn.com/t/font_1740380_epha2kuvmm.js',
+});
+
 const logoStyle = {
     height: '100%',
     width: 'auto',
@@ -27,9 +33,7 @@ const mapStateToProps = (state, ownProps) => ({
     userName: state.userName,
     collapsed: state.collapsed
 });
-const IconFont = Icon.createFromIconfontCN({
-    scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
-});
+
 class Main extends React.Component {
     componentDidMount() { }
     render() {
@@ -42,28 +46,26 @@ class Main extends React.Component {
                     <Zlayout flexRow >
                         <Zlayout.Zheader className="bread-crumb">
                             <Breadcrumb>
-                                <Breadcrumb.Item>Home</Breadcrumb.Item>
+                                <Breadcrumb.Item>线索管理</Breadcrumb.Item>
                                 <Breadcrumb.Item>
-                                    <a href="">Application Center</a>
+                                    <a href="">线索发现</a>
                                 </Breadcrumb.Item>
-                                <Breadcrumb.Item>
-                                    <a href="">Application List</a>
-                                </Breadcrumb.Item>
-                                <Breadcrumb.Item>An Application</Breadcrumb.Item>
                             </Breadcrumb>
                         </Zlayout.Zheader>
-                        <Zlayout.Zbody>
-                            {userName === 1
-                                ? (<Zlayout width={this.ToggleSiderWidth()}>
-                                    {this.props.getSideMenuTemplate({
-                                        theme: 'dark',
-                                        isCollapse: collapsed,
-                                        openAllSubmenu: true,
-                                    })}
-                                </Zlayout>)
-                                : null
-                            }
-                            <Zlayout>{this.props.getMaimRouteTemplate()}</Zlayout>
+                        <Zlayout.Zbody className="white-bg">
+                            <Zlayout flexRow>
+                                {userName !== 1
+                                    ? (<Zlayout width={this.ToggleSiderWidth()}>
+                                        {this.props.getSideMenuTemplate({
+                                            theme: 'dark',
+                                            isCollapse: collapsed,
+                                            openAllSubmenu: true,
+                                        })}
+                                    </Zlayout>)
+                                    : null
+                                }
+                                <Zlayout className="main-container">{this.props.getMaimRouteTemplate()}</Zlayout>
+                            </Zlayout>
                         </Zlayout.Zbody>
                     </Zlayout>
                 </Zlayout.Zbody>
@@ -96,8 +98,8 @@ export default ZmainHOC(connect(mapStateToProps)(Main), callback => {
             {
                 permUrl: 'clueDiscoveryCopy',
                 permName: '我的线索',
-                permIconUrl: ()=>{
-                    return (<Icon type="mail" />)
+                permIconUrl: () => {
+                    return (<IconFont type="icon-integral" />)
                 },
                 children: [
                     {

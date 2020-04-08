@@ -1,4 +1,22 @@
 :global {
+    .inline-block{
+        display: inline-block;
+    }
+    .mar-r-5 {
+        margin-right: 5px;
+    }
+    .mar-t-20 {
+        margin-top: 20px;
+    }
+    .ft-16 {
+        font-size: 16px;
+    }
+    .ft-18 {
+        font-size: 18px;
+    }
+    .pointer {
+        cursor: pointer;
+    }
     .z-layout {
         .z-main-nav {
             &.is-dark {
@@ -8,7 +26,7 @@
                     padding-left: 20px !important;
                     border-left: 4px solid transparent;
                     box-sizing: border-box;
-                   &.ant-menu-item-selected {
+                    &.ant-menu-item-selected {
                         background: #132e59;
                         border-left: 4px solid #3988ff;
                     }
@@ -42,6 +60,119 @@
                 }
             }
         }
-        
+    }
+    .white-bg {
+        background: #fff;
+    }
+    .flex {
+        display: flex;
+        &.align-item-center {
+            align-items: center;
+        }
+        &.just-con-center {
+            justify-content: center;
+        }
+        &.flex-col {
+            flex-direction: column;
+        }
+        &.flex-between {
+            justify-content: space-between;
+        }
+        .flex-1 {
+            flex: 1;
+        }
+    }
+    .separator {
+        display: inline-block;
+        width: 1px;
+        height: 12px;
+        background: #e0e5f3;
+        margin: 0 12px;
+    }
+    .border-tag {
+        border-color: #3988ff;
+        color: #3988ff;
+        svg {
+            color: #3988ff;
+        }
+    }
+    .primary_self {
+        .ant-btn-link {
+            color: #3988ff;
+        }
+        [type='button'] {
+            display: inline-block;
+            height: 32px;
+            line-height: 32px;
+            padding: 0 12px;
+            color: #fff;
+            background: rgba(35, 87, 161, 1);
+            border-radius: 2px;
+            border: none;
+        }
+    }
+    .dashed_self {
+        &.ant-btn-dashed {
+            color: #d1d5db;
+            &:hover {
+                color: #4272ad;
+            }
+        }
+    }
+    .tags-self {
+        display: inline-block;
+        height: 24px;
+        line-height: 24px;
+        padding: 0 8px;
+        border-radius: 2px;
+        &.tag-green {
+            background: rgba(226, 248, 239, 1);
+            color: #1BC27A;
+        }
+        &.tag-yellow {
+            background:rgba(252,246,235,1);
+            color: #FFB12D;
+        }
+        &.tag-red {
+            background:rgba(254,241,243,1);
+            color: #EF374F;
+        }
+        +.tags-self{
+            margin-left: 8px;
+        }
+    }
+    i {
+        font-style: normal;
+    }
+    .sort-btn {
+        position: relative;
+        display: flex;
+        align-items: center;
+        color: #9ea9c8;
+        margin-left: 10px;
+        .sort-btn-icon {
+            margin-left: 5px;
+            color: #d6dae5;
+            display: flex;
+            flex-direction: column;
+            &.ascending {
+                .icon-top {
+                    color: #24272c;
+                }
+            }
+            &.descending {
+                .icon-bottom {
+                    color: #24272c;
+                }
+            }
+            .icon-top {
+                position: relative;
+                bottom: -3px;
+            }
+            .icon-bottom {
+                position: relative;
+                top: -3px;
+            }
+        }
     }
 }
