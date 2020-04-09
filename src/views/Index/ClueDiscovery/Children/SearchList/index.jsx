@@ -17,7 +17,7 @@ const defaultCheckedList = [
 ]
 export default class SearchList extends React.Component {
     state = {
-        checkedList: defaultCheckedList,
+        checkedList: [],
         indeterminate: false,
         checkAll: false,
         sortByFilter: 0,
@@ -105,23 +105,27 @@ export default class SearchList extends React.Component {
             </div>
         );
     }
-    onChange = checkedList => {
+    onChange = newCheckedList => {
+        const { plainOptions, checkedList } = this.state;
+        console.log(newCheckedList);
         this.setState({
-            checkedList,
-            indeterminate: !!checkedList.length && checkedList.length < this.plainOptions.length,
-            checkAll: checkedList.length === this.plainOptions.length,
-        }, () => { console.log(this.state.checkedList) });
+            checkedList: newCheckedList,
+            indeterminate: !!newCheckedList.length && newCheckedList.length < plainOptions.length,
+            checkAll: newCheckedList.length === plainOptions.length,
+        }, () => { console.log(checkedList) });
     };
 
     onCheckAllChange = e => {
+        const { plainOptions, checkedList } = this.state;
         this.setState({
-            checkedList: e.target.checked ? this.state.plainOptions : [],
+            checkedList: e.target.checked ? plainOptions : [],
             indeterminate: false,
             checkAll: e.target.checked,
         });
     };
     changeSortType1 = () => {
-        let type = this.state.sortByFilter,
+        const { sortByFilter } = this.state;
+        let type = sortByFilter,
             newType;
         if (type != 1) {
             newType = 1;
@@ -133,7 +137,8 @@ export default class SearchList extends React.Component {
         })
     }
     changeSortType2 = () => {
-        let type = this.state.sortByCollect,
+        const { sortByCollect } = this.state;
+        let type = sortByCollect,
             newType;
         if (type != 1) {
             newType = 1;

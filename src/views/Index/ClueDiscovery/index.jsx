@@ -93,7 +93,7 @@ class ClueDiscovery extends React.Component {
             });
             newQuery.pageSet.pageNum += 1;
             let dataList = this.state.dataList;
-            let dataItem = dataList[dataList.length - 1];
+            let dataItem = zTool.deepCopy(dataList[dataList.length - 1]);
             dataItem.menuid = dataItem.menuid + 1;
             dataList.push(dataItem);
             this.setState({
