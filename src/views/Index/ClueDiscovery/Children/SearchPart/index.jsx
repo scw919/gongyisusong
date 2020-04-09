@@ -10,20 +10,25 @@ import { useStore } from 'react-redux';
 
 export default (props) => {
 	let childDiyu = useRef(null), childLingyu = useRef(null), childLeibie = useRef(null), childTimer = useRef(null);
-	const [tags, setTags] = useState([
-		// {name: '全部',counts: 123, type: 'diyu'},{name: '天河区', counts: 222, type: 'lingyu'}
-	]);
+
 	const timerSeparator = [{ name: '全部', counts: 1124 }, { name: '近1年', counts: 1124 }, { name: '1-3年', counts: 1124 }, { name: '3-5年', counts: 1124 }, { name: '其他', counts: 1124 }];
 	const areasDiyu = [{ name: '全部', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }];
 	const areasLingyu = [{ name: '全部', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }];
 	const areasLeibie = [{ name: '全部', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }];
+	// 已选条件数组
+	const [tags, setTags] = useState([
+		// {name: '全部',counts: 123, type: 'diyu'},{name: '天河区', counts: 222, type: 'lingyu'}
+	]);
+	// 已选条件对象
+	const [searchOptions, setSearchOptions] = useState({});
 	// 地域
 	const [areaDiyu, setAreaDiyu] = useState(areasDiyu);
 	// 领域
 	const [areaLingyu, setAreaLingyu] = useState(areasLingyu);
 	// 类别
 	const [areaLeibie, setAreaLeibie] = useState(areasLeibie);
-
+	// 搜索框 输入值
+	const [keyWord, setKeyWord] = useState(null);
 	// 关闭单个已选条件
 	function handleClose(removedTag) {
 		const newTags = tags.filter(tag => tag !== removedTag);
@@ -45,15 +50,32 @@ export default (props) => {
 	}
 	// 子组件传值
 	function changeSel(newTag, isDel) {
-		console.log(newTag);
+		// console.log(newTag);
 		const newTags = tags.filter(tag => tag.type != newTag.type);
 		isDel ? null : newTags.push(newTag);
 		setTags(newTags);
 	}
+	// 更新搜索条件
+	function updateSearchOptions(keyWord) {
+		let newSearchOptions = {};
+		tags.forEach(item => {
+			debugger
+			newSearchOptions[item.type] = item.counts;
+		})
+		newSearchOptions.keyWord = keyWord;
+		setSearchOptions(newSearchOptions);
+		props.searchResult(newSearchOptions);
+		// console.log(newSearchOptions,searchOptions);
+	}
+	// 点击搜索
+	function searchResult(value) {
+		setKeyWord(value);
+		updateSearchOptions(value);
+	}
 	return (
 		<div styleName="search-box" className="flex align-item-center just-con-center flex-col">
 			<div styleName="search-top-ipt" className="flex align-item-center">
-				<Search placeholder="请输入关键字进行查询" onSearch={value => console.log(value)} enterButton />
+				<Search className="search-ipt" size="large" placeholder="请输入关键字进行查询" onSearch={value => searchResult(value)} enterButton />
 			</div>
 			<div className="flex flex-between" styleName="border-box search-center-check">
 				<div className="flex align-item-center">

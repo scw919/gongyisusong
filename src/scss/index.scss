@@ -1,5 +1,14 @@
 :global {
-    .inline-block{
+    // 重置样式
+    p {
+        margin: 0;
+        padding: 0;
+    }
+    i {
+        font-style: normal;
+    }
+
+    .inline-block {
         display: inline-block;
     }
     .mar-r-5 {
@@ -13,6 +22,9 @@
     }
     .ft-18 {
         font-size: 18px;
+    }
+    .ft-24 {
+        font-size: 24px;
     }
     .pointer {
         cursor: pointer;
@@ -82,6 +94,7 @@
             flex: 1;
         }
     }
+    // 自定义 分割线 |
     .separator {
         display: inline-block;
         width: 1px;
@@ -96,6 +109,7 @@
             color: #3988ff;
         }
     }
+    // 自定义primary 按钮
     .primary_self {
         .ant-btn-link {
             color: #3988ff;
@@ -119,6 +133,7 @@
             }
         }
     }
+    // 自定义tag
     .tags-self {
         display: inline-block;
         height: 24px;
@@ -127,23 +142,22 @@
         border-radius: 2px;
         &.tag-green {
             background: rgba(226, 248, 239, 1);
-            color: #1BC27A;
+            color: #1bc27a;
         }
         &.tag-yellow {
-            background:rgba(252,246,235,1);
-            color: #FFB12D;
+            background: rgba(252, 246, 235, 1);
+            color: #ffb12d;
         }
         &.tag-red {
-            background:rgba(254,241,243,1);
-            color: #EF374F;
+            background: rgba(254, 241, 243, 1);
+            color: #ef374f;
         }
-        +.tags-self{
+        + .tags-self {
             margin-left: 8px;
         }
     }
-    i {
-        font-style: normal;
-    }
+
+    // 排序按钮
     .sort-btn {
         position: relative;
         display: flex;
@@ -174,5 +188,19 @@
                 top: -3px;
             }
         }
+    }
+    // 定位
+    .relative {
+        position: relative;
+    }
+    .absolute {
+        position: absolute;
+    }
+    // 文字超出
+    .ellipsis {
+        white-space: nowrap;
+        overflow: hidden;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
     }
 }

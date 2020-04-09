@@ -30,3 +30,7 @@ export { default as HeartFill } from '@ant-design/icons/lib/fill/HeartFill';
 export { default as BookOutline } from '@ant-design/icons/lib/outline/BookOutline';
 // 时间
 export { default as ClockCircleOutline } from '@ant-design/icons/lib/outline/ClockCircleOutline';
+// 查看
+export { default as EyeOutline } from '@ant-design/icons/lib/outline/EyeOutline';
+// 下载
+export { default as DownloadOutline } from '@ant-design/icons/lib/outline/DownloadOutline';

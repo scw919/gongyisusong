@@ -3,7 +3,7 @@ const Charts = lazyLoad(() => import('.'));
 
 export default [
     {
-        path: '/clueDiscovery',
+        path: '/clueDiscovery/byClue',
         component: Charts,
     },
 ];

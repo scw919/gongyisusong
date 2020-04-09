@@ -1,0 +1,90 @@
+.card-box {
+    height: 430px;
+    padding: 20px 30px;
+    border: 1px solid rgba(215, 219, 230, 1);
+    .card-box-left {
+        width: 537px;
+        :global(.ant-carousel) {
+            height: 302px;
+            border: 1px solid rgba(210, 213, 217, 1);
+        }
+        .carousel-img-box {
+            width: 100%;
+            height: 100%;
+            > img {
+                width: 100%;
+                height: auto;
+            }
+        }
+        .carousel-dots-box {
+            height: 70px;
+            margin-top: 16px;
+            padding: 10px 0;
+            border: 1px solid rgba(210, 213, 217, 1);
+            overflow-y: hidden !important;
+            &::-webkit-scrollbar {
+                display: none;
+            }
+            &::-webkit-scrollbar-thumb {
+                display: none;
+            }
+            &:hover {
+                &::-webkit-scrollbar {
+                    display: block;
+                }
+                &::-webkit-scrollbar-thumb {
+                    display: block;
+                }
+            }
+            .carousel-dots {
+                // display: flex;
+                // justify-content: center;
+                // flex-wrap: nowrap;
+                text-align: center;
+                width: auto;
+                > div {
+                    display: inline-block;
+                    cursor: pointer;
+                    width: 50px;
+                    height: 50px;
+                    margin: 0 15px;
+                    &.active {
+                        border: 1px solid rgba(210, 213, 217, 1);
+                    }
+                    > img {
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+            }
+        }
+    }
+    .card-box-right {
+        padding: 22px 30px;
+        .collect-btn {
+            right: -30px;
+            top: -20px;
+        }
+        .title {
+            p {
+                color: rgba(36, 39, 44, 1);
+                line-height: 33px;
+                margin-bottom: 15px;
+            }
+        }
+        .info {
+            margin-top: 40px;
+            > div + div {
+                margin-left: 70px;
+            }
+            p {
+                color: #565a60;
+                line-height: 22px;
+                margin-bottom: 18px;
+                > a {
+                    color: #3988ff;
+                }
+            }
+        }
+    }
+}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import compnents from '@/components/load-components.js';
-const { AsortButton } = compnents;
+const { AsortButton, Acollect } = compnents;
 import { Input, Tag, Icon, Button, Checkbox } from 'antd';
 // 样式类
 import './style.scss';
@@ -22,23 +22,14 @@ export default class SearchList extends React.Component {
         checkAll: false,
         sortByFilter: 0,
         sortByCollect: 0,
+        plainOptions: this.props.data,
     };
 
-    onChange = checkedList => {
+    componentWillReceiveProps(props, nextProps) { //解决父组件setState传值 无法更新子组件页面的问题
         this.setState({
-            checkedList,
-            indeterminate: !!checkedList.length && checkedList.length < plainOptions.length,
-            checkAll: checkedList.length === plainOptions.length,
-        }, () => { console.log(this.state.checkedList) });
-    };
-
-    onCheckAllChange = e => {
-        this.setState({
-            checkedList: e.target.checked ? plainOptions : [],
-            indeterminate: false,
-            checkAll: e.target.checked,
+            plainOptions: props.data,
         });
-    };
+    }
 
     render() {
         return (
@@ -64,7 +55,7 @@ export default class SearchList extends React.Component {
                     {
                         <CheckboxGroup value={this.state.checkedList} onChange={this.onChange}>
                             {
-                                plainOptions.map((sub, subKey) => {
+                                this.state.plainOptions.map((sub, subKey) => {
                                     return (
                                         <div styleName="search-list-item" key={subKey}>
                                             <div styleName="search-list-item-title" className="flex flex-between">
@@ -72,22 +63,8 @@ export default class SearchList extends React.Component {
                                                     <Checkbox value={sub} id={`${sub.menuid}`} key={subKey} >{sub.name}</Checkbox >
                                                     <span>番禺南丰塑料有限公司行政处罚案</span>
                                                 </div>
-                                                {
-                                                    false ?
-                                                        (
-                                                            <div styleName="collect collected" className="ft-16 pointer">
-                                                                <Icon type="heartFill" className="mar-r-5" />
-                                                                已收录
-                                                            </div>
-                                                        ) :
-                                                        (
-                                                            <div styleName="collect" className="ft-16 pointer">
-                                                                <Icon type="heart" className="mar-r-5" />
-                                                                收录
-                                                            </div>
-                                                        )
-                                                }
-
+                                                {/* 收录 */}
+                                                <Acollect isCollected={true} onClick={this.handleCollected} />
                                             </div>
                                             <div className="flex flex-between">
                                                 <div styleName="left-part">
@@ -128,6 +105,21 @@ export default class SearchList extends React.Component {
             </div>
         );
     }
+    onChange = checkedList => {
+        this.setState({
+            checkedList,
+            indeterminate: !!checkedList.length && checkedList.length < this.plainOptions.length,
+            checkAll: checkedList.length === this.plainOptions.length,
+        }, () => { console.log(this.state.checkedList) });
+    };
+
+    onCheckAllChange = e => {
+        this.setState({
+            checkedList: e.target.checked ? this.state.plainOptions : [],
+            indeterminate: false,
+            checkAll: e.target.checked,
+        });
+    };
     changeSortType1 = () => {
         let type = this.state.sortByFilter,
             newType;
@@ -151,5 +143,9 @@ export default class SearchList extends React.Component {
         this.setState({
             sortByCollect: newType
         })
+    }
+    // 收录 / 取消收录
+    handleCollected = (value) => {
+        console.log(value)
     }
 }

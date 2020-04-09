@@ -13,7 +13,6 @@ class AsortButton extends React.Component {
             sortName,
             onClick,
         } = this.props;
-        const mb = 'bottom-16';
         return (
             <Button onClick={onClick} className="sort-btn">
                 {sortName}

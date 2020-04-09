@@ -7,6 +7,7 @@ import { zTool } from 'zerod';
  * @param {object} query //接口参数，key，value 对应
  * @param {object} config //可配置请求头等，请看下面的config注释
  */
+
 function httpAjax(method, url, query, config) {
     const newurl = `/webapi${url}`; //处理url前缀
     const promise = zTool.httpAjax(method, newurl, query, config);
