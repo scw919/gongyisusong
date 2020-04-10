@@ -1,36 +1,76 @@
-.search-box{
+.search-box {
     .search-top-ipt {
         width: 700px;
         margin: 40px 0;
-        :global(.search-ipt){
-            box-shadow:0px 0px 10px 0px rgba(4,24,72,0.13);
+        :global(.search-ipt) {
+            box-shadow: 0px 0px 10px 0px rgba(4, 24, 72, 0.13);
         }
     }
-    .search-center-check{
+    .search-center-check {
         width: 100%;
         padding: 13px 23px;
-        color: #3988FF;
+        color: #3988ff;
     }
-    .search-bottom-check{
+    .search-bottom-check {
         width: 100%;
         padding: 30px;
-        .select-item{
+        .slide-box {
+            max-height: 300px;
+            overflow-y: auto;
+            transition: all ease 0.5s;
+        }
+        .select-item {
             margin-bottom: 8px;
             align-items: flex-start;
-            >div:nth-child(1){
-                color: #A2AAB5;
+            > div:nth-child(1) {
+                color: #a2aab5;
                 line-height: 24px !important;
             }
-            .flex-1{
+            .flex-1 {
                 flex-wrap: wrap;
             }
-            :global(.separator){
+            :global(.separator) {
                 margin-right: 0;
+            }
+            &:last-child {
+                > div:nth-child(1) {
+                    color: #a2aab5;
+                    line-height: 32px !important;
+                }
+                .radio-tag {
+                    height: 32px;
+                    line-height: 32px;
+                }
+            }
+        }
+        .slide-btn {
+            color: #3988ff;
+            .slide-icon {
+                transition: all ease 0.5s;
+                transform: rotate(90deg);
+                margin-right: 5px;
+            }
+        }
+        &.collapse {
+            .slide-box {
+                max-height: 0;
+            }
+            .down {
+                .slide-icon {
+                    transform: rotate(270deg);
+                }
+            }
+        }
+        &.extend {
+            .down {
+                .slide-icon {
+                    transform: rotate(90deg);
+                }
             }
         }
     }
-    
-    .radio-tag{
+
+    .radio-tag {
         display: inline-block;
         border-radius: 2px;
         cursor: pointer;
@@ -38,15 +78,15 @@
         line-height: 24px;
         padding: 0 8px;
         margin: 0 10px 12px;
-        &.selected{
-            background: #2356A1;
+        &.selected {
+            background: #2356a1;
             color: #fff;
         }
     }
 }
-.border-box{
-    border:1px solid rgba(215,219,230,1);
-    +.border-box{
+.border-box {
+    border: 1px solid rgba(215, 219, 230, 1);
+    + .border-box {
         margin-top: 10px;
     }
 }

@@ -29,6 +29,8 @@ export default (props) => {
 	const [areaLeibie, setAreaLeibie] = useState(areasLeibie);
 	// 搜索框 输入值
 	const [keyWord, setKeyWord] = useState(null);
+	// 搜索条件框 显示/隐藏
+	const [isCollapse, setIsCollapse] = useState(false);
 	// 关闭单个已选条件
 	function handleClose(removedTag) {
 		const newTags = tags.filter(tag => tag !== removedTag);
@@ -72,6 +74,10 @@ export default (props) => {
 		setKeyWord(value);
 		updateSearchOptions(value);
 	}
+	function toggleSlide() {
+		console.log(isCollapse);
+		setIsCollapse(!isCollapse);
+	}
 	return (
 		<div styleName="search-box" className="flex align-item-center just-con-center flex-col">
 			<div styleName="search-top-ipt" className="flex align-item-center">
@@ -105,13 +111,21 @@ export default (props) => {
                     </Button>
 				</div>
 			</div>
-			<div styleName="border-box search-bottom-check">
-				<SelectItem ref={childDiyu} areas={areaDiyu} selName={'地域'} type={'diyu'} selectedChange={changeSel} />
-				<SelectItem ref={childLingyu} areas={areaLingyu} selName={'领域'} type={'lingyu'} selectedChange={changeSel} />
-				<SelectItem ref={childLeibie} areas={areaLeibie} selName={'类别'} type={'leibie'} selectedChange={changeSel} />
-				<SelectItem ref={childTimer} areas={timerSeparator} selName={'时间'} type={'timer'} selectedChange={changeSel}>
-					<Button className="dashed_self" type="dashed" icon="plus">自定义时间段</Button>
-				</SelectItem>
+			<div styleName="border-box search-bottom-check" styleName={isCollapse ? 'collapse' : 'extend'}>
+				<div styleName="slide-box">
+					<SelectItem ref={childDiyu} areas={areaDiyu} selName={'地域'} type={'diyu'} selectedChange={changeSel} />
+					<SelectItem ref={childLingyu} areas={areaLingyu} selName={'领域'} type={'lingyu'} selectedChange={changeSel} />
+					<SelectItem ref={childLeibie} areas={areaLeibie} selName={'类别'} type={'leibie'} selectedChange={changeSel} />
+					<SelectItem ref={childTimer} areas={timerSeparator} selName={'时间'} type={'timer'} selectedChange={changeSel}>
+						<Button className="dashed_self" type="dashed" icon="plus">自定义时间段</Button>
+					</SelectItem>
+				</div>
+				<div onClick={() => { toggleSlide() }} styleName="slide-btn down" className="flex just-con-center">
+					<span className="pointer">
+						<Icon styleName="slide-icon" type="double-left" />
+						{isCollapse ? '展开' : '收起'}
+					</span>
+				</div>
 			</div>
 		</div>
 	)

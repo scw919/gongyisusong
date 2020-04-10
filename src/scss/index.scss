@@ -1,3 +1,17 @@
+@mixin radius-btn($radius: 19px, $height: 36px, $padding: 0 15px, $color: #fff, $bg: #3988ff, $hoverBg: #5b98f3,$border:1px solid #3988ff) {
+    box-sizing: border-box;
+    border-radius: $radius;
+    height: $height;
+    line-height: $height;
+    padding: $padding;
+    color: $color;
+    background: $bg;
+    border: $border;
+    cursor: pointer;
+    &:hover {
+        background: $hoverBg;
+    }
+}
 :global {
     // 重置样式
     p {
@@ -13,6 +27,12 @@
     }
     .mar-r-5 {
         margin-right: 5px;
+    }
+    .mar-r-10 {
+        margin-right: 10px;
+    }
+    .mar-r-15 {
+        margin-right: 15px;
     }
     .mar-t-20 {
         margin-top: 20px;
@@ -59,6 +79,16 @@
         }
     }
     .ant-menu {
+        .ant-menu-submenu {
+            .ant-menu-submenu-title {
+                > span {
+                    > i {
+                        min-width: 20px;
+                        margin-right: 5px;
+                    }
+                }
+            }
+        }
         .ant-menu-submenu-selected {
             .ant-menu-submenu-title {
                 color: #3988ff;
@@ -78,11 +108,15 @@
     }
     .flex {
         display: flex;
+        flex-flow: row;
         &.align-item-center {
             align-items: center;
         }
         &.just-con-center {
             justify-content: center;
+        }
+        &.flex-end {
+            justify-content: flex-end;
         }
         &.flex-col {
             flex-direction: column;
@@ -203,4 +237,15 @@
         -o-text-overflow: ellipsis;
         text-overflow: ellipsis;
     }
+    // 文字排列
+    .text-right{
+        text-align: right;
+    }
+    .text-left{
+        text-align: left;
+    }
+    .icon-font{
+        font-size: 20px !important;
+    }
 }
+

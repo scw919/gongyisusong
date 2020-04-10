@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import compnents from '@/components/load-components.js';
-const { AsortButton, Acollect } = compnents;
+const { AsortButton, Acollect, AclueItem } = compnents;
 import { Input, Tag, Icon, Button, Checkbox } from 'antd';
+import { Link } from 'react-router-dom';
 // 样式类
 import './style.scss';
 // import { useStore } from 'react-redux';
@@ -16,6 +18,10 @@ const defaultCheckedList = [
     { menuid: 2, name: 'pear' },
 ]
 export default class SearchList extends React.Component {
+    static propTypes = {
+        toggleModalNew: PropTypes.func,
+        toggleModalRel: PropTypes.func,
+    };
     state = {
         checkedList: [],
         indeterminate: false,
@@ -32,6 +38,7 @@ export default class SearchList extends React.Component {
     }
 
     render() {
+        const { isCollect } = this.props;
         return (
             <div className="mar-t-20" styleName="search-list">
                 <div className="flex flex-between" styleName="search-list-top">
@@ -57,44 +64,14 @@ export default class SearchList extends React.Component {
                             {
                                 this.state.plainOptions.map((sub, subKey) => {
                                     return (
-                                        <div styleName="search-list-item" key={subKey}>
-                                            <div styleName="search-list-item-title" className="flex flex-between">
-                                                <div className="ft-18" styleName="title">
-                                                    <Checkbox value={sub} id={`${sub.menuid}`} key={subKey} >{sub.name}</Checkbox >
-                                                    <span>番禺南丰塑料有限公司行政处罚案</span>
-                                                </div>
-                                                {/* 收录 */}
-                                                <Acollect isCollected={true} onClick={this.handleCollected} />
-                                            </div>
-                                            <div className="flex flex-between">
-                                                <div styleName="left-part">
-                                                    <Icon className="mar-r-5" type="environment" />
-                                                    <span>广州市南沙区南天街102号</span>
-                                                </div>
-                                                <div></div>
-                                            </div>
-                                            <div className="flex flex-between">
-                                                <div styleName="left-part">
-                                                    <Icon className="mar-r-5" type="book" />
-                                                    <div className="ft-16 inline-block">
-                                                        <span className="tags-self tag-green">资源环境</span>
-                                                        <span className="tags-self tag-yellow">其他案件</span>
-                                                        <span className="tags-self tag-red">罚款</span>
-                                                    </div>
-                                                </div>
-                                                {/* <div></div> */}
-                                            </div>
-                                            <div className="flex flex-between">
-                                                <div styleName="left-part">
-                                                    <Icon className="mar-r-5" type="clock-circle" />
-                                                    <span>处罚决定日期: </span>
-                                                    <span>2019年12月24日</span>
-                                                </div>
-                                                <div styleName="right-part">
-                                                    采集时间: 2020-02-12
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <AclueItem
+                                            key={subKey}
+                                            sub={sub}
+                                            toggleModalNew={this.props.toggleModalNew}
+                                            toggleModalRel={this.props.toggleModalRel}
+                                            isCollect={isCollect}
+                                            onClick={this.handleCollected}>
+                                        </AclueItem>
                                     )
                                 })
                             }

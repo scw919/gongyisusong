@@ -3,7 +3,8 @@ const ClueDiscoveryDetail = lazyLoad(() => import('.'));
 
 export default [
     {
-        path: '/clueDiscovery/clueDiscoveryDetail',
+        path: '/clueDiscovery/byClue/clueDiscoveryDetail',
         component: ClueDiscoveryDetail,
+        notFilterByMenu: true,
     },
 ];

@@ -1,0 +1,84 @@
+.new-deal-box {
+    .clue-name {
+        .left {
+            width: 70px;
+        }
+        .right {
+            flex: 1;
+        }
+    }
+    .item {
+        + .item {
+            margin-top: 15px;
+        }
+        &.search {
+            border-radius: 2px;
+            :global(.ant-input) {
+                background: #f4f4f4;
+            }
+        }
+        .search-clue-list {
+            height: 275px;
+            margin-top: 15px;
+            .search-clue-item {
+                margin-bottom: 8px;
+                .clue-name {
+                    margin-left: 5px;
+                    flex: 1;
+                    width: calc(100% - 26px);
+                    > div:nth-child(1) {
+                        width: 270px;
+                    }
+                }
+            }
+        }
+    }
+
+    :global {
+        .ant-modal-body {
+            padding: 20px;
+        }
+        .ant-checkbox-group {
+            width: 100%;
+        }
+        .z-to-top {
+            display: none;
+        }
+    }
+}
+.extend—item {
+    color: #565A60;
+    width: 100%;
+    .extend-item-tit {
+        .extend-icon {
+            font-size: 12px;
+            margin-right: 3px;
+        }
+    }
+    .extend-item-content {
+        padding-left: 16px;
+        height: auto;
+        max-height: 500px;
+        transition: all ease .5s;
+        &.collapse{
+            transition-duration: .3s;
+            max-height: 0;
+            overflow: hidden;
+        }
+        &.extend{
+            transition-duration: .8s;
+        }
+        >div{
+            margin: 8px 0;
+            >div:nth-child(1){
+                width: 258px;
+            }
+            .flag{
+                color: #A2AAB5;
+                >span+span{
+                    margin-left: 10px;
+                }
+            }
+        }
+    }
+}

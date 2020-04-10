@@ -26,7 +26,7 @@ class AfileShow extends React.Component {
     };
     state = {
         previewVisible: false,
-        previewImage: this.props.url,
+        previewImage: null
     }
     render() {
         const {
@@ -35,6 +35,7 @@ class AfileShow extends React.Component {
             size,
             url
         } = this.props;
+        // console.log(this.props)
         const { previewVisible, previewImage } = this.state;
         return (
             <div className="relative" styleName="file-box">
@@ -44,32 +45,28 @@ class AfileShow extends React.Component {
                         <Icon onClick={(e) => {
                             e.stopPropagation();
                             e.nativeEvent.stopImmediatePropagation();
-                            this.handlePreview({ url: previewImage })
+                            this.handlePreview(url)
                         }} type="eye" />
                         <Icon type="download" />
                     </div>
                 </div>
-                {this.renderImg()}
+                {this.renderImg(name)}
                 <div>
                     <p title={name} className="ellipsis">{name}</p>
                     <p>({size})</p>
                 </div>
                 <Modal width={768} visible={previewVisible} footer={null} onCancel={this.handleCancel}>
                     {
-                        this.renderPreview(type, url)
+                        this.renderPreview((type||this.getFileType(name)), url)
                     }
                 </Modal >
             </div >
         );
     }
     // 预览文件
-    handlePreview = async file => {
-        console.log('preview');
-        if (!file.url && !file.preview) {
-            file.preview = await getBase64(file.originFileObj);
-        }
+    handlePreview = async url => {
         this.setState({
-            previewImage: file.url || file.preview,
+            previewImage: url,
             previewVisible: true,
         });
     }
@@ -83,19 +80,20 @@ class AfileShow extends React.Component {
         });
     }
     // 渲染对应文件的icon
-    renderImg = () => {
+    renderImg = (name) => {
         const { type } = this.props;
-        switch (type) {
+        let fileType = this.getFileType(name);
+        switch (fileType) {
             case 'png':
                 return <img src={pngIcon} alt="" />;
                 break;
             case 'pdf':
                 return <img src={pdfIcon} alt="" />;;
                 break;
-            case 'video':
+            case 'mp4':
                 return <img src={videoIcon} alt="" />;;
                 break;
-            case 'word':
+            case 'doc'||'docx':
                 return <img src={wordIcon} alt="" />;;
                 break;
         }

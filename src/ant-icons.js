@@ -32,5 +32,11 @@ export { default as BookOutline } from '@ant-design/icons/lib/outline/BookOutlin
 export { default as ClockCircleOutline } from '@ant-design/icons/lib/outline/ClockCircleOutline';
 // 查看
 export { default as EyeOutline } from '@ant-design/icons/lib/outline/EyeOutline';
+// 上传
+export { default as UploadOutline } from '@ant-design/icons/lib/outline/UploadOutline';
 // 下载
 export { default as DownloadOutline } from '@ant-design/icons/lib/outline/DownloadOutline';
+// 收起  DoubleLeftOutline
+export { default as DoubleLeftOutline } from '@ant-design/icons/lib/outline/DoubleLeftOutline';
+// 加减
+export { default as MinusOutline } from '@ant-design/icons/lib/outline/MinusOutline';

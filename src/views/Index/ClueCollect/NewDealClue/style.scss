@@ -1,0 +1,52 @@
+.new-deal-box {
+    .clue-name {
+        .left {
+            width: 70px;
+        }
+        .right {
+            flex: 1;
+        }
+        :global {
+            .ant-input {
+                background: #f4f4f4;
+            }
+        }
+    }
+    .item {
+        +.item{
+            margin-top: 15px;
+        }
+        &.search {
+            padding: 12px 15px;
+            background: #f4f4f4;
+            border-radius: 2px;
+        }
+        .search-clue-list{
+            height:160px;
+            margin-top: 15px;
+            .search-clue-item{
+                margin-bottom: 8px; 
+                .clue-name{
+                    margin-left: 5px;
+                    flex: 1;
+                    width: calc( 100% - 26px );
+                    >div:nth-child(1){
+                        width: 270px;
+                    }
+                }
+            }
+        }
+    }
+
+    :global {
+        .ant-modal-body {
+            padding: 20px;
+        }
+        .ant-checkbox-group{
+            width: 100%;
+        }
+        .z-to-top{
+            display: none;
+        }
+    }
+}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import compnents from '@/components/load-components.js';
 const { AClueDetailCard, AfileShow } = compnents;
 
-import { Input, Tag, Icon, Button } from 'antd';
+import { Icon, Button, Upload } from 'antd';
 
 import { Zlayout } from 'zerod';
 import { connect } from 'react-redux';
@@ -18,6 +18,26 @@ const mapStateToProps = (state, ownProps) =>
         userName: state.userName,
         collapsed: state.collapsed
     });
+const fileList = [
+    {
+        uid: '-1',
+        name: 'xxx.png',
+        status: 'done',
+        size: '2.9M',
+        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+        thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    }
+];
+const uploadProps = {
+    showUploadList: false,
+    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+    listType: 'picture',
+    defaultFileList: [...fileList],
+    onChange: updateFileList
+}
+function updateFileList(fileList) {
+    fileList = fileList
+}
 
 class ClueDiscoveryDetail extends React.Component {
     state = {
@@ -27,9 +47,29 @@ class ClueDiscoveryDetail extends React.Component {
             { name: '2附件名称.doc', type: 'word', size: '2.8M', url: detailInfo },
             { name: '3附件名称.mp4', type: 'video', size: '2.8M', url: detailInfo },
             { name: '4附件名称.pdf', type: 'pdf', size: '2.8M', url: detailInfo },
+        ],
+        fileList: [
+            {
+                uid: '-1',
+                name: 'xxx.png',
+                status: 'done',
+                size: '2.9M',
+                url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+                thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+            },
+            {
+                uid: '-1',
+                name: 'xxx.png',
+                status: 'done',
+                size: '2.9M',
+                url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+                thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+            },
         ]
     }
     render() {
+        const { fileList } = this.state;
+        const { history } = this.props;
         return (
             <Zlayout.Zbody scroll={true}>
                 <div styleName="main-rt-con-detail" style={{ height: '100%' }}>
@@ -69,15 +109,49 @@ class ClueDiscoveryDetail extends React.Component {
                             {
                                 this.state.filesList.map((item, index) => {
                                     return (
-                                        <AfileShow key={index} type={item.type} name={item.name} size={item.size} url={item.url} />
+                                        <AfileShow key={index} {...item} />
                                     )
                                 })
                             }
                         </div>
                     </div>
+                    {/* 其他材料 上传 */}
+                    <div styleName="main-module">
+                        <p className="title-line-before" styleName="title bt-line">其他材料上传</p>
+                        <div className="flex" styleName="file-manage file-list">
+                            {fileList.map((file, index) => {
+                                return (
+                                    <AfileShow key={index} {...file} />
+                                )
+                            })}
+                            <Upload
+                                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                                showUploadList={false}
+                                fileList={fileList}
+                                onChange={this.handleChangeFile}
+                            >
+                                <Button styleName="upload-btn">
+                                    <Icon type="upload" />
+                                    支持扩展名： .doc .docx .pdf .jpg
+                                </Button>
+                            </Upload>
+                        </div>
+                    </div>
+                    <div className="flex just-con-center" style={{ padding: '45px 0' }}>
+                        <Button type="primary" style={{ marginRight: '24px' }}>保存</Button>
+                        <Button onClick={() => { history.goBack() }}>返回</Button>
+                    </div>
                 </div>
             </Zlayout.Zbody>
         )
+    }
+    handleChangeFile = (fileList) => {
+        console.log(fileList);
+        let newFile = fileList.file.response;
+        let stateFileList = this.state.fileList;
+        stateFileList.push(newFile);
+        console.log(stateFileList);
+        // this.setState({ fileList: stateFileList });
     }
 }
 export default connect(mapStateToProps)(ClueDiscoveryDetail);

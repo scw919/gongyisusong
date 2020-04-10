@@ -87,31 +87,27 @@ export default ZmainHOC(connect(mapStateToProps)(Main),
                 {
                     permUrl: 'clueDiscovery',
                     permName: '线索发现',
-                    permIconUrl: 'compass',
+                    permIconUrl: () => {
+                        return (<IconFont className="icon-font" type="icon-integral" />)
+                    },
                     children: [
                         {
                             permUrl: 'byClue',
                             permName: '按线索',
                             permIconUrl: '11',
-                        },
-                        {
-                            permUrl: 'clueDiscoveryDetail',
-                            permName: 'detail',
-                            permIconUrl: '11'
                         }
                     ]
                 },
                 {
-                    permUrl: 'clueDiscoveryCopy',
+                    permUrl: 'myClue',
                     permName: '我的线索',
-                    permIconUrl: () => {
-                        return (<IconFont size="large" type="icon-integral" />)
-                    },
+                    permIconUrl: 'compass',
                     children: [
                         {
-                            permUrl: 'byClue1',
+                            permUrl: 'clueCollect',
                             permName: '线索搜录',
                             permIconUrl: '11',
+                            exact: true
                         },
                         {
                             permUrl: 'byClue2',

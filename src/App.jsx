@@ -31,6 +31,10 @@ const pageConfig = {
             path: '/login',
             component: LoginMain,
         },
+        // {
+        //     path: '/index/clueDiscovery/clueDiscoveryDetail',
+
+        // }
     ],
     footerLinks: null,
     footerCopyright: null,
