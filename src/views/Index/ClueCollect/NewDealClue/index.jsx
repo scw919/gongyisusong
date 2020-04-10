@@ -39,9 +39,6 @@ class NewDealClue extends React.Component {
         const { visible, loading, title, isRelate } = this.state;
         return (
             <div>
-                <Button type="primary" onClick={this.showModal}>
-                    Open Modal with customized footer
-                </Button>
                 <Modal
                     styleName="new-deal-box"
                     visible={visible}
