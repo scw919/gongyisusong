@@ -49,6 +49,16 @@
     .pointer {
         cursor: pointer;
     }
+    .clearfix{
+        &:after{
+            visibility: hidden;
+            display: block;
+            font-size: 0;
+            content: " ";
+            clear: both;
+            height: 0;
+        }
+    }
     .z-layout {
         .z-main-nav {
             &.is-dark {

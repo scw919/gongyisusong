@@ -81,10 +81,9 @@ class AfileShow extends React.Component {
     }
     // 渲染对应文件的icon
     renderImg = (name) => {
-        const { type } = this.props;
         let fileType = this.getFileType(name);
         switch (fileType) {
-            case 'png':
+            case 'png'||'jpg':
                 return <img src={pngIcon} alt="" />;
                 break;
             case 'pdf':

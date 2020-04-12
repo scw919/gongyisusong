@@ -6,6 +6,7 @@ import { Icon, Button, Upload } from 'antd';
 
 import { Zlayout } from 'zerod';
 import { connect } from 'react-redux';
+import upload from '@/Api/upload.api.js';
 // 样式类
 import './style.scss';
 // 通用工具
@@ -125,7 +126,8 @@ class ClueDiscoveryDetail extends React.Component {
                                 )
                             })}
                             <Upload
-                                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                                action="https://172.16.121.18:8904/gzwjc-miniprogram-wisdom/file/upload"
+                                // customRequest={this.customRequest}
                                 showUploadList={false}
                                 fileList={fileList}
                                 onChange={this.handleChangeFile}
@@ -144,6 +146,13 @@ class ClueDiscoveryDetail extends React.Component {
                 </div>
             </Zlayout.Zbody>
         )
+    }
+    // 自定义上传  gzwjc-miniprogram-wisdom/file/upload
+    customRequest = (detail) => {
+        console.log(detail);
+        upload.apis.upload(detail.file).then((res) => {
+            console.log(res.success)
+        })
     }
     handleChangeFile = (fileList) => {
         console.log(fileList);
