@@ -52,17 +52,18 @@ class ClueDiscovery extends React.Component {
         relatedVisible: false, //关联线索 弹窗
     }
     render() {
+        const { history } = this.props;
         const { newVisible, relatedVisible } = this.state;
         return (
             <Zlayout.Zbody scroll={true} loadMore={this.getData}>
                 <div className="main-rt-container" style={{ height: '100%' }}>
                     {/* <AseamlessScroll /> */}
                     <SearchPart searchResult={this.updateOptions} />
-                    <SearchList toggleModalNew={this.toggleModalNew} toggleModalRel={this.toggleModalRel} data={this.state.dataList} isCollect={true} />
+                    <SearchList toggleModalNew={this.toggleModalNew} toggleModalRel={this.toggleModalRel} data={this.state.dataList} isCollect={true} history={history}/>
                     {/* 新建 线索收录 */}
-                    <NewDealClue visible={newVisible} toggleModalNew={this.toggleModalNew}/>
+                    <NewDealClue visible={newVisible} toggleModalNew={this.toggleModalNew} />
                     {/* 关联线索收录 */}
-                    <RelatedClue visible={relatedVisible} toggleModalRel={this.toggleModalRel}/>
+                    <RelatedClue visible={relatedVisible} toggleModalRel={this.toggleModalRel} />
                 </div>
             </Zlayout.Zbody>
         )
@@ -118,22 +119,22 @@ class ClueDiscovery extends React.Component {
         this.setState(
             {
                 newVisible: status
-            },()=>{
+            }, () => {
                 console.log(this.state)
             }
         );
-        
+
     }
     // 列表组件 点击 关联 处置线索
     toggleModalRel = (status) => {
         this.setState(
             {
                 relatedVisible: status
-            },()=>{
+            }, () => {
                 console.log(this.state)
             }
         );
-        
+
     }
 }
 export default connect(mapStateToProps)(ClueDiscovery);

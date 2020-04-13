@@ -38,7 +38,7 @@ export default class SearchList extends React.Component {
     }
 
     render() {
-        const { isCollect } = this.props;
+        const { isCollect, toggleModalNew, toggleModalRel, history } = this.props;
         return (
             <div className="mar-t-20" styleName="search-list">
                 <div className="flex flex-between" styleName="search-list-top">
@@ -65,12 +65,14 @@ export default class SearchList extends React.Component {
                                 this.state.plainOptions.map((sub, subKey) => {
                                     return (
                                         <AclueItem
+                                            history={history}
                                             key={subKey}
                                             sub={sub}
-                                            toggleModalNew={this.props.toggleModalNew}
-                                            toggleModalRel={this.props.toggleModalRel}
+                                            toggleModalNew={toggleModalNew}
+                                            toggleModalRel={toggleModalRel}
                                             isCollect={isCollect}
-                                            onClick={this.handleCollected}>
+                                            hasChecked={true}
+                                            clickEvent={this.handleCollected}>
                                         </AclueItem>
                                     )
                                 })

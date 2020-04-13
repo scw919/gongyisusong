@@ -5,6 +5,12 @@
         :global(.search-ipt) {
             box-shadow: 0px 0px 10px 0px rgba(4, 24, 72, 0.13);
         }
+        button{
+            background: #2357A1;
+            &:hover{
+                background: #386ab3;
+            }
+        }
     }
     .search-center-check {
         width: 100%;

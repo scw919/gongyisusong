@@ -1,4 +1,13 @@
-@mixin radius-btn($radius: 19px, $height: 36px, $padding: 0 15px, $color: #fff, $bg: #3988ff, $hoverBg: #5b98f3,$border:1px solid #3988ff) {
+// 自定义按钮样式
+@mixin radius-btn(
+    $radius: 19px,
+    $height: 36px,
+    $padding: 0 15px,
+    $color: #fff,
+    $bg: #3988ff,
+    $hoverBg: #5b98f3,
+    $border: 1px solid #3988ff
+) {
     box-sizing: border-box;
     border-radius: $radius;
     height: $height;
@@ -21,10 +30,35 @@
     i {
         font-style: normal;
     }
-
+    // 定位
+    .relative {
+        position: relative;
+    }
+    .absolute {
+        position: absolute;
+    }
+    // 文字超出
+    .ellipsis {
+        white-space: nowrap;
+        overflow: hidden;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+    }
+    // 文字排列
+    .text-right {
+        text-align: right;
+    }
+    .text-left {
+        text-align: left;
+    }
+    .text-center {
+        text-align: center;
+    }
+    // 行内块
     .inline-block {
         display: inline-block;
     }
+    // 统一 间距
     .mar-r-5 {
         margin-right: 5px;
     }
@@ -34,8 +68,17 @@
     .mar-r-15 {
         margin-right: 15px;
     }
+    .mar-t-10 {
+        margin-top: 10px;
+    }
+    .mar-t-15 {
+        margin-top: 15px;
+    }
     .mar-t-20 {
         margin-top: 20px;
+    }
+    .mar-b-20 {
+        margin-bottom: 20px;
     }
     .ft-16 {
         font-size: 16px;
@@ -49,16 +92,18 @@
     .pointer {
         cursor: pointer;
     }
-    .clearfix{
-        &:after{
+    // 浮动清除
+    .clearfix {
+        &:after {
             visibility: hidden;
             display: block;
             font-size: 0;
-            content: " ";
+            content: ' ';
             clear: both;
             height: 0;
         }
     }
+    // 侧边导航 重置
     .z-layout {
         .z-main-nav {
             &.is-dark {
@@ -113,9 +158,11 @@
             }
         }
     }
+    // 白色背景
     .white-bg {
         background: #fff;
     }
+    // flex 布局
     .flex {
         display: flex;
         flex-flow: row;
@@ -158,7 +205,7 @@
         .ant-btn-link {
             color: #3988ff;
         }
-        [type='button'] {
+        [type='button'],&[type='button'] {
             display: inline-block;
             height: 32px;
             line-height: 32px;
@@ -167,8 +214,12 @@
             background: rgba(35, 87, 161, 1);
             border-radius: 2px;
             border: none;
+            &:hover{
+                background: #386ab3;
+            }
         }
     }
+    // 虚线边框按钮重置
     .dashed_self {
         &.ant-btn-dashed {
             color: #d1d5db;
@@ -184,6 +235,7 @@
         line-height: 24px;
         padding: 0 8px;
         border-radius: 2px;
+        font-size: 12px;
         &.tag-green {
             background: rgba(226, 248, 239, 1);
             color: #1bc27a;
@@ -195,6 +247,10 @@
         &.tag-red {
             background: rgba(254, 241, 243, 1);
             color: #ef374f;
+        }
+        &.tag-grey {
+            background: rgba(235, 238, 245, 1);
+            color: #a2aab5;
         }
         + .tags-self {
             margin-left: 8px;
@@ -233,29 +289,14 @@
             }
         }
     }
-    // 定位
-    .relative {
-        position: relative;
-    }
-    .absolute {
-        position: absolute;
-    }
-    // 文字超出
-    .ellipsis {
-        white-space: nowrap;
-        overflow: hidden;
-        -o-text-overflow: ellipsis;
-        text-overflow: ellipsis;
-    }
-    // 文字排列
-    .text-right{
-        text-align: right;
-    }
-    .text-left{
-        text-align: left;
-    }
-    .icon-font{
+    // 引入阿里图标重置图标字号
+    .icon-font {
         font-size: 20px !important;
     }
+    // 自定义  link 按钮
+    .ant-btn-link {
+        &.warning {
+            color: #ff4f69;
+        }
+    }
 }
-

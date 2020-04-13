@@ -1,0 +1,9 @@
+.base-info{
+    color: #565A60;
+    font-size: 16px;
+    :global{
+        .ant-form-item-required:before{
+            display: none;
+        }
+    }
+}

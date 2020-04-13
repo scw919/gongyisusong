@@ -1,0 +1,29 @@
+.main-rt-con-detail {
+    padding: 20px;
+    .search-box {
+        background: #eff0f2;
+        border-radius: 2px;
+        padding: 20px 45px;
+    }
+    .result-box {
+        overflow: hidden;
+        >div{
+            margin-left: -10px;
+            width: calc( 100% + 20px );
+        }
+    }
+    :global {
+        .ant-form-item {
+            margin-bottom: 12px;
+            .ant-form-item-label > label {
+                color: #565a60;
+            }
+        }
+        .ant-pagination{
+            .ant-select-selection,.ant-pagination-options-quick-jumper input{
+                background: #fff;
+                border: 1px solid rgba(0,0,0,0.15);
+            }
+        }
+    }
+}

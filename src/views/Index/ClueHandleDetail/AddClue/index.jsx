@@ -10,7 +10,7 @@ const plainOptions11 = [
     { name: 'apple2apple2apple2apple2apple2applapple2apple2', menuid: 2, type: '行政处罚', extend: true },
     { name: 'apple0', menuid: 3, type: '行政处罚', extend: true },
 ];
-class NewDealClue extends React.Component {
+class AddClue extends React.Component {
     static propTypes = {
         visible: PropTypes.bool
     };
@@ -71,32 +71,9 @@ class NewDealClue extends React.Component {
                                                 return (
                                                     <div className="flex" styleName="search-clue-item">
                                                         <Checkbox className="mar-r-5" key={subKey} value={sub} onChange={this.onChangeSelClue} />
-                                                        <div className="pointer" styleName="extend—item">
-                                                            <div onClick={() => { this.toggleExtend(sub) }} className="flex" styleName="extend-item-tit">
-                                                                <span styleName="extend-icon">
-                                                                    {
-                                                                        sub.extend ? (<Icon type="minus" />)
-                                                                            : (<Icon type="plus" />)
-                                                                    }
-                                                                </span>
-                                                                <span>番禺新风塑料制品有限公司行政处罚案</span>
-                                                            </div>
-                                                            <div styleName={`${sub.extend ? 'extend' : 'collapse'} extend-item-content `}>
-                                                                <div className="flex flex-between">
-                                                                    <div>制品有限公司行政处罚案番禺新风塑料</div>
-                                                                    <div className="flex-1 text-left" styleName="flag">
-                                                                        <span>环境污染</span>
-                                                                        <span>刑事案件</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="flex flex-between">
-                                                                    <div>制品有限公司行政处罚案番禺新风塑料</div>
-                                                                    <div className="flex-1 text-left" styleName="flag">
-                                                                        <span>环境污染</span>
-                                                                        <span>12345举报</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                        <div className="flex flex-1">
+                                                            <span styleName="item-tit">番禺新风塑料制品有限公司行政处罚案</span>
+                                                            <span className="text-right" styleName="item-tag">环境污染</span>
                                                         </div>
                                                     </div>
                                                 )
@@ -116,19 +93,13 @@ class NewDealClue extends React.Component {
         this.setState({ loading: true });
         setTimeout(() => {
             this.setState({ loading: false, visible: false });
-            this.props.toggleModalRel(false);
+            this.props.toggleModal(false);
         }, 3000);
     };
 
     handleCancel = () => {
         this.setState({ visible: false });
-        this.props.toggleModalRel(false);
-    };
-    // 切换是否需要关联
-    onChangeRadio = e => {
-        this.setState({
-            isRelate: e.target.value,
-        });
+        this.props.toggleModal(false);
     };
     // 滚动获取数据
     getData = () => {
@@ -143,20 +114,5 @@ class NewDealClue extends React.Component {
             checkAll: checkedList.length === plainOptions.length,
         });
     }
-    // 展开 收起
-    toggleExtend = (item) => {
-        console.log(item);
-        const { plainOptions } = this.state;
-        let newPlainOptions = plainOptions.map(item_1 => {
-            if (item_1.menuid == item.menuid) {
-                item_1.extend = !item_1.extend;
-            }
-            return item_1
-        })
-        this.setState({
-            plainOptions: newPlainOptions
-        })
-
-    }
 }
-export default NewDealClue;
+export default AddClue;

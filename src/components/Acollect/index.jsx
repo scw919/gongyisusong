@@ -22,9 +22,6 @@ export class Acollect extends React.Component {
     //     });
     // }
     render() {
-        const {
-            onClick
-        } = this.props;
         return (
             <div>
                 {
@@ -32,32 +29,32 @@ export class Acollect extends React.Component {
                         (
                             <div onClick={this.handleCollected} styleName="collect collected" className="ft-16 pointer">
                                 <Icon type="heartFill" className="mar-r-5" />
-                                                                已收录
+                                已收录
                             </div>
                         ) :
                         (
                             <div onClick={this.handleCollected} styleName="collect" className="ft-16 pointer">
                                 <Icon type="heart" className="mar-r-5" />
-                                                                收录
+                                收录
                             </div>
                         )
                 }
             </div>
         );
     }
-    handleCollected = () => {
+    handleCollected = (e) => {
+        e.stopPropagation();
+        e.nativeEvent.stopImmediatePropagation();
         const {
-            onClick,
+            clickEvent,
         } = this.props;
         let isCollected = this.state.isCollected;
-        // this.state.isCollected = !isCollected;
         this.setState({
             isCollected: !isCollected
         },() => {
-            console.log(this.state);
-            onClick(!isCollected);
+            // console.log(this.state);
+            clickEvent&&clickEvent(!isCollected);
         });
-        
         
     }
 }

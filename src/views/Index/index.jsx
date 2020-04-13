@@ -110,7 +110,7 @@ export default ZmainHOC(connect(mapStateToProps)(Main),
                             exact: true
                         },
                         {
-                            permUrl: 'byClue2',
+                            permUrl: 'clueHandle',
                             permName: '线索处置',
                             permIconUrl: '11',
                         }

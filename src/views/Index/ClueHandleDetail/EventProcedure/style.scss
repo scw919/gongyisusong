@@ -1,0 +1,27 @@
+.time-line-dot {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(209, 213, 219, 1);
+}
+.time-line{
+    font-size: 14px;
+    .name{
+        color: #565A60;
+    }
+    .unit,.type{
+        color: #9EA9C8;
+    }
+    .time{
+        color: #D1D5DB;
+    }
+    :global{
+        .ant-timeline-item-tail{
+            border-left: 3px solid #D1D5DB;
+        }
+        .ant-timeline-item-head-custom{
+            padding: 0;
+        }
+    }
+}

@@ -86,7 +86,7 @@ class NewDealClue extends React.Component {
                                                         return (
                                                             <div key={subKey} className="flex" styleName="search-clue-item">
                                                                 <Checkbox value={sub} onChange={this.onChangeSelClue} />
-                                                                <div className="flex ft-16" styleName="clue-name">
+                                                                <div className="flex" styleName="clue-name">
                                                                     <div className="ellipsis" title={sub.name}>{sub.name}</div>
                                                                     <div className="flex-1 text-right">{sub.type}</div>
                                                                 </div>
@@ -106,11 +106,6 @@ class NewDealClue extends React.Component {
             </div>
         );
     }
-    showModal = () => {
-        this.setState({
-            visible: true,
-        });
-    };
 
     handleOk = () => {
         this.setState({ loading: true });

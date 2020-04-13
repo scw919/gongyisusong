@@ -30,6 +30,7 @@ class ClueDiscoveryDetail extends React.Component {
         ]
     }
     render() {
+        const { history } = this.props;
         return (
             <Zlayout.Zbody scroll={true}>
                 <div styleName="main-rt-con-detail" style={{ height: '100%' }}>
@@ -76,7 +77,10 @@ class ClueDiscoveryDetail extends React.Component {
                         </div>
                     </div>
                 </div>
-            </Zlayout.Zbody>
+                <div className="text-center mar-b-20">
+                    <Button onClick={() => { history.goBack() }} >返回</Button>
+                </div>
+            </Zlayout.Zbody >
         )
     }
 }

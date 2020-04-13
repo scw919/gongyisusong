@@ -1,0 +1,19 @@
+.search-box {
+    background: #eff0f2;
+    border-radius: 2px;
+    padding: 20px 45px;
+    :global {
+        .ant-form-item {
+            margin-bottom: 12px;
+            .ant-form-item-label > label {
+                color: #565a60;
+            }
+        }
+    }
+}
+
+:global {
+    .ant-calendar-picker {
+        width: 100%;
+    }
+}

@@ -48,12 +48,13 @@ class ClueDiscovery extends React.Component {
         ]
     }
     render() {
+        const { history } = this.props;
         return (
             <Zlayout.Zbody scroll={true} loadMore={this.getData}>
                 <div className="main-rt-container" style={{ height: '100%' }}>
                     {/* <AseamlessScroll /> */}
                     <SearchPart searchResult={this.updateOptions} />
-                    <SearchList data={this.state.dataList} />
+                    <SearchList data={this.state.dataList} history={history} />
                 </div>
             </Zlayout.Zbody>
         )
