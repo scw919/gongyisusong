@@ -3,7 +3,7 @@ const Charts = lazyLoad(() => import('.'));
 
 export default [
     {
-        path: '/',
+        path: '/charts',
         component: Charts,
         notFilterByMenu: true,
     },

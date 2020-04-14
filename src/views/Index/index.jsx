@@ -40,10 +40,10 @@ class Main extends React.Component {
     match = matchPath(this.props.location.pathname, {
         path: this.props.routePath
     });
-    componentWillMount() { 
-        console.log(this.props.location, this.match, '11112222' );
+    componentWillMount() {
+        console.log(this.props.location, this.match, '11112222');
     }
-    render() { 
+    render() {
         const { history, collapsed, menuIndex } = this.props;
         //自定义主页布局，经过ZmainHOC包装的组件，会this.props.getSideMenuTemplate和this.props.getMaimRouteTemplate两个方法
         return (
@@ -51,23 +51,23 @@ class Main extends React.Component {
                 <ApageHeader history={history} />
                 <Zlayout.Zbody scroll={false} className="layout-container">
                     <Zlayout flexRow >
-                        <Zlayout.Zheader className="bread-crumb">
-                            <div style={{ width: '100%' }} className="flex flex-between">
-                                <Breadcrumb>
+                        <Zlayout.Zheader>
+                            <div style={{ width: '100%', height: '100%' }} className="flex flex-between align-item-center">
+                                <Breadcrumb className="ft-16">
                                     <Breadcrumb.Item>首页</Breadcrumb.Item>
                                 </Breadcrumb>
                                 <div style={{ width: '400px' }} className="relative flex align-item-center">
                                     <div style={{ width: '90px' }}>选择日期：</div>
                                     <RangePicker
+                                        style={{ width: '300px' }}
                                         onChange={this.onChange}
-                                        getCalendarContainer={trigger => trigger.parentNode}
                                     />
                                 </div>
                             </div>
                         </Zlayout.Zheader>
                         <Zlayout.Zbody>
                             <Zlayout flexRow>
-                                <Zlayout className="index-container">{this.props.getMaimRouteTemplate()}</Zlayout>
+                                <Zlayout className="main-container">{this.props.getMaimRouteTemplate()}</Zlayout>
                             </Zlayout>
                         </Zlayout.Zbody>
                     </Zlayout>

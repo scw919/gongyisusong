@@ -4,7 +4,7 @@ import initialState from './initialState';
 // export default function configureStore() {
 //     return createStore(rootReducer, initialState);
 // }
-export default function configureStore() {
+const configureStore = function () {
     const store = createStore(rootReducer, initialState);
 
     if (module.hot) {
@@ -17,3 +17,5 @@ export default function configureStore() {
 
     return store;
 }
+const store = configureStore();
+export default store;

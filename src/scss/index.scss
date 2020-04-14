@@ -300,3 +300,27 @@
         }
     }
 }
+// 页面跟路由央视设置
+:global {
+    .layout-container {
+        padding: 0 80px;
+        background: #f0f2f5;
+        .bread-crumb {
+            height: 48px !important;
+            display: flex;
+            align-items: center;
+        }
+        .main-container {
+            .z-layout-body {
+                background: #fff;
+                .main-rt-container {
+                    width: 1200px;
+                    padding-bottom: 50px;
+                    margin: 0 auto;
+                }
+            }
+            
+        }
+    }
+}
+

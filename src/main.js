@@ -24,7 +24,7 @@ import './antd-vars.less';
 import './app.scss';
 function didRoot(App) {
     render(
-        <Provider store={store()}>
+        <Provider store={store}>
             <App />
         </Provider>,
         document.querySelector('#app'),

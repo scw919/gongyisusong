@@ -15,7 +15,7 @@ const pageConfig = {
         {
             redirect: true,
             path: '/index',
-            to: '/index/',
+            to: '/index/charts',
         },
         
         {

@@ -1,5 +1,6 @@
 .index-container {
     padding-bottom: 50px;
+    background: #f0f2f5;
     .col-div-box {
         overflow: hidden;
         .col-div {
@@ -142,16 +143,16 @@
                     }
                 }
             }
-            :global {
-                .ant-select-dropdown {
-                    top: 35px !important;
-                    left: 0 !important;
-                }
-                .ant-select-selection{
-                    background: #E6EAF6;
-                    color: #565A60;
-                }
-            }
+            // :global {
+            //     .ant-select-dropdown {
+            //         top: 35px !important;
+            //         left: 0 !important;
+            //     }
+            //     .ant-select-selection{
+            //         background: #E6EAF6;
+            //         color: #565A60;
+            //     }
+            // }
         }
     }
 }

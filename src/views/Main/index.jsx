@@ -6,6 +6,8 @@ import { matchPath } from 'react-router-dom';
 // zerod
 import { Zlayout, ZmainHOC, ZpageHeader } from 'zerod';
 import GlobalLoading from 'zerod/lazyLoad/Loading.jsx';
+// actions
+import { changeMenuIndex } from '@/store/actions';
 // 路由组件
 import mainRoutes from './load-child-routes.js';
 // console.log(mainRoutes);
@@ -14,7 +16,7 @@ const { ApageHeader, } = compnents;
 // ant ui
 import { Icon, Dropdown, Menu, Button, Breadcrumb } from 'antd';
 import { createFromIconfontCN } from '@ant-design/icons';
-
+import { matchUrlToMenu } from '@/zTool/commonMethods.js';
 // img
 import logo from '@/assets/images/logo.png';
 // 样式类
@@ -32,15 +34,27 @@ const logoStyle = {
 };
 const mapStateToProps = (state, ownProps) => ({
     userName: state.userName,
+    menuIndex: state.menuIndex,
     collapsed: state.collapsed
 });
-
+const mapDispatchToProps = (dispatch) => ({
+    changeMenuIndex: (...args) => dispatch(changeMenuIndex(...args)),
+});
 class Main extends React.Component {
     match = matchPath(this.props.location.pathname, {
         path: this.props.routePath
     });
     componentDidMount() {
-        console.log(this.props.location, this.match, '11112222');
+        const { location, menuIndex, changeMenuIndex } = this.props;
+        console.log(location, this.match, '11112222');
+        matchUrlToMenu(this.match);
+        // let newMenuIndex, cur_url = this.match.url;
+        // if (cur_url == "/main") {
+        //     newMenuIndex = 1;
+        // } else if (cur_url == "/index") {
+        //     newMenuIndex = 0;
+        // }
+        // changeMenuIndex(newMenuIndex);
     }
     render() {
         const { history, userName, collapsed } = this.props;
@@ -50,7 +64,7 @@ class Main extends React.Component {
                 <ApageHeader history={history} />
                 <Zlayout.Zbody scroll={false} className="layout-container">
                     <Zlayout flexRow >
-                        <Zlayout.Zheader className="bread-crumb">
+                        <Zlayout.Zheader className="bread-crumb ft-16">
                             <Breadcrumb>
                                 <Breadcrumb.Item>线索管理</Breadcrumb.Item>
                                 <Breadcrumb.Item>
@@ -82,7 +96,7 @@ class Main extends React.Component {
         return this.props.collapsed ? '80px' : '200px';
     }
 }
-export default ZmainHOC(connect(mapStateToProps)(Main),
+export default ZmainHOC(connect(mapStateToProps, mapDispatchToProps)(Main),
     callback => {
         //同pageConfig的componentDidMount函数
         callback(

@@ -275,48 +275,45 @@ class ClueDiscovery extends React.Component {
         }
     }
     componentDidMount() {
+        let chart_1 = document.getElementById('data-charts-1');
+        let chart_2 = document.getElementById('data-charts-2');
+        let chart_3 = document.getElementById('data-charts-3');
+        let chart_4 = document.getElementById('data-charts-4');
         if (window.innerWidth < 1920) {
             var devicewidth = document.documentElement.clientWidth;
             var scale = devicewidth / 1920; // 分母——设计稿的尺寸
-            // document.body.style.zoom = scale;
-            var $body = document.body;
-            var $html = document.getElementsByTagName('html')[0];
-            $body.style.setProperty('transform', 'scale(' + scale + ')');
-            $body.style.setProperty('transform-origin', '0 0');
-            $body.style.setProperty('width', window.innerWidth / scale + 'px');
-            $body.style.setProperty('height', window.innerHeight / scale + 'px');
-            $body.style.zoom = 1;
+            this.reset_echarts_size(chart_1, scale);
+            this.reset_echarts_size(chart_2, scale);
+            this.reset_echarts_size(chart_3, scale);
+            this.reset_echarts_size(chart_4, scale);
         }
-        let chart_1 = document.getElementById('data-charts-1');
-        console.log(chart_1.offsetWidth, chart_1.offsetHeight);
-
-        let myChart_1 = echarts.init(document.getElementById('data-charts-1'));
+        let myChart_1 = echarts.init(chart_1);
         myChart_1.setOption(this.echartOptions['part-1']);
 
-        let myChart_2 = echarts.init(document.getElementById('data-charts-2'));
+        let myChart_2 = echarts.init(chart_2);
         myChart_2.setOption(this.echartOptions['part-2']);
 
-        let myChart_3 = echarts.init(document.getElementById('data-charts-3'));
+        let myChart_3 = echarts.init(chart_3);
         myChart_3.setOption(this.echartOptions['part-3']);
 
-        let myChart_4 = echarts.init(document.getElementById('data-charts-4'));
+        let myChart_4 = echarts.init(chart_4);
         myChart_4.setOption(this.echartOptions['part-4']);
 
 
     }
     componentWillUnmount() {
-        if (window.innerWidth < 1920) {
-            var devicewidth = document.documentElement.clientWidth;
-            var scale = devicewidth / 1920; // 分母——设计稿的尺寸
-            // document.body.style.zoom = scale;
-            var $body = document.body;
-            var $html = document.getElementsByTagName('html')[0];
-            $body.style.setProperty('transform', 'scale(' + 1 + ')');
-            $body.style.setProperty('transform-origin', '0 0');
-            $body.style.setProperty('width', '1920px');
-            $body.style.setProperty('height', '100%');
-            $body.style.zoom = scale;
-        }
+        // if (window.innerWidth < 1920) {
+        //     var devicewidth = document.documentElement.clientWidth;
+        //     var scale = devicewidth / 1920; // 分母——设计稿的尺寸
+        //     // document.body.style.zoom = scale;
+        //     var $body = document.body;
+        //     var $html = document.getElementsByTagName('html')[0];
+        //     $body.style.setProperty('transform', 'scale(' + 1 + ')');
+        //     $body.style.setProperty('transform-origin', '0 0');
+        //     $body.style.setProperty('width', '1920px');
+        //     $body.style.setProperty('height', '100%');
+        //     $body.style.zoom = scale;
+        // }
     }
     render() {
         const { history } = this.props;
@@ -444,6 +441,16 @@ class ClueDiscovery extends React.Component {
                 </div>
             </Zlayout.Zbody>
         )
+    }
+    reset_echarts_size = (container, scale) => {
+        let container_height = container.offsetHeight;
+        let container_width = container.offsetWidth;
+        container.style.zoom = 1 / scale;
+        // let transform_scale = 
+        container.style.setProperty('transform', 'scale(' + scale + ')');
+        container.style.setProperty('transform-origin', '0 0');
+        container.style.setProperty('width', container_width + 'px');
+        container.style.setProperty('height', container_height + 'px');
     }
     getCalendarContainer = (triggerNode) => {
         // console.log(e);

@@ -14,17 +14,3 @@
     background: transparent !important;
     color: #fff;
 }
-:global {
-    .index-container {
-        .z-layout-body {
-            background: #f0f2f5;
-        }
-    }
-    .ant-breadcrumb{
-        display: flex;
-        align-items: center;
-    }
-    .ant-calendar-picker-container{
-        top: 0 !important;
-    }
-}
