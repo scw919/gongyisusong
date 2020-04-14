@@ -26,5 +26,11 @@ export default {
                 collapsed: Boolean(action.payload.value),
             };
         },
+        changeMenuIndex(state, action) {
+            return {
+                ...state,
+                menuIndex: Number(action.payload.value),
+            };
+        },
     },
 };

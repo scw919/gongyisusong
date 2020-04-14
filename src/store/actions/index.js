@@ -25,3 +25,10 @@ export const changeCollapsed = (value) => ({
         value,
     },
 });
+
+export const changeMenuIndex = (value) => ({
+    type: 'evaluate.changeMenuIndex',
+    payload: {
+        value,
+    },
+});

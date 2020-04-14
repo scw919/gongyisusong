@@ -16,7 +16,7 @@ class EventProcedure extends React.Component {
                 {eventLists.map((event, index) => {
                     return (
                         <Timeline.Item key={index} dot={<span styleName="time-line-dot"></span>}>
-                            <div className="pointer" onClick={(menuid) => { history.push('/index/clueDiscovery/byClue/clueDiscoveryDetail') }}>
+                            <div className="pointer" onClick={(menuid) => { history.push('/main/clueDiscovery/byClue/clueDiscoveryDetail') }}>
                                 <p styleName="name">{event.name}</p>
                                 <p styleName="unit">{event.unit}</p>
                                 <p styleName="type">{event.type}</p>

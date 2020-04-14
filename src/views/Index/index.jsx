@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { matchPath } from 'react-router-dom';
 // zerod
 import { Zlayout, ZmainHOC, ZpageHeader } from 'zerod';
 import GlobalLoading from 'zerod/lazyLoad/Loading.jsx';
@@ -11,7 +12,8 @@ import mainRoutes from './load-child-routes.js';
 import compnents from '@/components/load-components.js';
 const { ApageHeader, } = compnents;
 // ant ui
-import { Icon, Dropdown, Menu, Button, Breadcrumb } from 'antd';
+import { Icon, Dropdown, Menu, Button, Breadcrumb, DatePicker } from 'antd';
+const { RangePicker } = DatePicker;
 import { createFromIconfontCN } from '@ant-design/icons';
 
 // img
@@ -30,14 +32,19 @@ const logoStyle = {
     width: 'auto',
 };
 const mapStateToProps = (state, ownProps) => ({
-    userName: state.userName,
-    collapsed: state.collapsed
+    collapsed: state.collapsed,
+    menuIndex: state.mmenuIndex,
 });
 
 class Main extends React.Component {
-    componentDidMount() { }
-    render() {
-        const { history, userName, collapsed } = this.props;
+    match = matchPath(this.props.location.pathname, {
+        path: this.props.routePath
+    });
+    componentWillMount() { 
+        console.log(this.props.location, this.match, '11112222' );
+    }
+    render() { 
+        const { history, collapsed, menuIndex } = this.props;
         //自定义主页布局，经过ZmainHOC包装的组件，会this.props.getSideMenuTemplate和this.props.getMaimRouteTemplate两个方法
         return (
             <Zlayout>
@@ -45,32 +52,31 @@ class Main extends React.Component {
                 <Zlayout.Zbody scroll={false} className="layout-container">
                     <Zlayout flexRow >
                         <Zlayout.Zheader className="bread-crumb">
-                            <Breadcrumb>
-                                <Breadcrumb.Item>线索管理</Breadcrumb.Item>
-                                <Breadcrumb.Item>
-                                    <a href="">线索发现</a>
-                                </Breadcrumb.Item>
-                            </Breadcrumb>
+                            <div style={{ width: '100%' }} className="flex flex-between">
+                                <Breadcrumb>
+                                    <Breadcrumb.Item>首页</Breadcrumb.Item>
+                                </Breadcrumb>
+                                <div style={{ width: '400px' }} className="relative flex align-item-center">
+                                    <div style={{ width: '90px' }}>选择日期：</div>
+                                    <RangePicker
+                                        onChange={this.onChange}
+                                        getCalendarContainer={trigger => trigger.parentNode}
+                                    />
+                                </div>
+                            </div>
                         </Zlayout.Zheader>
-                        <Zlayout.Zbody className="white-bg">
+                        <Zlayout.Zbody>
                             <Zlayout flexRow>
-                                {userName !== 1
-                                    ? (<Zlayout width={this.ToggleSiderWidth()}>
-                                        {this.props.getSideMenuTemplate({
-                                            theme: 'dark',
-                                            isCollapse: collapsed,
-                                            openAllSubmenu: true,
-                                        })}
-                                    </Zlayout>)
-                                    : null
-                                }
-                                <Zlayout className="main-container">{this.props.getMaimRouteTemplate()}</Zlayout>
+                                <Zlayout className="index-container">{this.props.getMaimRouteTemplate()}</Zlayout>
                             </Zlayout>
                         </Zlayout.Zbody>
                     </Zlayout>
                 </Zlayout.Zbody>
             </Zlayout>
         );
+    }
+    onChange = (date, dateString) => {
+        console.log(date, dateString);
     }
     ToggleSiderWidth() {
         return this.props.collapsed ? '80px' : '200px';
@@ -80,42 +86,12 @@ export default ZmainHOC(connect(mapStateToProps)(Main),
     callback => {
         //同pageConfig的componentDidMount函数
         callback(
+
             //保存的用户信息
             {},
             //侧边导航数据
             [
-                {
-                    permUrl: 'clueDiscovery',
-                    permName: '线索发现',
-                    permIconUrl: () => {
-                        return (<IconFont className="icon-font" type="icon-integral" />)
-                    },
-                    children: [
-                        {
-                            permUrl: 'byClue',
-                            permName: '按线索',
-                            permIconUrl: '11',
-                        }
-                    ]
-                },
-                {
-                    permUrl: 'myClue',
-                    permName: '我的线索',
-                    permIconUrl: 'compass',
-                    children: [
-                        {
-                            permUrl: 'clueCollect',
-                            permName: '线索搜录',
-                            permIconUrl: '11',
-                            exact: true
-                        },
-                        {
-                            permUrl: 'clueHandle',
-                            permName: '线索处置',
-                            permIconUrl: '11',
-                        }
-                    ]
-                }
+
             ],
             //mapKeys
             { iconClass: 'permIconUrl', path: 'permUrl', name: 'permName', children: 'children' },

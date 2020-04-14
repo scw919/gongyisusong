@@ -11,6 +11,7 @@ const { Search } = Input;
 
 import { Zlayout } from 'zerod';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 // 样式类
 import './style.scss';
 // 通用工具
@@ -137,4 +138,4 @@ class ClueDiscovery extends React.Component {
 
     }
 }
-export default connect(mapStateToProps)(ClueDiscovery);
+export default connect(mapStateToProps)(withRouter(ClueDiscovery));

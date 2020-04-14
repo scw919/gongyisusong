@@ -3,7 +3,8 @@ const Charts = lazyLoad(() => import('.'));
 
 export default [
     {
-        path: '/clueDiscovery/byClue',
+        path: '/',
         component: Charts,
+        notFilterByMenu: true,
     },
 ];

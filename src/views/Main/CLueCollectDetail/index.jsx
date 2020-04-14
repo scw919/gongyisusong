@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import upload from '@/Api/upload.api.js';
 // 样式类
 import './style.scss';
+import { withRouter } from 'react-router-dom';
 // 通用工具
 import { zTool } from "zerod";
 import detailInfo from '@/assets/images/detail/detail-info.jpg';
@@ -163,4 +164,4 @@ class ClueDiscoveryDetail extends React.Component {
         // this.setState({ fileList: stateFileList });
     }
 }
-export default connect(mapStateToProps)(ClueDiscoveryDetail);
+export default connect(mapStateToProps)(withRouter(ClueDiscoveryDetail));

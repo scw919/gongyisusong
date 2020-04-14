@@ -51,7 +51,7 @@ class ListItem extends React.Component {
         e.preventDefault();
         e.stopPropagation();
         const { history } = this.props;
-        history.push('/index/myClue/clueHandleDetail');
+        history.push('/main/myClue/clueHandle/clueHandleDetail');
     }
     // 删除
     delete = (e) => {

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 // zerod
 import { Zlayout, ZmainHOC } from 'zerod';
 // actions
-import { changeCollapsed } from '@/store/actions';
+import { changeCollapsed, changeMenuIndex } from '@/store/actions';
 import { Link } from 'react-router-dom';
 // import { Breadcrumb } from 'antd';
 import { Icon, Dropdown, Menu, Button } from 'antd';
@@ -13,36 +13,40 @@ import cssClass from './style.scss';
 import logo from '@/assets/images/logo@2x.png';
 import avator from '@/assets/images/procurator.png';
 
-function itemRender(route, params, routes, paths) {
-    return !route.link ? <span>{route.name}</span> : <Link to={paths.join('/')}>{route.name}</Link>;
-}
 const mapStateToProps = (state, ownProps) => ({
-    userName: state.userName,
+    menuIndex: state.menuIndex,
     collapsed: state.collapsed
 });
 const mapDispatchToProps = (dispatch) => ({
     changeCollapsed: (...args) => dispatch(changeCollapsed(...args)),
+    changeMenuIndex: (...args) => dispatch(changeMenuIndex(...args)),
 });
-
 class ApageHeader extends React.Component {
     static propTypes = {
         activeIndex: PropTypes.number,
         history: PropTypes.any
     };
+    menuItems = [
+        { name: '首页', index: 0, path: '/index' },
+        { name: '线索管理', index: 1, path: '/main' },
+        { name: '参考案例', index: 2, path: '' },
+        { name: '系统管理', index: 3, path: '' },
+    ]
     render() {
-        const { history, userName, collapsed } = this.props;
-        const mb = 'bottom-16';
+        const { history, menuIndex, collapsed } = this.props;
         return (
             <Zlayout.Zheader style={{ backgroundColor: '#14305A' }}>
                 <div className="z-flex-space-between" style={{ height: '100%' }}>
                     <div className="z-flex-items-center">
                         <Logo />
                         <Zlayout.Template>
-                            {/* <Button type="link" onClick={() => { this.linkTo('/main/home'); }}>Link</Button> */}
-                            <Zlayout.ZheaderBtn styleName={userName === 1 ? 'head-btn active' : 'head-btn'}>首页</Zlayout.ZheaderBtn>
-                            <Zlayout.ZheaderBtn styleName={userName === 2 ? 'head-btn active' : 'head-btn'}>线索管理</Zlayout.ZheaderBtn>
-                            <Zlayout.ZheaderBtn styleName={userName === 3 ? 'head-btn active' : 'head-btn'}>参考案例</Zlayout.ZheaderBtn>
-                            <Zlayout.ZheaderBtn styleName={userName === 3 ? 'head-btn active' : 'head-btn'}>系统管理</Zlayout.ZheaderBtn>
+                            {
+                                this.menuItems.map((menu, index) => {
+                                    return (
+                                        <Zlayout.ZheaderBtn key={index} onClick={() => { this.linkTo(menu) }} styleName={menuIndex === menu.index ? 'head-btn active' : 'head-btn'}>{menu.name}</Zlayout.ZheaderBtn>
+                                    )
+                                })
+                            }
                         </Zlayout.Template>
                     </div>
                     <div><UserDropdown /></div>
@@ -50,14 +54,17 @@ class ApageHeader extends React.Component {
             </Zlayout.Zheader >
         );
     }
-    linkTo(path) {
-        this.props.history.push(path);
+    linkTo = (menu) => {
+        const { changeMenuIndex, history } = this.props;
+        changeMenuIndex(menu.index);
+        history.push(menu.path);
     }
     toggleCollapsed = () => {
+        const { changeCollapsed } = this.props;
         // this.setState({
         //     collapsed: !this.state.collapsed,
         // });
-        this.props.changeCollapsed(!this.props.collapsed);
+        changeCollapsed(!this.props.collapsed);
     };
 }
 class UserDropdown extends React.Component {
@@ -66,7 +73,7 @@ class UserDropdown extends React.Component {
             <Dropdown className='z-drop-down' overlay={this.dropdownMenu} trigger={['click']} placement="bottomRight">
                 <Zlayout.ZheaderBtn className="z-margin-right-15">
                     <span className="z-icon-circle z-margin-right-8 head-avator">
-                        <img src={avator} alt=""/>
+                        <img src={avator} alt="" />
                     </span>
                     <span className={cssClass['z-my-class']}>用户名</span>
                 </Zlayout.ZheaderBtn>

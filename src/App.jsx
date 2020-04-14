@@ -3,9 +3,9 @@ import { ZappHOC } from 'zerod';
 
 // 路由组件
 import lazyLoad from '@/lazyLoad/lazyLoad';
-const Main = lazyLoad(() => import('@/views/Main/'));
 const LoginMain = lazyLoad(() => import('@/views/Login/'));
 const Index = lazyLoad(() => import('@/views/Index/'));
+const Main = lazyLoad(() => import('@/views/Main/'));
 const pageConfig = {
     rootRoutes: [
         {
@@ -14,27 +14,29 @@ const pageConfig = {
         },
         {
             redirect: true,
-            path: '/',
-            to: '/index/clueDiscovery'
-        },
-        {
-            redirect: true,
             path: '/index',
-            to: '/index/clueDiscovery'
+            to: '/index/',
+        },
+        
+        {
+            path: '/main',
+            component: Main,
+        },
+        
+        {
+            redirect: true,
+            path: '/main',
+            to: '/main/clueDiscovery'
         },
         {
             redirect: true,
-            path: '/index/clueDiscovery',
-            to: '/index/clueDiscovery/byClue'
+            path: '/main/clueDiscovery',
+            to: '/main/clueDiscovery/byClue'
         },
         {
             path: '/login',
             component: LoginMain,
         },
-        // {
-        //     path: '/index/clueDiscovery/clueDiscoveryDetail',
-
-        // }
     ],
     footerLinks: null,
     footerCopyright: null,

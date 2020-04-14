@@ -9,8 +9,8 @@ const { confirm } = Modal;
 import './style.scss';
 
 const linkTypes = {
-    collectDetail: '/index/myClue/clueCollectDetail',
-    discoveryDetail: '/index/clueDiscovery/byClue/clueDiscoveryDetail',
+    collectDetail: '/main/myClue/clueCollect/clueCollectDetail',
+    discoveryDetail: '/main/clueDiscovery/byClue/clueDiscoveryDetail',
 }
 
 class AclueItem extends React.Component {

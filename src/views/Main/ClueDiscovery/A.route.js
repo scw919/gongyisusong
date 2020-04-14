@@ -1,9 +1,9 @@
 import lazyLoad from '@/lazyLoad/lazyLoad';
-const Home = lazyLoad(() => import('.'));
+const ClueDiscovery = lazyLoad(() => import('.'));
 
 export default [
     {
-        path: '/clueDiscovery',
-        component: Home,
+        path: '/clueDiscovery/byClue',
+        component: ClueDiscovery,
     },
 ];
