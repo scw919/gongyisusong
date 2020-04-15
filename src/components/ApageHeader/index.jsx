@@ -15,7 +15,7 @@ import avator from '@/assets/images/procurator.png';
 
 const mapStateToProps = (state, ownProps) => ({
     menuIndex: state.menuIndex,
-    collapsed: state.collapsed
+    collapsed: state.collapsed,
 });
 const mapDispatchToProps = (dispatch) => ({
     changeCollapsed: (...args) => dispatch(changeCollapsed(...args)),
@@ -29,8 +29,8 @@ class ApageHeader extends React.Component {
     menuItems = [
         { name: '首页', index: 0, path: '/index' },
         { name: '线索管理', index: 1, path: '/main' },
-        { name: '参考案例', index: 2, path: '' },
-        { name: '系统管理', index: 3, path: '' },
+        // { name: '参考案例', index: 2, path: '' },
+        // { name: '系统管理', index: 3, path: '' },
     ]
     render() {
         const { history, menuIndex, collapsed } = this.props;
@@ -84,7 +84,8 @@ class UserDropdown extends React.Component {
         //用户dropdown按钮点击触发
         onMenuClick: (item) => {
             if (item.key === '/logout') {
-                window.open('/main/home');
+                window.location.assign('/login');
+                // window.open('/main/home'); //打开新的页面
                 // window.location.assign('http://www.runoob.com');
             }
         },

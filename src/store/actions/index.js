@@ -32,3 +32,11 @@ export const changeMenuIndex = (value) => ({
         value,
     },
 });
+
+// changeBreadCrumb
+export const changeBreadCrumb = (value) => ({
+    type: 'evaluate.changeBreadCrumb',
+    payload: {
+        value,
+    },
+});

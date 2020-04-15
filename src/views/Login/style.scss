@@ -1,7 +1,98 @@
-
-@import '~zerod/scssMixin/generateClassName';
-// @import '../../ant-theme-vars.scss';
-
-@include z('main-user-menu'){
-    min-width: 180px;
+.login-box {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url(../../assets/images/login/bg.png) center / cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-flow: column;
+    .logo-div {
+        margin: 54px 0 70px;
+        > img {
+            width: 506px;
+            height: 192px;
+        }
+    }
+    .login-box-child {
+        width: 410px;
+        height: 448px;
+        background: rgba(243, 248, 255, 1);
+        border-radius: 12px;
+        padding: 50px 60px;
+    }
+    .validate-icon {
+        width: 24px;
+        height: 24px;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        &.user {
+            background-image: url(../../assets/images/login/user.png);
+        }
+        &.pwd {
+            background-image: url(../../assets/images/login/pwd.png);
+        }
+        &.validate {
+            background-image: url(../../assets/images/login/cetificate.png);
+        }
+        &.code {
+            width: 61px;
+            height: 28px;
+            background: #d9e2ff;
+            border-radius: 2px;
+            cursor: pointer;
+            > img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+    .login-box-title {
+        font-size: 24px;
+        color: #27292e;
+    }
+    .login-form {
+        width: 100%;
+        font-size: 14px;
+        margin-top: 25px;
+        :global {
+            .ant-row {
+                margin-bottom: 12px;
+            }
+            .ant-input-affix-wrapper .ant-input {
+                border: none;
+                outline: none;
+                background: transparent;
+                padding-left: 30px;
+                color: #9ea9c8;
+                &::-webkit-input-placeholder {
+                    color: #9ea9c8;
+                }
+            }
+            .ant-input-affix-wrapper .ant-input-prefix {
+                left: 3px;
+            }
+            .ant-input-affix-wrapper .ant-input-suffix {
+                right: 0;
+            }
+            .ant-form-item:not(:last-child) {
+                .ant-form-item-control-wrapper {
+                    border-bottom: 1px solid #c9d6ff;
+                }
+            }
+        }
+        .login-form-forgot {
+            float: right;
+        }
+        .login-form-button {
+            margin-top: 60px;
+            width: 100%;
+            height: 36px;
+            background: rgba(35, 87, 161, 1);
+            border-radius: 4px;
+        }
+    }
 }

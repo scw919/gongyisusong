@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Acollect } from '../Acollect';
 import { Icon, Button, Checkbox, Modal } from 'antd';
 const { confirm } = Modal;
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './style.scss';
 
 const linkTypes = {
@@ -41,14 +41,14 @@ class AclueItem extends React.Component {
         } = this.props;
         const linkUrl = isCollect ? linkTypes['collectDetail'] : linkTypes['discoveryDetail'];
         return (
-            <div onClick={(e) => { this.checkDetail(e, linkUrl) }} styleName="search-list-item">
+            <div styleName="search-list-item">
                 <div styleName="search-list-item-title" className="flex flex-between">
                     <div className="ft-18" styleName="title">
                         {hasChecked ? <Checkbox value={sub} id={`${sub.menuid}`} >{sub.name}</Checkbox > : null}
-                        <span>番禺南丰塑料有限公司行政处罚案</span>
-                        {/* <Link to={linkUrl}>
-                            <span>番禺南丰塑料有限公司行政处罚案</span>
-                        </Link> */}
+                        {/* <span onClick={(e) => { this.checkDetail(e, linkUrl) }}>番禺南丰塑料有限公司行政处罚案</span> */}
+                        <Link to={linkUrl} target="_blank">
+                            <span style={{marginLeft: '8px'}}>番禺南丰塑料有限公司行政处罚案</span>
+                        </Link>
                     </div>
                     {/* 收录 */}
                     {canCollect ? <Acollect isCollected={true} clickEvent={clickEvent} /> : null}
@@ -114,6 +114,7 @@ class AclueItem extends React.Component {
     // 跳转详情
     checkDetail = (e, linkUrl) => {
         e.stopPropagation();
+        e.nativeEvent.stopImmediatePropagation();
         const { history } = this.props;
         history.push(linkUrl);
 
@@ -121,6 +122,7 @@ class AclueItem extends React.Component {
     // 删除
     delete = (e) => {
         e.stopPropagation();
+        e.nativeEvent.stopImmediatePropagation()
         confirm({
             title: '确定删除?',
             content: '',

@@ -69,7 +69,7 @@ class NewDealClue extends React.Component {
                                         {
                                             plainOptions.map((sub, subKey) => {
                                                 return (
-                                                    <div className="flex" styleName="search-clue-item">
+                                                    <div key={subKey} className="flex" styleName="search-clue-item">
                                                         <Checkbox className="mar-r-5" key={subKey} value={sub} onChange={this.onChangeSelClue} />
                                                         <div className="pointer" styleName="extend—item">
                                                             <div onClick={() => { this.toggleExtend(sub) }} className="flex" styleName="extend-item-tit">

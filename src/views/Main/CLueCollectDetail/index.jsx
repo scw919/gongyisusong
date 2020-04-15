@@ -71,7 +71,8 @@ class ClueDiscoveryDetail extends React.Component {
     }
     render() {
         const { fileList } = this.state;
-        const { history } = this.props;
+        const { history, routes } = this.props;
+        console.log(this.props, 'clueCollectDetail')
         return (
             <Zlayout.Zbody scroll={true}>
                 <div styleName="main-rt-con-detail" style={{ height: '100%' }}>

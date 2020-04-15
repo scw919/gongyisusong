@@ -11,10 +11,10 @@ class AsortButton extends React.Component {
         const {
             sortType,
             sortName,
-            onClick,
+            clickEvent,
         } = this.props;
         return (
-            <Button onClick={onClick} className="sort-btn">
+            <Button onClick={clickEvent} className="sort-btn">
                 {sortName}
                 <span className={`sort-btn-icon ${sortType == 1 ? 'ascending' : (sortType == 2 ? 'descending' : '')}`}><Icon className="icon-top" type="caret-up" /><Icon className="icon-bottom" type="caret-down" /></span>
             </Button>

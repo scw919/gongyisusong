@@ -134,6 +134,11 @@
         }
     }
     .ant-menu {
+        .ant-menu-inline{
+            .ant-menu-item{
+                margin: 0;
+            }
+        }
         .ant-menu-submenu {
             .ant-menu-submenu-title {
                 > span {

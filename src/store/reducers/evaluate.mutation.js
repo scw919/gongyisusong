@@ -32,5 +32,11 @@ export default {
                 menuIndex: Number(action.payload.value),
             };
         },
+        changeBreadCrumb(state, action) {
+            return {
+                ...state,
+                breadCrumbData: action.payload.value,
+            };
+        },
     },
 };

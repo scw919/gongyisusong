@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import { matchPath } from 'react-router-dom';
 import compnents from '@/components/load-components.js';
 const { AfileShow, AclueItem } = compnents;
 import { Upload, Icon, Button } from 'antd';
 
 import { Zlayout } from 'zerod';
 import { connect } from 'react-redux';
+// 路由组件
+import mainRoutes from '../load-child-routes.js';
 // 样式类
 import './style.scss';
 // 通用工具
 import { zTool } from "zerod";
+import commonMethods from '@/zTool/commonMethods.js';
+const { matchUrlToMenu, createBreadCrumb } = commonMethods;
+
 import BaseInfo from './BaseInfo';
 import AddClue from './AddClue';
 import EventProcedure from './EventProcedure';
@@ -41,6 +47,13 @@ class ClueDiscoveryDetail extends React.Component {
             { name: '4附件名称.pdf', type: 'pdf', size: '2.8M', url: detailInfo },
         ],
         visible: false, //添加线索弹窗 
+    }
+    match = matchPath(this.props.location.pathname, {
+        path: this.props.routePath
+    });
+    componentWillMount() {
+        // console.log(this.match, mainRoutes,this.props.location);
+        // createBreadCrumb(this.match, this.props.location, mainRoutes);
     }
     render() {
         const { history } = this.props;

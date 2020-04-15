@@ -70,13 +70,13 @@ class ClueDiscovery extends React.Component {
                         show: false,
                         position: 'center'
                     },
-                    emphasis: {
-                        label: {
-                            show: true,
-                            fontSize: '30',
-                            fontWeight: 'bold'
-                        }
-                    },
+                    // emphasis: {
+                    //     label: {
+                    //         show: true,
+                    //         fontSize: '30',
+                    //         fontWeight: 'bold'
+                    //     }
+                    // },
                     labelLine: {
                         show: false
                     },
@@ -323,23 +323,25 @@ class ClueDiscovery extends React.Component {
                 <div styleName="index-container" style={{ height: '100%' }}>
 
                     {/* part-1 */}
-                    <div className="flex" styleName="col-div-box part-1">
-                        {
-                            this.iconLists.map((item, index) => {
-                                return (
-                                    <div key={index} className="flex align-item-center ft-16" styleName="col-div">
-                                        <div styleName={this.renderIcon(item.type)}></div>
-                                        <div className="flex" styleName="desc">
-                                            <p>{item.name}</p>
-                                            <p>
-                                                <span className="ft-24 mar-r-5" styleName="counts">{item.counts}</span>
-                                                <span className="ft-14" styleName="unit">{item.unit}</span>
-                                            </p>
+                    <div styleName="col-div-box part-1">
+                        <div styleName="col-div-box-child">
+                            {
+                                this.iconLists.map((item, index) => {
+                                    return (
+                                        <div key={index} className="flex align-item-center ft-16" styleName="col-div">
+                                            <div styleName={this.renderIcon(item.type)}></div>
+                                            <div className="flex" styleName="desc">
+                                                <p>{item.name}</p>
+                                                <p>
+                                                    <span className="ft-24 mar-r-5" styleName="counts">{item.counts}</span>
+                                                    <span className="ft-14" styleName="unit">{item.unit}</span>
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                )
-                            })
-                        }
+                                    )
+                                })
+                            }
+                        </div>
                     </div>
                     {/* part-2 */}
                     <div className="flex ft-16" styleName="col-div-box part-2">
@@ -416,8 +418,8 @@ class ClueDiscovery extends React.Component {
                                     导出
                                 </Button>
                             </div>
-                            <div className="flex-1" styleName="col-div-content">
-                                <div className="absolute" style={{ top: '85px', left: '160px', zIndex: 1000000 }}>
+                            <div className="flex-1 relative" styleName="col-div-content">
+                                <div className="absolute" style={{ top: '40px', left: '160px', zIndex: 1000000 }}>
                                     <Select
                                         defaultValue="lucy"
                                         style={{ width: 90 }}

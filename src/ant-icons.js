@@ -4,9 +4,11 @@
 //如引入home图标
 export { default as HomeOutline } from '@ant-design/icons/lib/outline/CaretUpOutline';
 //如引入user图标
-export {
-    default as UserOutline,
-} from '@ant-design/icons/lib/outline/UserOutline';
+export { default as UserOutline } from '@ant-design/icons/lib/outline/UserOutline';
+// 密码
+export { default as LockOutline } from '@ant-design/icons/lib/outline/LockOutline';
+// 验证  safetyCertificate
+export { default as SafetyCertificateOutline } from '@ant-design/icons/lib/outline/SafetyCertificateOutline';
 
 // SettingFilled
 export { default as AccountBookFill } from '@ant-design/icons/lib/fill/AccountBookFill';
@@ -14,7 +16,6 @@ export { default as AccountBookFill } from '@ant-design/icons/lib/fill/AccountBo
 import AccountBookFill from '@ant-design/icons/lib/fill/AccountBookFill';
 AccountBookFill.theme = 'outline';
 export default AccountBookFill;
-
 
 export { default as MainOutline } from '@ant-design/icons/lib/outline/MailOutline';
 

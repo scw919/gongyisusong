@@ -1,0 +1,43 @@
+.search-list {
+    .search-list-top {
+        color: #9ea9c8;
+        .total-counts {
+            color: #a2aab5;
+            margin-left: 23px;
+        }
+    }
+    .search-list-results {
+        :global(.ant-checkbox-group) {
+            width: 100%;
+        }
+        .search-list-item {
+            font-size: 16px;
+            margin-top: 10px;
+            padding: 20px;
+            border: 1px solid rgba(215, 219, 230, 1);
+            &:hover {
+                border: 1px solid rgba(53, 135, 255, 1);
+            }
+            >div{
+                margin-bottom: 8px;
+            }
+            .search-list-item-title {
+                .title {
+                    color: #24272c;
+                }
+                .collect {
+                    color: #565a60;
+                    &.collected {
+                        color: #ff4f69;
+                    }
+                }
+            }
+            .left-part {
+                color: #a2aab5;
+            }
+            .right-part {
+                color: #d1d5db;
+            }
+        }
+    }
+}

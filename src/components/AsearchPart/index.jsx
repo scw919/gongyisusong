@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 // import compnents from '@/components/load-components.js';
 import { Input, Tag, Icon, Button } from 'antd';
 const { Search } = Input;
 import SelectItem from './SelectItem';
 // 样式类
 import './style.scss';
-import { useStore } from 'react-redux';
 
 
-export default (props) => {
+export const AsearchPart = (props) => {
 	let childDiyu = useRef(null), childLingyu = useRef(null), childLeibie = useRef(null), childTimer = useRef(null);
 
 	const timerSeparator = [{ name: '全部', counts: 1124 }, { name: '近1年', counts: 1124 }, { name: '1-3年', counts: 1124 }, { name: '3-5年', counts: 1124 }, { name: '其他', counts: 1124 }];
@@ -34,13 +33,16 @@ export default (props) => {
 	// 关闭单个已选条件
 	function handleClose(removedTag) {
 		const newTags = tags.filter(tag => tag !== removedTag);
+		console.log(removedTag, newTags, 'removed tags');
 		setTags(newTags);
 		if (removedTag.type == 'diyu') {
 			childDiyu.current.setSelectedAreaIndex(null);
 		} else if (removedTag.type == 'lingyu') {
 			childLingyu.current.setSelectedAreaIndex(null);
-		} else {
+		} else if (removedTag.type == 'leibie') {
 			childLeibie.current.setSelectedAreaIndex(null);
+		} else {
+			childTimer.current.setSelectedAreaIndex(null);
 		}
 	};
 	// 清除所有已选条件
@@ -49,10 +51,11 @@ export default (props) => {
 		childDiyu.current.setSelectedAreaIndex(null);
 		childLingyu.current.setSelectedAreaIndex(null);
 		childLeibie.current.setSelectedAreaIndex(null);
+		childTimer.current.setSelectedAreaIndex(null);
 	}
 	// 子组件传值
 	function changeSel(newTag, isDel) {
-		// console.log(newTag);
+		// console.log(newTag, '子组件传值');
 		const newTags = tags.filter(tag => tag.type != newTag.type);
 		isDel ? null : newTags.push(newTag);
 		setTags(newTags);
@@ -74,6 +77,7 @@ export default (props) => {
 		setKeyWord(value);
 		updateSearchOptions(value);
 	}
+	// 展开/收起 搜索框
 	function toggleSlide() {
 		console.log(isCollapse);
 		setIsCollapse(!isCollapse);
@@ -88,10 +92,11 @@ export default (props) => {
 					已选条件<span className="separator"></span>
 					<div>
 						{tags.map((tagObj, index) => {
+							console.log(tagObj, index);
 							const tag = `${tagObj.name}(${tagObj.counts})`;
 							const isLongTag = tag.length > 20;
 							const tagElem = (
-								<Tag className="border-tag" key={index} closable onClose={() => handleClose(tagObj)}>
+								<Tag className="border-tag" key={index} visible={true} closable onClose={() => handleClose(tagObj)}>
 									{isLongTag ? `${tag.slice(0, 20)}...` : tag}
 								</Tag>
 							);
@@ -105,7 +110,7 @@ export default (props) => {
 						})}
 					</div>
 				</div>
-				<div className="primary_self">
+				<div>
 					<Button type="link" icon="delete" block onClick={clearTags}>
 						清空全部
                     </Button>
@@ -123,10 +128,14 @@ export default (props) => {
 				<div onClick={() => { toggleSlide() }} styleName="slide-btn down" className="flex just-con-center">
 					<span className="pointer">
 						<Icon styleName="slide-icon" type="double-left" />
-						{isCollapse ? '展开' : '收起'}
+						{isCollapse ? '展开搜索条件' : '收起'}
 					</span>
 				</div>
 			</div>
 		</div>
 	)
 };
+export default {
+	name: 'AsearchPart',
+	component: AsearchPart
+}
