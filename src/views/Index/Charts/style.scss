@@ -3,8 +3,8 @@
     background: #f0f2f5;
     .col-div-box {
         overflow: hidden;
-        .col-div-box-child{
-            width: calc( 100% + 35px );
+        .col-div-box-child {
+            width: calc(100% + 35px);
             margin-left: -10px;
         }
         .col-div {
@@ -60,31 +60,31 @@
                     background-position: center;
                     background-size: contain;
                     background-repeat: no-repeat;
-                    &.icon-find {
+                    &.allClue {
                         background-image: url(../../../assets/images/index/find.png);
                     }
-                    &.icon-main-body {
+                    &.subjectInvolved {
                         background-image: url(../../../assets/images/index/main_body.png);
                     }
-                    &.icon-unit {
+                    &.administrativeOrgan {
                         background-image: url(../../../assets/images/index/unit.png);
                     }
-                    &.icon-collect-counts {
+                    &.clueIncluded {
                         background-image: url(../../../assets/images/index/collect_counts.png);
                     }
-                    &.icon-deal-counts {
+                    &.clueDisposal {
                         background-image: url(../../../assets/images/index/deal_counts.png);
                     }
-                    &.icon-check {
+                    &.evidenceColl {
                         background-image: url(../../../assets/images/index/check.png);
                     }
-                    &.icon-register-ing {
+                    &.filing {
                         background-image: url(../../../assets/images/index/register_ing.png);
                     }
-                    &.icon-register-ed {
+                    &.registered {
                         background-image: url(../../../assets/images/index/register_ed.png);
                     }
-                    &.icon-unpass {
+                    &.failedFiling {
                         background-image: url(../../../assets/images/index/unpass.png);
                     }
                 }
@@ -108,12 +108,20 @@
                 height: 470px;
                 flex-flow: column;
                 // &:nth-of-type(4)
-                .col-div-head{
+                .col-div-head {
                     padding-top: 20px;
                 }
                 .col-div-content {
                     padding-top: 10px;
                     .data-type {
+                        position: relative;
+                        &:after {
+                            content: '';
+                            position: absolute;
+                            width: 100%;
+                            height: 100%;
+                            z-index: 2;
+                        }
                         .data-type-handle {
                             padding: 4px;
                             background: #e6eaf6;
@@ -143,11 +151,12 @@
                 background: #fff;
                 border-radius: 4px;
                 margin-top: 20px;
-                .col-div-head{
+                .col-div-head {
                     padding-top: 20px;
                     padding-bottom: 20px;
                 }
                 .col-div-content {
+                    position: relative;
                     padding-top: 10px;
                     .data-charts {
                         width: 100%;
@@ -160,10 +169,10 @@
                 //     top: 35px !important;
                 //     left: 0 !important;
                 // }
-                .ant-select-selection{
+                .ant-select-selection {
                     top: -25px;
-                    background: #E6EAF6;
-                    color: #565A60;
+                    background: #e6eaf6;
+                    color: #565a60;
                 }
             }
         }

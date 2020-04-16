@@ -8,10 +8,10 @@ import store from './store';
 // const echarts = require('echarts/lib/echarts');
 
 // 引入折线图/柱状图等组件
-require('echarts/lib/chart/line');
+// require('echarts/lib/chart/line');
+// require('echarts/lib/chart/radar');
 require('echarts/lib/chart/bar');
 require('echarts/lib/chart/pie');
-require('echarts/lib/chart/radar');
 
 // 引入提示框和title组件，图例
 require('echarts/lib/component/tooltip');

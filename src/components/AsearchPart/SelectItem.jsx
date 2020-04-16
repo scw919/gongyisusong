@@ -16,20 +16,20 @@ class SelectItem extends React.Component {
         }
     }
     render() {
-        const { areas, selName, children, type, selectedChange } = this.props;
+        const { result, value, children } = this.props;
         return (
             <div className="flex align-item-center" styleName="select-item">
                 <div className="flex align-item-center">
-                    {selName}<span className="separator"></span>
+                    {value}<span className="separator"></span>
                 </div>
                 <div className="flex-1">
                     {
-                        areas.map((tag, index) => {
+                        result && result.length > 0 ? result.map((tag, index) => {
                             return (<span key={index} onClick={() => { this.handleChangeArea(tag, index) }} styleName={`radio-tag ${index === this.state.selectedAreaIndex ? 'selected' : ''}`}>
-                                <i>{tag.name}</i>
-                                <i>({tag.counts})</i>
+                                <i>{tag.label}</i>
+                                <i>({tag.count})</i>
                             </span>)
-                        })
+                        }):null
                     }
                     {children}
                 </div>
@@ -37,8 +37,8 @@ class SelectItem extends React.Component {
         )
     }
     handleChangeArea(tag, index) {
-        const { type, selectedChange } = this.props;
-        tag.type = type;
+        const { dimension, selectedChange } = this.props;
+        tag.dimension = dimension;
         let isDel = false;
         if (this.state.selectedAreaIndex == index) {
             this.setSelectedAreaIndex(null);

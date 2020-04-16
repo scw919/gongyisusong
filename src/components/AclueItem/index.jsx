@@ -47,7 +47,7 @@ class AclueItem extends React.Component {
                         {hasChecked ? <Checkbox value={sub} id={`${sub.menuid}`} >{sub.name}</Checkbox > : null}
                         {/* <span onClick={(e) => { this.checkDetail(e, linkUrl) }}>番禺南丰塑料有限公司行政处罚案</span> */}
                         <Link to={linkUrl} target="_blank">
-                            <span style={{marginLeft: '8px'}}>番禺南丰塑料有限公司行政处罚案</span>
+                            <span style={{ marginLeft: '8px' }}>{sub.className}</span>
                         </Link>
                     </div>
                     {/* 收录 */}
@@ -56,7 +56,7 @@ class AclueItem extends React.Component {
                 <div className="flex flex-between">
                     <div styleName="left-part">
                         <Icon className="mar-r-5" type="environment" />
-                        <span>广州市南沙区南天街102号</span>
+                        <span>{sub.addressConcerned}</span>
                     </div>
                     <div></div>
                 </div>
@@ -64,9 +64,14 @@ class AclueItem extends React.Component {
                     <div styleName="left-part">
                         <Icon className="mar-r-5" type="book" />
                         <div className="ft-16 inline-block">
-                            <span className="tags-self tag-green">资源环境</span>
-                            <span className="tags-self tag-yellow">其他案件</span>
-                            <span className="tags-self tag-red">罚款</span>
+                            {
+                                sub.lables&&sub.lables.map((key,val)=>{
+                                    console.log(key, val)
+                                    return <span key={sub} className="tags-self tag-green">{val}</span>
+                                    // <span className="tags-self tag-yellow">其他案件</span>
+                                    // <span className="tags-self tag-red">罚款</span>
+                                })
+                            }
                         </div>
                     </div>
                     {/* <div></div> */}

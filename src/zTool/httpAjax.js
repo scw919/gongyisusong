@@ -8,9 +8,13 @@ import { zTool } from 'zerod';
  * @param {object} config //可配置请求头等，请看下面的config注释
  */
 
-function httpAjax(method, url, query, config) {
-    const newurl = `/webapi${url}`; //处理url前缀
-    const promise = zTool.httpAjax(method, newurl, query, config);
+const con = {
+    // 基础url前缀
+    baseURL: 'http://172.16.121.73:8762/',
+};
+function httpAjax(method, url, query) {
+    const newurl = url; //处理url前缀
+    const promise = zTool.httpAjax(method, newurl, query, con);
     return promise;
 }
 export default httpAjax;

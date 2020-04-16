@@ -11,6 +11,8 @@ import { connect } from 'react-redux';
 import './style.scss';
 // 通用工具
 import { zTool } from "zerod";
+// 接口
+import apis from '@/App.api.js';
 
 const mapStateToProps = (state, ownProps) =>
     // state 是 {userList: [{id: 0, name: '王二'}]}
@@ -21,14 +23,12 @@ const mapStateToProps = (state, ownProps) =>
 let isLoading = false;
 class ClueDiscovery extends React.Component {
     state = {
-        pageSet: {
-            pageSize: 10,
-            total: 100,
-            pageNum: 1,
-            hasNext: true,
-        },
         query: {
-
+            list: [],
+            pageNum: 1,
+            pageSize: 10,
+            pages: 1,
+            sortList: []
         },
         checkedList: [],
         dataList: [
@@ -41,6 +41,7 @@ class ClueDiscovery extends React.Component {
     }
     render() {
         const { history } = this.props;
+        const { dataList } = this.state;
         return (
             <Zlayout.Zbody scroll={true} loadMore={this.getData}>
                 <div className="main-rt-container" style={{ height: '100%' }}>
@@ -66,7 +67,7 @@ class ClueDiscovery extends React.Component {
                             {
                                 <CheckboxGroup value={this.state.checkedList} onChange={this.onChange}>
                                     {
-                                        this.state.dataList.map((sub, subKey) => {
+                                        dataList && dataList.length > 0 ? dataList.map((sub, subKey) => {
                                             return (
                                                 <AclueItem
                                                     history={history}
@@ -76,7 +77,7 @@ class ClueDiscovery extends React.Component {
                                                     clickEvent={this.handleCollected}>
                                                 </AclueItem>
                                             )
-                                        })
+                                        }) : null
                                     }
                                 </CheckboxGroup >
                             }
@@ -88,51 +89,60 @@ class ClueDiscovery extends React.Component {
             </Zlayout.Zbody>
         )
     }
+    // 搜索
+    clueSearch = async (query) => {
+        return apis.main.clueSearch(query).then(res => {
+            console.log(res.data);
+            let newQuery = zTool.deepCopy(this.state.query);
+            newQuery.pages = res.data.pages;
+            newQuery.total = res.data.total;
+            this.setState({
+                query: newQuery
+            })
+            return res.data.list;
+        }).catch(err => {
+            console.log(err)
+        })
+    }
     // 子组件 更新搜索条件
-    updateOptions = (options) => {
-        this.state.query = options;
+    updateOptions = (paramsList) => {
+        let newQuery = zTool.deepCopy(this.state.query);
+        newQuery.list = paramsList;
         this.setState({
-            query: options
+            query: newQuery
         }, () => { this.getData(true) });
         // console.log('loadMore',this.state.query);
     }
     // 获取查询数据
-    getData = (initData) => { //initData true: 初始化第一页 false 页数自加1
+    getData = async (initData) => { //initData true: 初始化第一页 false 页数自加1
         if (isLoading) {
             return;
         }
         isLoading = true;
-        let newQuery = zTool.deepCopy(this.state);
+        let newQuery = zTool.deepCopy(this.state.query);
         if (initData) {
-            // 
-            this.setState({
-                dataList: [
-                    { menuid: 1 },
-                    { menuid: 2 },
-                    { menuid: 3 },
-                    { menuid: 4 },
-                    { menuid: 5 },
-                ]
-            });
-            isLoading = false;
-        } else {
-            let pageSet = this.state.pageSet;
-            pageSet.pageNum += 1;
-            this.setState({
-                pageSet: pageSet
-            });
-            newQuery.pageSet.pageNum += 1;
-            let dataList = this.state.dataList;
-            let dataItem = zTool.deepCopy(dataList[dataList.length - 1]);
-            dataItem.menuid = dataItem.menuid + 1;
-            dataList.push(dataItem);
+            const dataList = await this.clueSearch(newQuery);
             this.setState({
                 dataList: dataList
+            })
+            isLoading = false;
+        } else {
+            let query = this.state.query;
+            query.pageNum += 1;
+            this.setState({
+                query: query
             });
+            newQuery.pageNum += 1;
+            const dataList = await this.clueSearch(newQuery);
+            let old_dataList = this.state.dataList;
+            old_dataList.concat(dataList);
+            this.setState({
+                dataList: old_dataList
+            })
             isLoading = false;
         }
         // 请求数据 
-        console.log(this.state);
+        console.log(this.state.dataList);
     }
     // 复选框 勾选
     onChange = newCheckedList => {

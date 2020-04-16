@@ -57,7 +57,7 @@ class LoginMain extends React.PureComponent {
                         </Form.Item>
                         <Form.Item>
                             <Button type="primary" htmlType="submit" styleName="login-form-button">
-                                Log in
+                                登录
                             </Button>
                         </Form.Item>
                     </Form>

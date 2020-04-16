@@ -25,6 +25,9 @@
 @include z('collapse-btn') {
     margin-bottom: 0 !important;
 }
+@include z('z-main-user-menu') {
+    color: #D7DBE6;
+}
 .head-btn{
     color: #DFE9FF;
     font-size: 16px;

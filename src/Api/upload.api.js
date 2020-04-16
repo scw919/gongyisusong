@@ -1,7 +1,7 @@
 // /gzwjc-miniprogram-wisdom/file/upload
 import httpAjax from '@/zTool/httpAjax.js';
 export default {
-    name: 'login',
+    name: 'upload',
     apis: {
         //上传文件
         upload(query) {
