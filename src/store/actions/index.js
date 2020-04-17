@@ -1,3 +1,6 @@
+// apis
+import apis from '@/App.api.js';
+
 // 侧边导航缩伸缩
 export const changeCollapsed = (value) => ({
     type: 'evaluate.changeCollapsed',
@@ -42,6 +45,19 @@ export const getIndexData_part_2 = (value) => {
         type: 'index.getIndexData_part_2',
         payload: {
             value,
+        },
+    };
+};
+// 获取用户已收录
+export const getCollectedClues = async (value) => {
+    const collectClues = await apis.main.clueFindUserClue().then((res) => {
+        return res && res.data;
+    });
+    // console.log(collectClues);
+    return {
+        type: 'find.getCollectedClues',
+        payload: {
+            collectClues,
         },
     };
 };

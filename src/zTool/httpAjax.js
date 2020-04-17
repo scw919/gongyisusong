@@ -10,7 +10,9 @@ import { zTool } from 'zerod';
 
 const con = {
     // 基础url前缀
-    baseURL: 'http://172.16.121.73:8762/',
+    // baseURL: 'http://172.20.5.220:8762/', // 苑迪 
+    // baseURL: 'http://172.20.5.233:8762/', // 海超 
+    baseURL: 'http://172.16.121.73:8762/',  //测试环境
 };
 function httpAjax(method, url, query) {
     const newurl = url; //处理url前缀

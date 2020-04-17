@@ -241,17 +241,21 @@
         padding: 0 8px;
         border-radius: 2px;
         font-size: 12px;
-        &.tag-green {
+        &.GREEN {
             background: rgba(226, 248, 239, 1);
             color: #1bc27a;
         }
-        &.tag-yellow {
+        &.YELLOW {
             background: rgba(252, 246, 235, 1);
             color: #ffb12d;
         }
-        &.tag-red {
+        &.RED {
             background: rgba(254, 241, 243, 1);
             color: #ef374f;
+        }
+        &.BLACK {
+            background:rgba(234,237,245,1);
+            color: #62697D;
         }
         &.tag-grey {
             background: rgba(235, 238, 245, 1);
@@ -326,6 +330,9 @@
             }
             
         }
+    }
+    .ant-modal-footer{
+        padding: 16px 24px;
     }
 }
 

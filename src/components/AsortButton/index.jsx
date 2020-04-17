@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Icon, Button } from 'antd';
 class AsortButton extends React.Component {
     static propTypes = {
-        sortType: PropTypes.number,
+        sortType: PropTypes.string,
         sortName: PropTypes.string,
     };
 
@@ -16,7 +16,7 @@ class AsortButton extends React.Component {
         return (
             <Button onClick={clickEvent} className="sort-btn">
                 {sortName}
-                <span className={`sort-btn-icon ${sortType == 1 ? 'ascending' : (sortType == 2 ? 'descending' : '')}`}><Icon className="icon-top" type="caret-up" /><Icon className="icon-bottom" type="caret-down" /></span>
+                <span className={`sort-btn-icon ${sortType == 'asc' ? 'ascending' : (sortType == 'desc' ? 'descending' : '')}`}><Icon className="icon-top" type="caret-up" /><Icon className="icon-bottom" type="caret-down" /></span>
             </Button>
         );
     }

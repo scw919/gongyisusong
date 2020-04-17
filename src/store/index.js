@@ -1,11 +1,14 @@
-import { createStore } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
+import thunk from 'redux-thunk';
+import promise from 'redux-promise';
 import rootReducer from './reducers';
 import initialState from './initialState';
 // export default function configureStore() {
 //     return createStore(rootReducer, initialState);
 // }
+let createMyStore = applyMiddleware(thunk, promise)(createStore);
 const configureStore = function () {
-    const store = createStore(rootReducer, initialState);
+    const store = createMyStore(rootReducer, initialState);
 
     if (module.hot) {
         // Enable Webpack hot module replacement for reducers
@@ -16,6 +19,6 @@ const configureStore = function () {
     }
 
     return store;
-}
+};
 const store = configureStore();
 export default store;

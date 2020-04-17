@@ -10,4 +10,5 @@ export default {
         clueDispose: '0',
     }, 
     part_3_data_index: {}, //首页可视化数据3
+    collectClues: [], //用户已收录线索
 };

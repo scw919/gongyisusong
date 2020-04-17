@@ -27,9 +27,11 @@ class SelectItem extends React.Component {
                         result && result.length > 0 ? result.map((tag, index) => {
                             return (<span key={index} onClick={() => { this.handleChangeArea(tag, index) }} styleName={`radio-tag ${index === this.state.selectedAreaIndex ? 'selected' : ''}`}>
                                 <i>{tag.label}</i>
-                                <i>({tag.count})</i>
+                                {
+                                    tag.count ? <i>({tag.count})</i> : null
+                                }
                             </span>)
-                        }):null
+                        }) : null
                     }
                     {children}
                 </div>

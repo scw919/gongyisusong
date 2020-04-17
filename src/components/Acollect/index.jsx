@@ -2,38 +2,38 @@ import React from 'react';
 import { Icon } from 'antd';
 import PropTypes from 'prop-types';
 import './style.scss';
-export class Acollect extends React.Component {
+import apis from '@/App.api.js';
+import store from '@/store';
+import { getCollectedClues } from '@/store/actions';
+export class Acollect extends React.PureComponent {
     static propTypes = {
-        trademark: PropTypes.any, //图标|图示
-        title: PropTypes.any, // 标题
-        content: PropTypes.any, //描述说明...
-        rightMoreContent: PropTypes.oneOfType([PropTypes.element, PropTypes.node, PropTypes.func]), // 标题列的右边可添加更多内容
-        breadcrumbParams: PropTypes.any, // 面包屑路由参数
-        breadcrumbRoutes: PropTypes.arrayOf(PropTypes.object), // 面包屑routes
-        children: PropTypes.any,
-        isCollected: PropTypes.bool
+        id: PropTypes.number,
+        hasCollected: PropTypes.bool,
     };
-    state={
-        isCollected: this.props.isCollected
+    state = {
+        hasCollected: this.props.hasCollected
     }
-    // componentWillReceiveProps(props, nextProps){
-    //     this.setState({
-    //         isCollected: props.isCollected
-    //     });
-    // }
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            hasCollected: nextProps.hasCollected
+        });
+    }
     render() {
+        const { id } = this.props;
+        const { hasCollected } = this.state;
+        console.log(hasCollected, 'acollected')
         return (
             <div>
                 {
-                    this.state.isCollected ?
+                    hasCollected ?
                         (
-                            <div onClick={this.handleCollected} styleName="collect collected" className="ft-16 pointer">
+                            <div onClick={(e) => { this.handleCollected(e, id) }} styleName="collect collected" className="ft-16 pointer">
                                 <Icon type="heartFill" className="mar-r-5" />
                                 已收录
                             </div>
                         ) :
                         (
-                            <div onClick={this.handleCollected} styleName="collect" className="ft-16 pointer">
+                            <div onClick={(e) => { this.handleCollected(e, id) }} styleName="collect" className="ft-16 pointer">
                                 <Icon type="heart" className="mar-r-5" />
                                 收录
                             </div>
@@ -42,20 +42,31 @@ export class Acollect extends React.Component {
             </div>
         );
     }
-    handleCollected = (e) => {
+    //发起请求
+    includeClue = (id, flag) => {
+        let query = {
+            clueIds: [id],
+            flag: flag
+        }
+        apis.main.includedClue(query).then(res => {
+            this.setState({
+                hasCollected: flag
+            }, () => {
+                // console.log(this.state);
+                const {
+                    clickEvent,
+                } = this.props;
+                clickEvent && clickEvent(flag);
+            });
+            store.dispatch(getCollectedClues());
+        })
+    }
+    handleCollected = (e, id) => {
+        // console.log(id);
         e.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
-        const {
-            clickEvent,
-        } = this.props;
-        let isCollected = this.state.isCollected;
-        this.setState({
-            isCollected: !isCollected
-        },() => {
-            // console.log(this.state);
-            clickEvent&&clickEvent(!isCollected);
-        });
-        
+        let hasCollected = this.state.hasCollected;
+        this.includeClue(id, !hasCollected);
     }
 }
 export default {

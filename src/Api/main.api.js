@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import httpAjax from '@/zTool/httpAjax.js';
 export default {
     name: 'main',
@@ -17,6 +18,14 @@ export default {
         // 查询当前用户所有收录的线索 /clue/findUserClue
         clueFindUserClue(query) {
             return httpAjax('post', '/clue/findUserClue', query);
+        },
+        // 线索发现-收录/取消收录线索 /clue/includedClue
+        includedClue(query) {
+            return httpAjax('post', '/clue/includedClue', query);
+        },
+        // 获取线索详情
+        getDetail(query) {
+            return httpAjax('get', `/clue/getDetail/${query.id}`);
         },
     },
 };

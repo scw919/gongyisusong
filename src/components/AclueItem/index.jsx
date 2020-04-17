@@ -18,6 +18,7 @@ class AclueItem extends React.Component {
         sub: PropTypes.object,
         onClick: PropTypes.func,
         toggleModal: PropTypes.func,
+        hasCollected: PropTypes.bool, //是否已收藏
         hasChecked: PropTypes.bool, // 是否可勾选
         canCollect: PropTypes.bool, //是否显示收录按钮
         isCollect: PropTypes.bool, // 是否可新建/关联 处置线索
@@ -25,6 +26,7 @@ class AclueItem extends React.Component {
     };
     static defaultProps = {
         canCollect: true,
+        hasCollected: false,
         hasChecked: false,
         isCollect: false,
         isHandle: false,
@@ -37,6 +39,7 @@ class AclueItem extends React.Component {
             isHandle,
             hasChecked,
             canCollect,
+            hasCollected,
             history
         } = this.props;
         const linkUrl = isCollect ? linkTypes['collectDetail'] : linkTypes['discoveryDetail'];
@@ -44,19 +47,19 @@ class AclueItem extends React.Component {
             <div styleName="search-list-item">
                 <div styleName="search-list-item-title" className="flex flex-between">
                     <div className="ft-18" styleName="title">
-                        {hasChecked ? <Checkbox value={sub} id={`${sub.menuid}`} >{sub.name}</Checkbox > : null}
+                        {hasChecked ? <Checkbox disabled={hasCollected} value={sub} id={`${sub.menuid}`} ></Checkbox > : null}
                         {/* <span onClick={(e) => { this.checkDetail(e, linkUrl) }}>番禺南丰塑料有限公司行政处罚案</span> */}
-                        <Link to={linkUrl} target="_blank">
-                            <span style={{ marginLeft: '8px' }}>{sub.className}</span>
+                        <Link to={`${linkUrl}/${sub.id}`} target="_blank">
+                            <span style={{ marginLeft: '8px' }} dangerouslySetInnerHTML={{ __html: this.highLightRender(sub, 'name') }}></span>
                         </Link>
                     </div>
                     {/* 收录 */}
-                    {canCollect ? <Acollect isCollected={true} clickEvent={clickEvent} /> : null}
+                    {canCollect ? <Acollect hasCollected={hasCollected} id={sub.id} /> : null}
                 </div>
                 <div className="flex flex-between">
                     <div styleName="left-part">
                         <Icon className="mar-r-5" type="environment" />
-                        <span>{sub.addressConcerned}</span>
+                        <span dangerouslySetInnerHTML={{ __html: this.highLightRender(sub, 'address') }}></span>
                     </div>
                     <div></div>
                 </div>
@@ -65,12 +68,11 @@ class AclueItem extends React.Component {
                         <Icon className="mar-r-5" type="book" />
                         <div className="ft-16 inline-block">
                             {
-                                sub.lables&&sub.lables.map((key,val)=>{
-                                    console.log(key, val)
-                                    return <span key={sub} className="tags-self tag-green">{val}</span>
+                                sub.lables ? Object.keys(sub.lables).map(key => {
+                                    return <span key={key} className={`tags-self ${sub.lables[key]}`}>{key}</span>
                                     // <span className="tags-self tag-yellow">其他案件</span>
                                     // <span className="tags-self tag-red">罚款</span>
-                                })
+                                }) : null
                             }
                         </div>
                     </div>
@@ -79,12 +81,12 @@ class AclueItem extends React.Component {
                 <div className="flex flex-between">
                     <div styleName="left-part">
                         <Icon className="mar-r-5" type="clock-circle" />
-                        <span>处罚决定日期: </span>
-                        <span>2019年12月24日</span>
+                        <span>{sub.timeLabel}: </span>
+                        <span>{sub.showDateTime}</span>
                     </div>
                     {
                         !isCollect && !isHandle ? (<div styleName="right-part">
-                            采集时间: 2020-02-12
+                            采集时间: {sub.createdTime}
                         </div>) : null
                     }
                 </div>
@@ -102,7 +104,7 @@ class AclueItem extends React.Component {
                             isHandle ? (
                                 <div className="flex flex-between align-item-center" styleName="collect">
                                     <div styleName="left-part">
-                                        <span>采集时间：2020-02-12</span>
+                                        <span>采集时间：{sub.createdTime}</span>
                                     </div>
                                     <div className="flex flex-1 flex-end" styleName="right-part">
                                         <Button onClick={(e) => { this.checkDetail(e, linkUrl) }} type="primary" style={{ marginRight: '8px' }}>查看</Button>
@@ -115,6 +117,25 @@ class AclueItem extends React.Component {
                 {this.props.children}
             </div>
         );
+    }
+    // 高亮渲染
+    highLightRender = (item, type) => {
+        switch (type) {
+            case 'name':
+                if (item.highlightResult && item.highlightResult.highlightCaseName) {
+                    return item.highlightResult.highlightCaseName
+                } else {
+                    return item.caseName;
+                }
+                break;
+            case 'address':
+                if (item.highlightResult && item.highlightResult.highlightAddressConcerned) {
+                    return item.highlightResult.highlightAddressConcerned
+                } else {
+                    return item.addressConcerned;
+                }
+                break;
+        }
     }
     // 跳转详情
     checkDetail = (e, linkUrl) => {

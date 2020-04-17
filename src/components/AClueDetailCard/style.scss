@@ -4,9 +4,18 @@
     border: 1px solid rgba(215, 219, 230, 1);
     .card-box-left {
         width: 537px;
-        :global(.ant-carousel) {
-            height: 302px;
-            border: 1px solid rgba(210, 213, 217, 1);
+        :global {
+            .ant-carousel {
+                height: 302px;
+                border: 1px solid rgba(210, 213, 217, 1);
+            }
+            .ant-carousel .slick-slide {
+                text-align: center;
+                height: 300px;
+                line-height: 300px;
+                background: #364d79;
+                overflow: hidden;
+            }
         }
         .carousel-img-box {
             width: 100%;
@@ -49,7 +58,7 @@
                     height: 50px;
                     margin: 0 15px;
                     &.active {
-                        border: 1px solid rgba(210, 213, 217, 1);
+                        border: 1px solid #FF4F69;
                     }
                     > img {
                         width: 100%;

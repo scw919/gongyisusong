@@ -1,19 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 // import compnents from '@/components/load-components.js';
-import { Input, Tag, Icon, Button, Modal } from 'antd';
+import { Input, Tag, Icon, Button, Tooltip } from 'antd';
 const { Search } = Input;
 import SelectItem from './SelectItem';
+import SelfTimer from './SelfTimer';
 // 样式类
 import './style.scss';
 // 接口
 import apis from '@/App.api.js';
-
+// 通用工具
+import { zTool } from "zerod";
 export const AsearchPart = (props) => {
 	let childDiyu = useRef(null), childLingyu = useRef(null), childLeibie = useRef(null), childTimer = useRef(null);
-	// const timerSeparator = [{ name: '全部', counts: 1124 }, { name: '近1年', counts: 1124 }, { name: '1-3年', counts: 1124 }, { name: '3-5年', counts: 1124 }, { name: '其他', counts: 1124 }];
-	// const areasDiyu = [{ name: '全部', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }];
-	// const areasLingyu = [{ name: '全部', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }];
-	// const areasLeibie = [{ name: '全部', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }, { name: '天河区', counts: 1124 }, { name: '越秀区', counts: 1124 }];
 	// 已选条件数组
 	const [tags, setTags] = useState([
 		// {name: '全部',counts: 123, type: 'diyu'},{name: '天河区', counts: 222, type: 'lingyu'}
@@ -28,6 +26,8 @@ export const AsearchPart = (props) => {
 	const [areaLeibie, setAreaLeibie] = useState({});
 	// 时间
 	const [areaTime, setAreaTime] = useState({});
+	// 自定义时间端弹窗 状态
+	const [modalVisible, setModalVisible] = useState(false);
 	// 搜索框 输入值
 	const [keyWord, setKeyWord] = useState(null);
 	// 搜索条件框 显示/隐藏
@@ -55,8 +55,8 @@ export const AsearchPart = (props) => {
 		}
 	}
 	// 获取条件筛选列表数据
-	function getClueParams() {
-		apis.main.clueParams().then(res => {
+	async function getClueParamsInit() {
+		await apis.main.clueParams().then(res => {
 			let data = res.data;
 			data.forEach((item, index) => {
 				switch (item.dimension) {
@@ -75,10 +75,12 @@ export const AsearchPart = (props) => {
 				}
 			})
 		});
+		// 初始化搜索
+		props.searchResult([])
 	}
 	useEffect(() => {
 		// getClueSuggestion();
-		getClueParams();
+		getClueParamsInit();
 	}, [])
 
 	// 关闭单个已选条件
@@ -121,10 +123,10 @@ export const AsearchPart = (props) => {
 			};
 			newSearchOptions.push(option);
 		})
-		keyWord&&keyWord.length>0?newSearchOptions.push({
+		keyWord && keyWord.length > 0 ? newSearchOptions.push({
 			dimension: 'keyword',
 			paramValue: keyWord
-		}):null;
+		}) : null;
 		// setSearchOptions(newSearchOptions);
 		props.searchResult(newSearchOptions);
 		// console.log(newSearchOptions,searchOptions);
@@ -140,6 +142,25 @@ export const AsearchPart = (props) => {
 	function toggleSlide() {
 		console.log(isCollapse);
 		setIsCollapse(!isCollapse);
+	}
+	// 自定义时间段
+	function addSelfTimer() {
+		setModalVisible(true);
+	}
+	function onOk(timeRanger) {
+		console.log(timeRanger);
+		let newAreaTime = zTool.deepCopy(areaTime);
+		let tag = {
+			count: null,
+			label: timeRanger,
+			value: timeRanger
+		}
+		newAreaTime.result.push(tag);
+		setAreaTime(newAreaTime);
+		setModalVisible(false);
+	}
+	function onCancel() {
+		setModalVisible(false);
 	}
 	return (
 		<div styleName="search-box" className="flex align-item-center just-con-center flex-col">
@@ -165,7 +186,7 @@ export const AsearchPart = (props) => {
 					已选条件<span className="separator"></span>
 					<div>
 						{tags.map((tagObj, index) => {
-							const tag = `${tagObj.label}(${tagObj.count})`;
+							const tag = `${tagObj.label}${tagObj.count ? (tagObj.count) : ''} `;
 							const isLongTag = tag.length > 20;
 							const tagElem = (
 								<Tag className="border-tag" key={index} visible={true} closable onClose={() => handleClose(tagObj)}>
@@ -194,7 +215,7 @@ export const AsearchPart = (props) => {
 					<SelectItem ref={childLingyu} {...areaLingyu} selectedChange={changeSel} />
 					<SelectItem ref={childLeibie} {...areaLeibie} selectedChange={changeSel} />
 					<SelectItem ref={childTimer} {...areaTime} selectedChange={changeSel}>
-						<Button className="dashed_self" type="dashed" icon="plus">自定义时间段</Button>
+						<Button className="dashed_self" type="dashed" icon="plus" onClick={() => { addSelfTimer() }}>自定义时间段</Button>
 					</SelectItem>
 				</div>
 				<div onClick={() => { toggleSlide() }} styleName="slide-btn down" className="flex just-con-center">
@@ -204,6 +225,8 @@ export const AsearchPart = (props) => {
 					</span>
 				</div>
 			</div>
+			{/* 自定义时间段 弹窗 */}
+			<SelfTimer visible={modalVisible} onOk={onOk} onCancel={onCancel} />
 		</div>
 	)
 };

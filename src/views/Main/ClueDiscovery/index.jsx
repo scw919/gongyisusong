@@ -4,7 +4,8 @@ const { AsortButton, AclueItem, AsearchPart } = compnents;
 // import SearchList from './Children/SearchList';
 import { Checkbox } from 'antd';
 const CheckboxGroup = Checkbox.Group;
-
+// actions
+import { getCollectedClues } from '@/store/actions';
 import { Zlayout } from 'zerod';
 import { connect } from 'react-redux';
 // 样式类
@@ -18,8 +19,12 @@ const mapStateToProps = (state, ownProps) =>
     // state 是 {userList: [{id: 0, name: '王二'}]}
     ({
         userName: state.userName,
-        collapsed: state.collapsed
+        collapsed: state.collapsed,
+        collectClues: state.collectClues,
     });
+const mapDispatchToProps = (dispatch) => ({
+    getCollectedClues: (...args) => dispatch(getCollectedClues(...args)),
+});
 let isLoading = false;
 class ClueDiscovery extends React.Component {
     state = {
@@ -28,20 +33,29 @@ class ClueDiscovery extends React.Component {
             pageNum: 1,
             pageSize: 10,
             pages: 1,
+            total: 0,
             sortList: []
         },
         checkedList: [],
         dataList: [
-            { menuid: 1 },
-            { menuid: 2 },
-            { menuid: 3 },
-            { menuid: 4 },
-            { menuid: 5 },
-        ]
+
+        ],
+        sortByFilter: '', //默认筛选时间
+        sortByCollect: '', //默认采集时间
+        collectClues: [],//已收录的线索
+    }
+    componentDidMount() {
+        this.props.getCollectedClues().then(action => {
+            // console.log(action.payload.collectClues);
+            // this.collectClues = action.payload.collectClues;
+            this.setState({
+                collectClues: action.payload.collectClues
+            })
+        });
     }
     render() {
         const { history } = this.props;
-        const { dataList } = this.state;
+        const { dataList, } = this.state;
         return (
             <Zlayout.Zbody scroll={true} loadMore={this.getData}>
                 <div className="main-rt-container" style={{ height: '100%' }}>
@@ -55,8 +69,8 @@ class ClueDiscovery extends React.Component {
                                     onChange={this.onCheckAllChange}
                                     checked={this.state.checkAll}
                                 />
-                                <span type="button" style={{ marginLeft: '10px' }}>全部收录</span>
-                                <span styleName="total-counts">共收录1313413个文件</span>
+                                <span onClick={() => { this.includeAll() }} type="button" style={{ marginLeft: '10px' }}>全部收录</span>
+                                <span styleName="total-counts">共收录{this.state.query.total}个文件</span>
                             </div>
                             <div className="flex">
                                 <AsortButton sortType={this.state.sortByFilter} sortName={'筛选时间'} clickEvent={this.changeSortType1} />
@@ -73,6 +87,7 @@ class ClueDiscovery extends React.Component {
                                                     history={history}
                                                     key={subKey}
                                                     sub={sub}
+                                                    hasCollected={this.hasCollected(sub.id)}
                                                     hasChecked={true}
                                                     clickEvent={this.handleCollected}>
                                                 </AclueItem>
@@ -81,7 +96,6 @@ class ClueDiscovery extends React.Component {
                                     }
                                 </CheckboxGroup >
                             }
-
                         </div>
                     </div>
                     {/* <SearchList data={this.state.dataList} history={history} /> */}
@@ -92,16 +106,9 @@ class ClueDiscovery extends React.Component {
     // 搜索
     clueSearch = async (query) => {
         return apis.main.clueSearch(query).then(res => {
-            console.log(res.data);
-            let newQuery = zTool.deepCopy(this.state.query);
-            newQuery.pages = res.data.pages;
-            newQuery.total = res.data.total;
-            this.setState({
-                query: newQuery
-            })
-            return res.data.list;
+            return res.data;
         }).catch(err => {
-            console.log(err)
+            // console.log(err)
         })
     }
     // 子组件 更新搜索条件
@@ -119,30 +126,51 @@ class ClueDiscovery extends React.Component {
             return;
         }
         isLoading = true;
+        const { sortByCollect, sortByFilter } = this.state;
+        let sortList = [
+            sortByCollect ? {
+                order: sortByCollect,
+                sortFiled: "createdTime"
+            } : null, sortByFilter ? {
+                order: sortByFilter,
+                sortFiled: "uniteSortTime"
+            } : null].filter((s) => {
+                return s;
+            });
+
         let newQuery = zTool.deepCopy(this.state.query);
+        newQuery.sortList = sortList;
         if (initData) {
-            const dataList = await this.clueSearch(newQuery);
+            newQuery.pageNum = 1;
+            const data = await this.clueSearch(newQuery);
+            newQuery.pages = data.pages;
+            newQuery.total = data.total;
             this.setState({
-                dataList: dataList
+                query: newQuery,
+                dataList: data.list,
+                checkAll: false,
+                checkedList:[],
+                indeterminate: false,
             })
             isLoading = false;
         } else {
-            let query = this.state.query;
-            query.pageNum += 1;
-            this.setState({
-                query: query
-            });
             newQuery.pageNum += 1;
-            const dataList = await this.clueSearch(newQuery);
+            console.log(newQuery.pageNum, newQuery.pages, '222222222222222222222222222222')
+            if (newQuery.pageNum > newQuery.pages) {
+                isLoading = false;
+                return false;
+            }
+            const data = await this.clueSearch(newQuery);
+            newQuery.pages = data.pages;
+            newQuery.total = data.total;
             let old_dataList = this.state.dataList;
-            old_dataList.concat(dataList);
+            old_dataList = old_dataList.concat(data.list);
             this.setState({
+                query: newQuery,
                 dataList: old_dataList
             })
             isLoading = false;
         }
-        // 请求数据 
-        console.log(this.state.dataList);
     }
     // 复选框 勾选
     onChange = newCheckedList => {
@@ -152,7 +180,7 @@ class ClueDiscovery extends React.Component {
             checkedList: newCheckedList,
             indeterminate: !!newCheckedList.length && newCheckedList.length < dataList.length,
             checkAll: newCheckedList.length === dataList.length,
-        }, () => { console.log(checkedList) });
+        });
     };
     onCheckAllChange = e => {
         const { dataList, checkedList } = this.state;
@@ -162,6 +190,37 @@ class ClueDiscovery extends React.Component {
             checkAll: e.target.checked,
         });
     };
+    // 全部收录
+    includeAll = () => {
+        const { checkedList } = this.state;
+        let query = { flag: true, clueIds: [] };
+        checkedList.map(item => {
+            query['clueIds'].push(item.id);
+        })
+        apis.main.includedClue(query).then(_ => {
+            this.props.getCollectedClues().then(action => {
+                this.setState({
+                    // collectClues: action.payload.collectClues,
+                    checkedList: [],
+                    indeterminate: false,
+                    checkAll: false,
+                })
+            })
+        })
+    }
+    // 重置复选框
+    resetCheckAll = () => {
+        this.setState({
+            checkedList: [],
+            indeterminate: false,
+            checkAll: false,
+        })
+    }
+    // 判断是否收录
+    hasCollected = (id) => {
+        const { collectClues } = this.props;
+        return collectClues.collectClues.indexOf(id) > -1;
+    }
     // 收录 / 取消收录
     handleCollected = (value) => {
         console.log(value)
@@ -171,27 +230,27 @@ class ClueDiscovery extends React.Component {
         const { sortByFilter } = this.state;
         let type = sortByFilter,
             newType;
-        if (type != 1) {
-            newType = 1;
+        if (type != 'asc') {
+            newType = 'asc';
         } else {
-            newType = 2
+            newType = 'desc'
         }
         this.setState({
             sortByFilter: newType
-        })
+        }, () => { this.getData(true) })
     }
     changeSortType2 = () => {
         const { sortByCollect } = this.state;
         let type = sortByCollect,
             newType;
-        if (type != 1) {
-            newType = 1;
+        if (type != 'asc') {
+            newType = 'asc';
         } else {
-            newType = 2
+            newType = 'desc'
         }
         this.setState({
             sortByCollect: newType
-        })
+        }, () => { this.getData(true) })
     }
 }
-export default connect(mapStateToProps)(ClueDiscovery);
+export default connect(mapStateToProps, mapDispatchToProps)(ClueDiscovery);

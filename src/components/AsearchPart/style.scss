@@ -123,3 +123,39 @@
         margin-top: 10px;
     }
 }
+.new-deal-box {
+    .clue-name {
+        .left {
+            width: 70px;
+        }
+        .right {
+            flex: 1;
+        }
+        :global {
+            .ant-input {
+                background: #f4f4f4;
+            }
+        }
+    }
+    :global{
+        .ant-modal-body{
+            padding: 32px 24px;
+        }
+    }
+    .timer-item{
+        color: #565A60;
+        .time-picker{
+            width: 220px;
+            height: 36px;
+        }
+        +.timer-item{
+            margin-top: 50px;
+        }
+        :global{
+            .ant-input{
+                height: 36px;
+            }
+        }
+    }
+}
+
