@@ -64,7 +64,8 @@ class ClueDiscoveryDetail extends React.Component {
                             <div>
                                 <p styleName="title">处罚依据：</p>
                                 <p styleName="content">
-                                    {details.punishmentBasis}                                </p>
+                                    {details.punishmentBasis}
+                                </p>
                             </div>
                         </div>
                         <div styleName="clue-other-item">
@@ -84,7 +85,7 @@ class ClueDiscoveryDetail extends React.Component {
                                 details.clueUploadFile ? details.clueUploadFile.split(',').map((item, index) => {
                                     let obj = { type: item.split('.'), name: item, size: item.length, url: item };
                                     return (
-                                        <AfileShow key={index} {...obj} />
+                                        <AfileShow disabled={true} key={index} {...obj} />
                                     )
                                 }) : null
                             }

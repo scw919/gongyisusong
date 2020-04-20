@@ -2,13 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Button, Modal } from 'antd';
 import './style.scss';
-
+import commonMethods from '@/zTool/commonMethods.js';
+const { downloadFile } = commonMethods;
 import pngIcon from '@/assets/images/detail/picture.png';
 import pdfIcon from '@/assets/images/detail/pdf.png';
 import videoIcon from '@/assets/images/detail/video.png';
 import wordIcon from '@/assets/images/detail/word.png';
 // import doc from '@/assets/doc.doc';
 import mp4 from '@/assets/mp4.mp4';
+
 function getBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -23,7 +25,11 @@ class AfileShow extends React.Component {
         size: PropTypes.string,
         name: PropTypes.string,
         url: PropTypes.any,
+        disabled: PropTypes.boolean
     };
+    static defaultProps = {
+        disabled: false
+    }
     state = {
         previewVisible: false,
         previewImage: null
@@ -33,8 +39,10 @@ class AfileShow extends React.Component {
             name,
             type,
             size,
-            url
+            url,
+            disabled
         } = this.props;
+        console.log(name, size, url);
         // console.log(this.props)
         const { previewVisible, previewImage } = this.state;
         return (
@@ -47,7 +55,15 @@ class AfileShow extends React.Component {
                             e.nativeEvent.stopImmediatePropagation();
                             this.handlePreview(url)
                         }} type="eye" />
-                        <Icon type="download" />
+                        {
+                            disabled ? (
+                                <Icon onClick={(e) => {
+                                    e.stopPropagation();
+                                    e.nativeEvent.stopImmediatePropagation();
+                                    downloadFile(url, name)
+                                }} type="download" />
+                            ) : null
+                        }
                     </div>
                 </div>
                 {this.renderImg(name)}
@@ -57,7 +73,7 @@ class AfileShow extends React.Component {
                 </div>
                 <Modal width={768} visible={previewVisible} footer={null} onCancel={this.handleCancel}>
                     {
-                        this.renderPreview((type||this.getFileType(name)), url)
+                        this.renderPreview((this.getFileType(name)), url)
                     }
                 </Modal >
             </div >
@@ -83,7 +99,7 @@ class AfileShow extends React.Component {
     renderImg = (name) => {
         let fileType = this.getFileType(name);
         switch (fileType) {
-            case 'png'||'jpg':
+            case 'png': case 'jpg':
                 return <img src={pngIcon} alt="" />;
                 break;
             case 'pdf':
@@ -92,7 +108,7 @@ class AfileShow extends React.Component {
             case 'mp4':
                 return <img src={videoIcon} alt="" />;;
                 break;
-            case 'doc'||'docx':
+            case 'doc': case 'docx':
                 return <img src={wordIcon} alt="" />;;
                 break;
         }

@@ -27,5 +27,25 @@ export default {
         getDetail(query) {
             return httpAjax('get', `/clue/getDetail/${query.id}`);
         },
+        // 获取线索集合展示列表 /ClueCollection/getRelations
+        getRelations(query) {
+            return httpAjax('post', '/ClueCollection/getRelations', query);
+        },
+        // 获取线索集合详情 /ClueCollection/{id}
+        getClueCollection(query) {
+            return httpAjax('get', `/ClueCollection/${query.id}`);
+        },
+        // 线索集合名字重复性查询 /ClueCollection/checkName/{name}
+        checkCollectionName(query) {
+            return httpAjax('get', `/ClueCollection/checkName/${query.name}`);
+        },
+        // 线索关联-新增线索集合 /ClueCollection/saveCollect
+        saveCollect(query) {
+            return httpAjax('post', '/ClueCollection/saveCollect', query);
+        },
+        // 线索关联到集合 /ClueCollection/addClueToColl
+        addClueToColl(query) {
+            return httpAjax('post', '/ClueCollection/addClueToColl', query);
+        },
     },
 };

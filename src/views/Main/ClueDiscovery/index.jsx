@@ -70,7 +70,7 @@ class ClueDiscovery extends React.Component {
                                     checked={this.state.checkAll}
                                 />
                                 <span onClick={() => { this.includeAll() }} type="button" style={{ marginLeft: '10px' }}>全部收录</span>
-                                <span styleName="total-counts">共收录{this.state.query.total}个文件</span>
+                                <span styleName="total-counts">共找到{this.state.query.total}个结果</span>
                             </div>
                             <div className="flex">
                                 <AsortButton sortType={this.state.sortByFilter} sortName={'筛选时间'} clickEvent={this.changeSortType1} />
@@ -149,7 +149,7 @@ class ClueDiscovery extends React.Component {
                 query: newQuery,
                 dataList: data.list,
                 checkAll: false,
-                checkedList:[],
+                checkedList: [],
                 indeterminate: false,
             })
             isLoading = false;

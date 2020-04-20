@@ -15,6 +15,8 @@ import { withRouter } from 'react-router-dom';
 import './style.scss';
 // 通用工具
 import { zTool } from "zerod";
+// 接口
+import apis from '@/App.api.js';
 
 const mapStateToProps = (state, ownProps) =>
     // state 是 {userList: [{id: 0, name: '王二'}]}
@@ -25,23 +27,22 @@ const mapStateToProps = (state, ownProps) =>
 let isLoading = false;
 class ClueDiscovery extends React.Component {
     state = {
-        pageSet: {
-            pageSize: 10,
-            total: 100,
-            pageNum: 1,
-            hasNext: true,
-        },
         query: {
-
+            list: [],
+            isMyClue: 1,
+            pageNum: 1,
+            pageSize: 10,
+            pages: 1,
+            total: 0,
+            sortList: []
         },
         checkedList: [],
         dataList: [
-            { menuid: 1 },
-            { menuid: 2 },
-            { menuid: 3 },
-            { menuid: 4 },
-            { menuid: 5 },
+
         ],
+        sortByFilter: '', //默认筛选时间
+        sortByCollect: '', //默认采集时间
+        collectClues: [],//已收录的线索
         newVisible: false, //新建处置 弹窗
         relatedVisible: false, //关联线索 弹窗
     }
@@ -62,8 +63,8 @@ class ClueDiscovery extends React.Component {
                                     onChange={this.onCheckAllChange}
                                     checked={this.state.checkAll}
                                 />
-                                <span type="button" style={{ marginLeft: '10px' }}>取消收录</span>
-                                <span styleName="total-counts">共收录1313413个文件</span>
+                                <span onClick={() => { this.includeAll() }} type="button" style={{ marginLeft: '10px' }}>取消收录</span>
+                                <span styleName="total-counts">共收录{this.state.query.total}个案件</span>
                             </div>
                             <div className="flex">
                                 <AsortButton sortType={this.state.sortByFilter} sortName={'筛选时间'} clickEvent={this.changeSortType1} />
@@ -80,10 +81,11 @@ class ClueDiscovery extends React.Component {
                                                     history={history}
                                                     key={subKey}
                                                     sub={sub}
+                                                    isCollect={true}
                                                     hasChecked={true}
+                                                    hasCollected={true}
                                                     toggleModalNew={this.toggleModalNew}
                                                     toggleModalRel={this.toggleModalRel}
-                                                    isCollect={true}
                                                     clickEvent={this.handleCollected}>
                                                 </AclueItem>
                                             )
@@ -96,79 +98,110 @@ class ClueDiscovery extends React.Component {
                     </div>
                     {/* <SearchList toggleModalNew={this.toggleModalNew} toggleModalRel={this.toggleModalRel} data={this.state.dataList} isCollect={true} history={history} /> */}
                     {/* 新建 线索收录 */}
-                    <NewDealClue visible={newVisible} toggleModalNew={this.toggleModalNew} />
+                    <NewDealClue visible={newVisible} clueName={this.state.clueName} clueID={this.state.clueID} toggleModalNew={this.toggleModalNew} />
                     {/* 关联线索收录 */}
-                    <RelatedClue visible={relatedVisible} toggleModalRel={this.toggleModalRel} />
+                    <RelatedClue visible={relatedVisible} clueName={this.state.clueName} clueID={this.state.clueID} toggleModalRel={this.toggleModalRel} />
                 </div>
             </Zlayout.Zbody>
         )
     }
+    // 搜索
+    clueSearch = async (query) => {
+        return apis.main.clueSearch(query).then(res => {
+            return res.data;
+        }).catch(err => {
+            // console.log(err)
+        })
+    }
     // 子组件 更新搜索条件
-    updateOptions = (options) => {
-        this.state.query = options;
+    updateOptions = (paramsList) => {
+        let newQuery = zTool.deepCopy(this.state.query);
+        newQuery.list = paramsList;
         this.setState({
-            query: options
+            query: newQuery
         }, () => { this.getData(true) });
         // console.log('loadMore',this.state.query);
     }
     // 获取查询数据
-    getData = (initData) => { //initData true: 初始化第一页 false 页数自加1
+    getData = async (initData) => { //initData true: 初始化第一页 false 页数自加1
         if (isLoading) {
             return;
         }
         isLoading = true;
-        let newQuery = zTool.deepCopy(this.state);
-        if (initData) {
-            // 
-            this.setState({
-                dataList: [
-                    { menuid: 1, name: 'Apple' },
-                    { menuid: 2, name: 'pear' },
-                    { menuid: 3, name: 'Orange' },
-                    { menuid: 4, name: 'Orange2' },
-                    { menuid: 5, name: 'Orange3' },
-                ]
+        const { sortByCollect, sortByFilter } = this.state;
+        let sortList = [
+            sortByCollect ? {
+                order: sortByCollect,
+                sortFiled: "createdTime"
+            } : null, sortByFilter ? {
+                order: sortByFilter,
+                sortFiled: "uniteSortTime"
+            } : null].filter((s) => {
+                return s;
             });
+
+        let newQuery = zTool.deepCopy(this.state.query);
+        newQuery.sortList = sortList;
+        if (initData) {
+            newQuery.pageNum = 1;
+            const data = await this.clueSearch(newQuery);
+            newQuery.pages = data.pages;
+            newQuery.total = data.total;
+            this.setState({
+                isMyClue: 1,
+                query: newQuery,
+                dataList: data.list,
+                checkAll: false,
+                checkedList: [],
+                indeterminate: false,
+            })
             isLoading = false;
         } else {
-            let pageSet = this.state.pageSet;
-            pageSet.pageNum += 1;
+            newQuery.pageNum += 1;
+            console.log(newQuery.pageNum, newQuery.pages, '222222222222222222222222222222')
+            if (newQuery.pageNum > newQuery.pages) {
+                isLoading = false;
+                return false;
+            }
+            const data = await this.clueSearch(newQuery);
+            newQuery.pages = data.pages;
+            newQuery.total = data.total;
+            let old_dataList = this.state.dataList;
+            old_dataList = old_dataList.concat(data.list);
             this.setState({
-                pageSet: pageSet
-            });
-            newQuery.pageSet.pageNum += 1;
-            let dataList = this.state.dataList;
-            let dataItem = zTool.deepCopy(dataList[dataList.length - 1]);
-            dataItem.menuid = dataItem.menuid + 1;
-            dataList.push(dataItem);
-            this.setState({
-                dataList: dataList
-            });
+                query: newQuery,
+                dataList: old_dataList
+            })
             isLoading = false;
         }
-        // 请求数据 
-        console.log(this.state);
     }
     // 列表组件 点击 新建 处置线索
-    toggleModalNew = (status) => {
-        this.setState(
-            {
-                newVisible: status
-            }, () => {
-                console.log(this.state)
-            }
-        );
-
+    toggleModalNew = (status, sub) => {
+        if (sub) {
+            this.setState({
+                newVisible: status,
+                clueName: sub.caseName,
+                clueID: sub.id,
+            })
+        } else {
+            this.setState({
+                newVisible: status,
+            })
+        }
     }
     // 列表组件 点击 关联 处置线索
-    toggleModalRel = (status) => {
-        this.setState(
-            {
-                relatedVisible: status
-            }, () => {
-                console.log(this.state)
-            }
-        );
+    toggleModalRel = (status, sub) => {
+        if (sub) {
+            this.setState({
+                relatedVisible: status,
+                clueName: sub.caseName,
+                clueID: sub.id,
+            })
+        } else {
+            this.setState({
+                relatedVisible: status,
+            })
+        }
 
     }
     // 复选框 勾选
@@ -179,7 +212,7 @@ class ClueDiscovery extends React.Component {
             checkedList: newCheckedList,
             indeterminate: !!newCheckedList.length && newCheckedList.length < dataList.length,
             checkAll: newCheckedList.length === dataList.length,
-        }, () => { console.log(checkedList) });
+        });
     };
     onCheckAllChange = e => {
         const { dataList, checkedList } = this.state;
@@ -189,6 +222,25 @@ class ClueDiscovery extends React.Component {
             checkAll: e.target.checked,
         });
     };
+    // 全部取消收录
+    includeAll = () => {
+        const { checkedList, dataList } = this.state;
+        let query = { flag: false, clueIds: [] };
+        checkedList.map(item => {
+            query['clueIds'].push(item.id);
+        })
+        apis.main.includedClue(query).then(_ => {
+            // this.props.getCollectedClues().then(action => {
+            this.setState({
+                // collectClues: action.payload.collectClues,
+                checkedList: [],
+                indeterminate: false,
+                checkAll: false,
+            })
+            this.getData(true);
+            // })
+        })
+    }
     // 收录 / 取消收录
     handleCollected = (value) => {
         console.log(value)
@@ -198,27 +250,27 @@ class ClueDiscovery extends React.Component {
         const { sortByFilter } = this.state;
         let type = sortByFilter,
             newType;
-        if (type != 1) {
-            newType = 1;
+        if (type != 'asc') {
+            newType = 'asc';
         } else {
-            newType = 2
+            newType = 'desc'
         }
         this.setState({
             sortByFilter: newType
-        })
+        }, () => { this.getData(true) })
     }
     changeSortType2 = () => {
         const { sortByCollect } = this.state;
         let type = sortByCollect,
             newType;
-        if (type != 1) {
-            newType = 1;
+        if (type != 'asc') {
+            newType = 'asc';
         } else {
-            newType = 2
+            newType = 'desc'
         }
         this.setState({
             sortByCollect: newType
-        })
+        }, () => { this.getData(true) })
     }
 }
 export default connect(mapStateToProps)(withRouter(ClueDiscovery));

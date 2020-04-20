@@ -47,7 +47,7 @@ class AclueItem extends React.Component {
             <div styleName="search-list-item">
                 <div styleName="search-list-item-title" className="flex flex-between">
                     <div className="ft-18" styleName="title">
-                        {hasChecked ? <Checkbox disabled={hasCollected} value={sub} id={`${sub.menuid}`} ></Checkbox > : null}
+                        {hasChecked ? <Checkbox disabled={hasCollected && !isCollect} value={sub} id={`${sub.id}`} ></Checkbox > : null}
                         {/* <span onClick={(e) => { this.checkDetail(e, linkUrl) }}>番禺南丰塑料有限公司行政处罚案</span> */}
                         <Link to={`${linkUrl}/${sub.id}`} target="_blank">
                             <span style={{ marginLeft: '8px' }} dangerouslySetInnerHTML={{ __html: this.highLightRender(sub, 'name') }}></span>
@@ -164,16 +164,18 @@ class AclueItem extends React.Component {
         })
     }
     toggleModalNew = (e) => { //新建
-        console.log('click');
+        const { sub } = this.props;
+        // console.log('click', sub);
         e.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
-        this.props.toggleModalNew(true);
+        this.props.toggleModalNew(true, sub);
     }
     toggleModalRel = (e) => { // 关联
-        console.log('click');
+        const { sub } = this.props;
+        // console.log('click', sub);
         e.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
-        this.props.toggleModalRel(true);
+        this.props.toggleModalRel(true, sub);
     }
 }
 

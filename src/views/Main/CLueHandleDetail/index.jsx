@@ -73,9 +73,9 @@ class ClueDiscoveryDetail extends React.Component {
                     <div className="text-center" styleName="detail-title">
                         <p className="ft-24">番禺南丰塑料制品有限公司行政处罚案</p>
                         <p className="mar-t-15">
-                            <span className="tags-self tag-green">资源环境</span>
-                            <span className="tags-self tag-yellow">其他案件</span>
-                            <span className="tags-self tag-red">罚款</span>
+                            <span className="tags-self GREEN">资源环境</span>
+                            <span className="tags-self YELLOW">其他案件</span>
+                            <span className="tags-self RED">罚款</span>
                         </p>
                     </div>
                     {/* 基本概况 */}
@@ -93,9 +93,9 @@ class ClueDiscoveryDetail extends React.Component {
                                 添加其他线索
                             </Button>
                         </div>
-                        <div styleName="other-clue">
+                        {/* <div styleName="other-clue">
                             <AclueItem {...AclueItmOpt} />
-                        </div>
+                        </div> */}
                     </div>
                     {/* 事态进程 */}
                     <div className="ft-16" styleName="main-module">

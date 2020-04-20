@@ -19,8 +19,10 @@ const matchUrlToMenu = function (match) {
 };
 const createBreadCrumb = function (main, location, mainRoutes) {
     const IndexRoute = { path: main.path, pathName: '线索管理', index: 0 };
+    const reg = /([^：]+)：.*/;
     let curPath = location.pathname,
         matchRoutes = [];
+    curPath = curPath.indexOf(':') > -1 ? curPath.match(reg)[0] : curPath;
     mainRoutes.map((item) => {
         let index = curPath.lastIndexOf(item.path);
         if (index > -1) {
@@ -38,8 +40,61 @@ const createBreadCrumb = function (main, location, mainRoutes) {
     // console.log(main, location, mainRoutes, 'commonMethods');
     store.dispatch(changeBreadCrumb(matchRoutes));
 };
+// 根据文件url 下载文件
+const downloadFileByUrl = {
+    getBlob: (url, cb) => {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.responseType = 'blob';
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                cb(xhr.response);
+            }
+        };
+        xhr.send();
+    },
+
+    /**
+     * 保存
+     * @param  {Blob} blob
+     * @param  {String} filename 想要保存的文件名称
+     */
+    saveAs: (blob, filename) => {
+        if (window.navigator.msSaveOrOpenBlob) {
+            navigator.msSaveBlob(blob, filename);
+        } else {
+            var link = document.createElement('a');
+            var body = document.querySelector('body');
+
+            link.href = window.URL.createObjectURL(blob);
+            link.download = filename;
+
+            // fix Firefox
+            link.style.display = 'none';
+            body.appendChild(link);
+
+            link.click();
+            body.removeChild(link);
+
+            window.URL.revokeObjectURL(link.href);
+        }
+    },
+
+    /**
+     * 下载
+     * @param  {String} url 目标文件地址
+     * @param  {String} filename 想要保存的文件名称
+     */
+    download: (url, filename) => {
+        downloadFileByUrl.getBlob(url, (blob) => {
+            downloadFileByUrl.saveAs(blob, filename);
+        });
+    },
+};
+
 const commonMethods = {
     matchUrlToMenu: matchUrlToMenu,
     createBreadCrumb: createBreadCrumb,
+    downloadFile: downloadFileByUrl.download,
 };
 export default commonMethods;

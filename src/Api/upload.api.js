@@ -5,7 +5,11 @@ export default {
     apis: {
         //上传文件
         upload(query) {
-            return httpAjax('post', '/gzwjc-miniprogram-wisdom/file/upload', query, {baseUrl: 'https://172.16.121.18:8904'});
+            return httpAjax('post', '/file/upload', query, {
+                headers:{
+                    'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundarymS7TlCNHkMnROj3Y'
+                }
+            });
         },
     },
 };
