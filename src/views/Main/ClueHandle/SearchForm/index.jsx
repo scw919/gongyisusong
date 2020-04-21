@@ -1,6 +1,8 @@
 import React from 'react';
 import { Row, Col, Form, Icon, Input, Button, Select, DatePicker } from 'antd';
+const { RangePicker } = DatePicker;
 import { zTool } from "zerod";
+import moment from 'moment';
 const { Option } = Select;
 import './style.scss';
 const layout = {
@@ -10,7 +12,7 @@ const layout = {
 class SearchForm extends React.Component {
     componentDidMount() {
         // To disable submit button at the beginning.
-        this.props.form.validateFields();
+        this.props.submit({})
     }
     // 重置
     handleReset = () => {
@@ -22,14 +24,20 @@ class SearchForm extends React.Component {
         this.props.form.validateFields((err, fieldsValue) => {
             if (!err) {
                 let values = zTool.deepCopy(fieldsValue);
-                values['updateTime'] = fieldsValue['updateTime'] ? fieldsValue['updateTime'].format('YYYY-MM-DD') : '';
-                values['createTime'] = fieldsValue['createTime'] ? fieldsValue['createTime'].format('YYYY-MM-DD') : '';
-                // console.log('Received values of form: ', values);
+                if (fieldsValue['createTime']) {
+                    values['createStart'] = fieldsValue['createTime'][0].format('YYYY-MM-DD');
+                    values['createEnd'] = fieldsValue['createTime'][1].format('YYYY-MM-DD');
+                }
+                if (fieldsValue['updateTime']) {
+                    values['updateStart'] = fieldsValue['updateTime'][0].format('YYYY-MM-DD');
+                    values['updateEnd'] = fieldsValue['updateTime'][1].format('YYYY-MM-DD');
+                }
+                values.pageNum = 1;
                 this.props.submit(values);
             }
         });
     };
-    
+
     render() {
         const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
         return (
@@ -41,9 +49,9 @@ class SearchForm extends React.Component {
                     <Col span={6}>
                         <Form.Item
                             label="线索名称："
-                            name="clueName"
+                            name="collectionName"
                         >
-                            {getFieldDecorator('clueName', {
+                            {getFieldDecorator('collectionName', {
                                 rules: [],
                             })(
                                 <Input
@@ -55,34 +63,42 @@ class SearchForm extends React.Component {
                     <Col span={6}>
                         <Form.Item
                             label="涉事主体："
-                            name="clueName"
+                            name="typesSubjectsInvolved"
                             rules={[]}
                         >
-                            {getFieldDecorator('mainBody', {
-                                rules: [],
-                            })(
-                                <Input
-                                    placeholder="请输入"
-                                />,
-                            )}
-                        </Form.Item>
-                    </Col>
-                    <Col span={6}>
-                        <Form.Item
-                            label="涉及公益诉讼领域："
-                            name="clueName"
-                            rules={[{ required: true, message: 'Please input your username!' }]}
-                        >
-                            {getFieldDecorator('areasInvolved', {
+                            {getFieldDecorator('typesSubjectsInvolved', {
                                 rules: [],
                             })(
                                 <Select
                                     placeholder="请选择"
                                     allowClear
                                 >
-                                    <Option value="1">1</Option>
-                                    <Option value="2">2</Option>
-                                    <Option value="3">3</Option>
+                                    <Option value="0">企业</Option>
+                                    <Option value="1">社会组织</Option>
+                                    <Option value="2">其他</Option>
+                                </Select>
+                            )}
+                        </Form.Item>
+                    </Col>
+                    <Col span={6}>
+                        <Form.Item
+                            label="涉及公益诉讼领域："
+                            name="domain"
+                            rules={[{ required: true, message: 'Please input your username!' }]}
+                        >
+                            {getFieldDecorator('domain', {
+                                rules: [],
+                            })(
+                                <Select
+                                    placeholder="请选择"
+                                    allowClear
+                                >
+                                    <Option value="0">环境资源</Option>
+                                    <Option value="1">食药安全</Option>
+                                    <Option value="2">国有财产</Option>
+                                    <Option value="3">国有土地</Option>
+                                    <Option value="4">英烈权益</Option>
+                                    <Option value="5">其他</Option>
                                 </Select>
                             )}
                         </Form.Item>
@@ -90,8 +106,7 @@ class SearchForm extends React.Component {
                     <Col span={6}>
                         <Form.Item
                             label="线索类别："
-                            name="clueName"
-                            rules={[]}
+                            name="clueType"
                         >
                             {getFieldDecorator('clueType', {
                                 rules: [],
@@ -100,9 +115,12 @@ class SearchForm extends React.Component {
                                     placeholder="请选择"
                                     allowClear
                                 >
-                                    <Option value="1">1</Option>
-                                    <Option value="2">2</Option>
-                                    <Option value="3">3</Option>
+                                    <Option value="0">其他案件</Option>
+                                    <Option value="1">行政处罚</Option>
+                                    <Option value="2">12309</Option>
+                                    <Option value="3">12345</Option>
+                                    <Option value="4">互联网舆情</Option>
+                                    <Option value="5">其他</Option>
                                 </Select>
                             )}
                         </Form.Item></Col>
@@ -111,19 +129,19 @@ class SearchForm extends React.Component {
                     <Col span={6}>
                         <Form.Item
                             label="线索阶段："
-                            name="clueName"
-                            rules={[]}
+                            name="collStage"
                         >
-                            {getFieldDecorator('clueStage', {
+                            {getFieldDecorator('collStage', {
                                 rules: [],
                             })(
                                 <Select
                                     placeholder="请选择"
                                     allowClear
                                 >
-                                    <Option value="1">1</Option>
-                                    <Option value="2">2</Option>
-                                    <Option value="3">3</Option>
+                                    <Option value="0">调查取证中</Option>
+                                    <Option value="1">呈请立案中</Option>
+                                    <Option value="2">已立案</Option>
+                                    <Option value="3">立案审批未通过</Option>
                                 </Select>
                             )}
                         </Form.Item>
@@ -131,39 +149,46 @@ class SearchForm extends React.Component {
                     <Col span={6}>
                         <Form.Item
                             label="线索状态："
-                            name="clueName"
+                            name="collStatus"
                             rules={[]}
                         >
-                            {getFieldDecorator('clueStatus', {
+                            {getFieldDecorator('collStatus', {
                                 rules: [],
                             })(
                                 <Select
                                     placeholder="请选择"
                                     allowClear
                                 >
-                                    <Option value="1">1</Option>
-                                    <Option value="2">2</Option>
-                                    <Option value="3">3</Option>
+                                    <Option value="0">正常</Option>
+                                    <Option value="1">废弃</Option>
                                 </Select>
                             )}
                         </Form.Item>
                     </Col>
-                    <Col span={6}>
+                    <Col span={6} className="align-right">
                         <Form.Item
                             label="更新时间："
-                            name="clueName"
-                            rules={[]}
+                            name="updateTime"
                         >
-                            {getFieldDecorator('updateTime')(<DatePicker />)}
+                            {getFieldDecorator('updateTime')(
+                                <RangePicker
+                                    format="YYYY-MM-DD"
+                                    getCalendarContainer={triggerNode => triggerNode.parentNode}
+                                />
+                            )}
                         </Form.Item>
                     </Col>
-                    <Col span={6}>
+                    <Col span={6} className="align-right">
                         <Form.Item
                             label="创建时间："
-                            name="clueName"
-                            rules={[]}
+                            name="createTime"
                         >
-                            {getFieldDecorator('createTime')(<DatePicker />)}
+                            {getFieldDecorator('createTime')(
+                                <RangePicker
+                                    getCalendarContainer={triggerNode => triggerNode.parentNode}
+                                    format="YYYY-MM-DD"
+                                />
+                            )}
                         </Form.Item>
                     </Col>
                 </Row>

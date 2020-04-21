@@ -253,6 +253,10 @@
             background: rgba(254, 241, 243, 1);
             color: #ef374f;
         }
+        &.BLUE{
+            background: rgb(227, 223, 249, 1);
+            color: blue;
+        }
         &.BLACK {
             background:rgba(234,237,245,1);
             color: #62697D;
@@ -334,5 +338,17 @@
     .ant-modal-footer{
         padding: 16px 24px;
     }
+    // 日历
+    .align-right {
+        .ant-calendar-picker-container {
+            left: auto !important;
+            right: 0 !important;
+        }
+    }
+    .align-left {
+        .ant-calendar-picker-container {
+            left: 0 !important;
+            right: auto !important;
+        }
+    }
 }
-

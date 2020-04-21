@@ -14,17 +14,3 @@
     background: transparent !important;
     color: #fff;
 }
-:global {
-    .align-right {
-        .ant-calendar-picker-container {
-            left: auto !important;
-            right: 0 !important;
-        }
-    }
-    .align-left {
-        .ant-calendar-picker-container {
-            left: 0 !important;
-            right: auto !important;
-        }
-    }
-}

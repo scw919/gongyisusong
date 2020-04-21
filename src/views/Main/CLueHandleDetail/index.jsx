@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { matchPath } from 'react-router-dom';
 import compnents from '@/components/load-components.js';
 const { AfileShow, AclueItem } = compnents;
-import { Upload, Icon, Button } from 'antd';
+import { Upload, Icon, Button, message } from 'antd';
 
 import { Zlayout } from 'zerod';
 import { connect } from 'react-redux';
@@ -10,6 +10,9 @@ import { connect } from 'react-redux';
 import mainRoutes from '../load-child-routes.js';
 // 样式类
 import './style.scss';
+// 接口
+import apis from '@/App.api.js';
+import upload from '@/Api/upload.api.js';
 // 通用工具
 import { zTool } from "zerod";
 import commonMethods from '@/zTool/commonMethods.js';
@@ -27,18 +30,19 @@ const mapStateToProps = (state, ownProps) =>
         collapsed: state.collapsed
     });
 
-const fileList = [
-    {
-        uid: '-1',
-        name: 'xxx.png',
-        status: 'done',
-        size: '2.9M',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    }
-];
+// const fileList = [
+//     {
+//         uid: '-1',
+//         name: 'xxx.png',
+//         status: 'done',
+//         size: '2.9M',
+//         url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+//         thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+//     }
+// ];
 class ClueDiscoveryDetail extends React.Component {
     state = {
+        details: {},
         // 文件列表
         filesList: [
             { name: '1附件名称.png', type: 'png', size: '2.8M', url: detailInfo },
@@ -46,42 +50,58 @@ class ClueDiscoveryDetail extends React.Component {
             { name: '3附件名称.mp4', type: 'video', size: '2.8M', url: detailInfo },
             { name: '4附件名称.pdf', type: 'pdf', size: '2.8M', url: detailInfo },
         ],
+        fileList: [],
         visible: false, //添加线索弹窗 
     }
     match = matchPath(this.props.location.pathname, {
         path: this.props.routePath
     });
-    componentWillMount() {
+    componentDidMount() {
         // console.log(this.match, mainRoutes,this.props.location);
         // createBreadCrumb(this.match, this.props.location, mainRoutes);
+        let query = {
+            id: this.props.match.params.id
+        }
+        apis.main.getClueCltDetail(query).then(res => {
+            res && res.data ? this.setState({
+                details: res.data
+            }) : null
+        })
     }
     render() {
+        const { details, fileList } = this.state;
         const { history } = this.props;
+        const addClueOpt = {
+            history: history,
+            visible: this.state.visible,
+            collectionID: this.props.match.params.id,
+            toggleModal: this.toggleModal
+        }
         const AclueItmOpt = {
             hasChecked: false,
             canCollect: false,
             isHandle: true,
             history: history,
-        }
-        const addClueOpt = {
-            visible: this.state.visible,
-            toggleModal: this.toggleModal
+            refresh: true
         }
         return (
             <Zlayout.Zbody scroll={true}>
                 <div styleName="main-rt-con-detail" style={{ height: '100%' }}>
                     <div className="text-center" styleName="detail-title">
-                        <p className="ft-24">番禺南丰塑料制品有限公司行政处罚案</p>
+                        <p className="ft-24">{details.collectionName}</p>
                         <p className="mar-t-15">
-                            <span className="tags-self GREEN">资源环境</span>
-                            <span className="tags-self YELLOW">其他案件</span>
-                            <span className="tags-self RED">罚款</span>
+                            {
+                                details.doMainsLabels ? details.doMainsLabels.map((item, index) => {
+                                    return <span key={index} className={`tags-self ${item.color}`}>{item.desc}</span>
+                                }) : null
+                            }
                         </p>
                     </div>
                     {/* 基本概况 */}
                     <div className="ft-16" styleName="main-module">
                         <p className="title-line-before" styleName="title bt-line">基本概况</p>
                         <BaseInfo
+                            {...details}
                             wrappedComponentRef={this.saveFormRef}
                         />
                     </div>
@@ -93,15 +113,19 @@ class ClueDiscoveryDetail extends React.Component {
                                 添加其他线索
                             </Button>
                         </div>
-                        {/* <div styleName="other-clue">
-                            <AclueItem {...AclueItmOpt} />
-                        </div> */}
+                        <div styleName="other-clue">
+                            {
+                                details.clues ? details.clues.map((item, index) => {
+                                    return <AclueItem key={index} {...AclueItmOpt} sub={item} />
+                                }) : null
+                            }
+                        </div>
                     </div>
                     {/* 事态进程 */}
                     <div className="ft-16" styleName="main-module">
                         <p className="title-line-before" styleName="title bt-line">事态进程</p>
                         <div styleName="event-procedure">
-                            <EventProcedure history={this.props.history} />
+                            <EventProcedure clues={details.clues} history={history} />
                         </div>
                     </div>
                     {/* 其他材料 上传 */}
@@ -114,8 +138,8 @@ class ClueDiscoveryDetail extends React.Component {
                                 )
                             })}
                             <Upload
-                                action="https://172.16.121.18:8904/gzwjc-miniprogram-wisdom/file/upload"
-                                // customRequest={this.customRequest}
+                                action=""
+                                customRequest={this.customRequest}
                                 showUploadList={false}
                                 fileList={fileList}
                                 onChange={this.handleChangeFile}
@@ -128,15 +152,15 @@ class ClueDiscoveryDetail extends React.Component {
                         </div>
                     </div>
                     <div className="text-center" styleName="handle-btn-box">
-                        <Button className="primary_self" onClick={this.saveBaseInfo} type="primary">
+                        <Button className="primary_self" disabled type="primary">
                             呈请立案
                         </Button>
                         <Button onClick={this.saveBaseInfo} ghost type="primary">
                             保存
                         </Button>
-                        <Button onClick={this.saveBaseInfo}>
+                        {/* <Button onClick={}>
                             返回
-                        </Button>
+                        </Button> */}
                     </div>
                     {/* 添加其他线索 */}
                     <AddClue {...addClueOpt} />
@@ -154,19 +178,38 @@ class ClueDiscoveryDetail extends React.Component {
     }
 
     // 自定义上传  gzwjc-miniprogram-wisdom/file/upload
-    customRequest = (detail) => {
-        console.log(detail);
-        upload.apis.upload(detail.file).then((res) => {
-            console.log(res.success)
+    getFileList = (name, uid, size, url) => {
+        const { fileList } = this.state;
+        let newFileList = zTool.deepCopy(fileList);
+        newFileList.push({
+            uid: uid,
+            name: name,
+            status: 'done',
+            size: size,
+            url: url,
+            thumbUrl: url,
+        })
+        this.setState({
+            fileList: newFileList
+        });
+    }
+    customRequest = (params) => {
+        const file = params.file;
+        let formData = new FormData();
+        formData.append("fName", file);
+        console.log(params);
+        upload.apis.upload(formData, {}).then((res) => {
+            // console.log(res.success)
+            let fileList = this.state.fileList;
+            this.getFileList(file.name, file.uid, file.size, res.data);
         })
     }
-    //  监听 文件上传
     handleChangeFile = (fileList) => {
         console.log(fileList);
-        let newFile = fileList.file.response;
-        let stateFileList = this.state.fileList;
-        stateFileList.push(newFile);
-        console.log(stateFileList);
+        // let newFile = fileList.file.response;
+        // let stateFileList = this.state.fileList;
+        // stateFileList.push(newFile);
+        // console.log(stateFileList);
         // this.setState({ fileList: stateFileList });
     }
     // 表单
@@ -175,11 +218,16 @@ class ClueDiscoveryDetail extends React.Component {
     };
     // 保存提交
     saveBaseInfo = (e) => {
+        const { details } = this.state;
         e.preventDefault();
         const form = this.formRef.props.form;
         form.validateFields((err, fieldsValue) => {
             if (!err) {
                 console.log(fieldsValue);
+                let data = Object.assign({}, fieldsValue, { id: details.id, collUploadFile: details.collUploadFile })
+                apis.main.saveColl(data).then(res => {
+                    message.success('保存成功')
+                })
             }
         });
     }

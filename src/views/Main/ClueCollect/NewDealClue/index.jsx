@@ -264,12 +264,13 @@ class NewDealClue extends React.Component {
             }
             this.setState({ loading: false, dataList: [], query: query });
             this.props.toggleModalNew(false);
-            message.info("新建成功");
+            message.success("新建成功");
         })
     };
     // 取消
     handleCancel = () => {
         let query = {
+            isMyClue: 1,
             list: [],
             sortList: [],
             pageNum: 1,

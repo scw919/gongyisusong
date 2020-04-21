@@ -243,7 +243,8 @@ class ClueDiscovery extends React.Component {
     }
     // 收录 / 取消收录
     handleCollected = (value) => {
-        console.log(value)
+        console.log(value);
+        this.getData(true);
     }
     // 排序按钮
     changeSortType1 = () => {

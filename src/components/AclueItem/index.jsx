@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 // import compnents from '@/components/load-components.js';
 // const { Acollect } = compnents;
 import { Acollect } from '../Acollect';
-import { Icon, Button, Checkbox, Modal } from 'antd';
+import { Icon, Button, Checkbox, Modal, message } from 'antd';
 const { confirm } = Modal;
 import { Link } from 'react-router-dom';
 import './style.scss';
-
+// 接口
+import apis from '@/App.api.js';
 const linkTypes = {
     collectDetail: '/main/myClue/clueCollect/clueCollectDetail',
     discoveryDetail: '/main/clueDiscovery/byClue/clueDiscoveryDetail',
@@ -17,6 +18,7 @@ class AclueItem extends React.Component {
     static propTypes = {
         sub: PropTypes.object,
         onClick: PropTypes.func,
+        refresh: PropTypes.bool, // 刷新
         toggleModal: PropTypes.func,
         hasCollected: PropTypes.bool, //是否已收藏
         hasChecked: PropTypes.bool, // 是否可勾选
@@ -42,7 +44,8 @@ class AclueItem extends React.Component {
             hasCollected,
             history
         } = this.props;
-        const linkUrl = isCollect ? linkTypes['collectDetail'] : linkTypes['discoveryDetail'];
+        sub.lables = sub.lables ? sub.lables : sub.labels;
+        const linkUrl = isCollect || isHandle ? linkTypes['collectDetail'] : linkTypes['discoveryDetail'];
         return (
             <div styleName="search-list-item">
                 <div styleName="search-list-item-title" className="flex flex-between">
@@ -54,7 +57,7 @@ class AclueItem extends React.Component {
                         </Link>
                     </div>
                     {/* 收录 */}
-                    {canCollect ? <Acollect hasCollected={hasCollected} id={sub.id} /> : null}
+                    {canCollect ? <Acollect clickEvent={this.props.clickEvent} hasCollected={hasCollected} id={sub.id} /> : null}
                 </div>
                 <div className="flex flex-between">
                     <div styleName="left-part">
@@ -79,11 +82,20 @@ class AclueItem extends React.Component {
                     {/* <div></div> */}
                 </div>
                 <div className="flex flex-between">
-                    <div styleName="left-part">
-                        <Icon className="mar-r-5" type="clock-circle" />
-                        <span>{sub.timeLabel}: </span>
-                        <span>{sub.showDateTime}</span>
-                    </div>
+                    {
+                        isHandle ? (
+                            <div styleName="left-part">
+                                <Icon className="mar-r-5" type="clock-circle" />
+                                <span>处罚决定日期: </span>
+                                <span>{sub.penaltyDecisionDate}</span>
+                            </div>) : (
+                                <div styleName="left-part">
+                                    <Icon className="mar-r-5" type="clock-circle" />
+                                    <span>{sub.timeLabel}: </span>
+                                    <span>{sub.showDateTime}</span>
+                                </div>
+                            )
+                    }
                     {
                         !isCollect && !isHandle ? (<div styleName="right-part">
                             采集时间: {sub.createdTime}
@@ -93,7 +105,7 @@ class AclueItem extends React.Component {
                 {
                     isCollect ? (<div className="flex flex-between align-item-center" styleName="collect">
                         <div styleName="left-part">
-                            <span>收录时间：2020-02-12</span>
+                            <span>收录时间：{sub.createdTime}</span>
                         </div>
                         <div className="flex flex-1 flex-end" styleName="right-part">
                             <div onClick={this.toggleModalNew}>新建处置线索</div>
@@ -107,7 +119,9 @@ class AclueItem extends React.Component {
                                         <span>采集时间：{sub.createdTime}</span>
                                     </div>
                                     <div className="flex flex-1 flex-end" styleName="right-part">
-                                        <Button onClick={(e) => { this.checkDetail(e, linkUrl) }} type="primary" style={{ marginRight: '8px' }}>查看</Button>
+                                        <Link to={`${linkUrl}/${sub.id}`} target="_blank">
+                                            <Button onClick={(e) => { this.checkDetail(e, linkUrl) }} type="primary" style={{ marginRight: '8px' }}>查看</Button>
+                                        </Link>
                                         <Button onClick={(e) => { this.delete(e) }} type="danger">删除</Button>
                                     </div>
                                 </div>
@@ -147,6 +161,7 @@ class AclueItem extends React.Component {
     }
     // 删除
     delete = (e) => {
+        const { sub, refresh } = this.props;
         e.stopPropagation();
         e.nativeEvent.stopImmediatePropagation()
         confirm({
@@ -156,7 +171,11 @@ class AclueItem extends React.Component {
             okType: 'danger',
             cancelText: '取消',
             onOk() {
-                console.log('OK');
+                // console.log('OK');
+                apis.main.deleteClue({ id: sub.id }).then(res => {
+                    message.success('操作成功');
+                    // refresh && window.location.reload();
+                })
             },
             onCancel() {
                 console.log('Cancel');

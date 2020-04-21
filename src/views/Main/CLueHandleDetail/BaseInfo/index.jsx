@@ -16,7 +16,12 @@ const BaseInfo = Form.create({ name: 'form_in_modal' })(
     // eslint-disable-next-line
     class extends React.Component {
         render() {
-            const { onCancel, onCreate, form } = this.props;
+            const {
+                soluClueDes, //基本概况-线所描述 
+                soluClueDomain, //基本概况-线索领域
+                soluClueType, //基本概况-线索类型
+                form
+            } = this.props;
             const { getFieldDecorator } = form;
             return (
                 <Form
@@ -28,10 +33,11 @@ const BaseInfo = Form.create({ name: 'form_in_modal' })(
                         <Col span={6}>
                             <Form.Item
                                 label="线索类型："
-                                name="clueType"
+                                name="soluClueType"
                             >
-                                {getFieldDecorator('clueType', {
-                                    rules: [{required: true, message: '请输入线索类型'}],
+                                {getFieldDecorator('soluClueType', {
+                                    rules: [{ required: true, message: '请输入线索类型' }],
+                                    initialValue: soluClueType,
                                 })(
                                     <Input
                                         placeholder="请输入"
@@ -42,11 +48,12 @@ const BaseInfo = Form.create({ name: 'form_in_modal' })(
                         <Col span={6}>
                             <Form.Item
                                 label="线索领域："
-                                name="clueAreas"
+                                name="soluClueDomain"
                                 rules={[]}
                             >
-                                {getFieldDecorator('clueAreas', {
-                                    rules: [{required: true,  message: '请输入线索领域'}],
+                                {getFieldDecorator('soluClueDomain', {
+                                    rules: [{ required: true, message: '请输入线索领域' }],
+                                    initialValue: soluClueDomain,
                                 })(
                                     <Input
                                         placeholder="请输入"
@@ -60,11 +67,12 @@ const BaseInfo = Form.create({ name: 'form_in_modal' })(
                             <Form.Item
                                 {...textLayout}
                                 label="线索描述："
-                                name="clueDesc"
+                                name="soluClueDes"
                                 rules={[]}
                             >
-                                {getFieldDecorator('clueDesc', {
-                                    rules: [{required: true,  message: '请输入线索描述'}],
+                                {getFieldDecorator('soluClueDes', {
+                                    rules: [{ required: true, message: '请输入线索描述' }],
+                                    initialValue: soluClueDes,
                                 })(
                                     <TextArea
                                         autoSize={{ minRows: 5, maxRows: 6 }}

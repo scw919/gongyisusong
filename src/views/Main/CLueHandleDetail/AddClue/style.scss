@@ -22,13 +22,14 @@
             margin-top: 15px;
             .search-clue-item {
                 margin-bottom: 8px;
-                .item-tit{
-                    width: 350px;
-                    color: #565A60;
+                .item-tit {
+                    width: 280px;
+                    color: #565a60;
+                    margin-right: 15px;
                 }
-                .item-tag{
-                    flex: 1;
-                    color: #A2AAB5;
+                .item-tag {
+                    color: #a2aab5;
+                    width: 145px;
                 }
             }
         }
@@ -43,6 +44,21 @@
         }
         .z-to-top {
             display: none;
+        }
+        .ant-input-group-addon {
+            display: none;
+        }
+        .ant-input-search-enter-button {
+            input {
+                &:hover,
+                &:focus {
+                    border-right: 1px solid #80a8ff;
+                }
+            }
+        }
+        .ant-input-group > .ant-input-affix-wrapper:not(:last-child) .ant-input {
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
         }
     }
 }

@@ -1,40 +1,51 @@
 import React from 'react';
-import { Modal, Button, Input, Radio, Icon, Checkbox } from 'antd';
+import { Modal, Button, Input, Radio, Icon, Checkbox, message } from 'antd';
 const CheckboxGroup = Checkbox.Group;
+const { Search } = Input;
 import { Zlayout } from 'zerod';
 import PropTypes from 'prop-types';
 import './style.scss';
-const plainOptions11 = [
-    { name: 'apple0', menuid: 0, type: '行政处罚', extend: true },
-    { name: 'apple1', menuid: 1, type: '行政处罚', extend: true },
-    { name: 'apple2apple2apple2apple2apple2applapple2apple2', menuid: 2, type: '行政处罚', extend: true },
-    { name: 'apple0', menuid: 3, type: '行政处罚', extend: true },
-];
+// 工具
+import { zTool } from 'zerod';
+// 接口
+import apis from '@/App.api.js';
+let isLoading = false;
 class AddClue extends React.Component {
     static propTypes = {
-        visible: PropTypes.bool
+        visible: PropTypes.bool,
+        collectionID: PropTypes.number,
+        toggleModal: PropTypes.func,
     };
     state = {
-        loading: false,
         visible: this.props.visible,
+        collectionID: this.props.collectionID,
         title: '关联处置线索',
-        isRelate: false,
+        isRelate: true,
         indeterminate: true, //多选框样式设置
+        checkAll: false,
         checkedList: [], //已选的线索
-        plainOptions: [
-            { name: 'apple0', menuid: 0, type: '行政处罚', extend: true },
-            { name: 'apple1', menuid: 1, type: '行政处罚', extend: true },
-            { name: 'apple2apple2apple2apple2apple2applapple2apple2', menuid: 2, type: '行政处罚', extend: true },
-            { name: 'apple0', menuid: 3, type: '行政处罚', extend: true },
-        ]
+        keyword: null, //关键字
+        query: {
+            isMyClue: 1,
+            list: [],
+            sortList: [],
+            pageNum: 1,
+            pageSize: 10,
+            pages: 1,
+            total: 0,
+        },
+        dataList: []
     }
-    componentWillReceiveProps(props, nextProps) {
-        this.setState({
-            visible: props.visible
-        })
+    componentWillReceiveProps(nextprops, prevProps) {
+        if (nextprops.visible) {
+            this.setState({
+                visible: nextprops.visible,
+            })
+            this.getData(true);
+        }
     }
     render() {
-        const { visible, loading, title, isRelate, plainOptions } = this.state;
+        const { visible, loading, title, isRelate, dataList } = this.state;
         return (
             <div>
                 <Modal
@@ -54,7 +65,11 @@ class AddClue extends React.Component {
                 >
                     <div styleName="item search">
                         <div>
-                            <Input
+                            <Search
+                                // onInput={(e) => { this.setState({ keyword: e.target.value }); this.getData(true) }}
+                                // value={keyword}
+                                enterButton
+                                onSearch={(value, e) => { this.setState({ keyword: value }, () => { this.getData(true) }); }}
                                 placeholder="根据用户输入关键字进行模糊搜索"
                                 prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
                             />
@@ -67,13 +82,13 @@ class AddClue extends React.Component {
                                         onChange={this.onChangeSelClue}
                                     >
                                         {
-                                            plainOptions.map((sub, subKey) => {
+                                            dataList.map((sub, subKey) => {
                                                 return (
-                                                    <div className="flex" styleName="search-clue-item">
-                                                        <Checkbox className="mar-r-5" key={subKey} value={sub} onChange={this.onChangeSelClue} />
+                                                    <div key={subKey} className="flex" styleName="search-clue-item">
+                                                        <Checkbox className="mar-r-5" value={sub} onChange={this.onChangeSelClue} />
                                                         <div className="flex flex-1">
-                                                            <span styleName="item-tit">番禺新风塑料制品有限公司行政处罚案</span>
-                                                            <span className="text-right" styleName="item-tag">环境污染</span>
+                                                            <span className="ellipsis" styleName="item-tit" title={sub.caseName}>{sub.caseName}</span>
+                                                            <span className="text-right ellipsis" styleName="item-tag" title={this.subLables(sub.lables)}>{this.subLables(sub.lables)}</span>
                                                         </div>
                                                     </div>
                                                 )
@@ -89,30 +104,122 @@ class AddClue extends React.Component {
         );
     }
 
-    handleOk = () => {
-        this.setState({ loading: true });
-        setTimeout(() => {
-            this.setState({ loading: false, visible: false });
-            this.props.toggleModal(false);
-        }, 3000);
-    };
-
-    handleCancel = () => {
-        this.setState({ visible: false });
-        this.props.toggleModal(false);
-    };
+    // 搜索
+    clueSearch = async (query) => {
+        return apis.main.clueSearch(query).then(res => {
+            return res.data;
+        }).catch(err => {
+            // console.log(err)
+        })
+    }
     // 滚动获取数据
-    getData = () => {
-        console.log('getData')
+    getData = async (initData) => { //initData true: 初始化第一页 false 页数自加1
+        if (isLoading) {
+            return;
+        }
+        isLoading = true;
+        let newQuery = zTool.deepCopy(this.state.query);
+        if (this.state.keyword) {
+            newQuery.list = [{
+                dimension: "keyword",
+                paramValue: this.state.keyword
+            }]
+        } else {
+            newQuery.list = []
+        }
+        if (initData) {
+            newQuery.pageNum = 1;
+            const data = await this.clueSearch(newQuery);
+            newQuery.pages = data.pages;
+            newQuery.total = data.total;
+            this.setState({
+                query: newQuery,
+                dataList: data.list,
+                checkAll: false,
+                checkedList: [],
+                indeterminate: false,
+            })
+            isLoading = false;
+        } else {
+            newQuery.pageNum += 1;
+            console.log(newQuery.pageNum, newQuery.pages, '222222222222222222222222222222')
+            if (newQuery.pageNum > newQuery.pages) {
+                isLoading = false;
+                return false;
+            }
+            const data = await this.clueSearch(newQuery);
+            newQuery.pages = data.pages;
+            newQuery.total = data.total;
+            let old_dataList = this.state.dataList;
+            old_dataList = old_dataList.concat(data.list);
+            this.setState({
+                query: newQuery,
+                dataList: old_dataList
+            })
+            isLoading = false;
+        }
+    }
+    // lables 解析
+    subLables = (lables) => {
+        let newLables = "";
+        if (lables) {
+            Object.keys(lables).map(key => {
+                // return <span key={key} className={`tags-self ${sub.lables[key]}`}>{key}</span>
+                newLables += ` ${key}`
+            })
+        }
+        return newLables;
     }
     // 改变 所选 线索
     onChangeSelClue = (checkedList) => {
-        const { plainOptions } = this.state;
+        const { dataList } = this.state;
+        console.log(checkedList);
         this.setState({
             checkedList,
-            indeterminate: !!checkedList.length && checkedList.length < plainOptions.length,
-            checkAll: checkedList.length === plainOptions.length,
+            indeterminate: !!checkedList.length && checkedList.length < dataList.length,
+            checkAll: checkedList.length === dataList.length,
         });
     }
+    // 确定
+    handleOk = () => {
+        const { history } = this.props;
+        const { collectionID, checkedList } = this.state;
+        let data = {
+            clueId: [],
+            clueCollectionIds: [collectionID],
+        }
+        checkedList.map(item => {
+            data['clueId'].push(item.id);
+        })
+        apis.main.addClueToColl(data).then(res => {
+            let query = {
+                isMyClue: 1,
+                list: [],
+                sortList: [],
+                pageNum: 1,
+                pageSize: 10,
+                pages: 1,
+                total: 0,
+            }
+            this.setState({ visible: false, dataList: [], query: query });
+            this.props.toggleModal(false);
+            message.success("操作成功");
+            // history.go(0);
+        })
+    };
+    // 取消
+    handleCancel = () => {
+        let query = {
+            isMyClue: 1,
+            list: [],
+            sortList: [],
+            pageNum: 1,
+            pageSize: 10,
+            pages: 1,
+            total: 0,
+        }
+        this.setState({ visible: false, dataList: [], query: query });
+        this.props.toggleModal(false);
+    };
 }
 export default AddClue;

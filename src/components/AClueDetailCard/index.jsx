@@ -55,7 +55,7 @@ class AClueDetailCard extends React.PureComponent {
     //     return nextProps.snapshot !== this.props.snapshot
     // }
     componentDidMount() {
-       
+
     }
     render() {
         const {
@@ -79,7 +79,7 @@ class AClueDetailCard extends React.PureComponent {
         } = this.props;
         const snapShots = snapshot && snapshot.length > 0 && snapshot.split(',') || [];
         const hasCollected = Boolean(isIncluded);
-        console.log(hasCollected, 'AclueDetailCard');
+        console.log(hasCollected, snapShots, 'AclueDetailCard');
         return (
             <div className="flex" styleName="card-box">
                 <SelfCarousel files={snapShots} />
@@ -113,7 +113,7 @@ class AClueDetailCard extends React.PureComponent {
                             <p>网站链接：
                                 <a href={siteLink}>{siteLink}</a>
                             </p>
-                            <p>涉事主体类型：{typesSubjectsInvolved}</p>
+                            <p>涉事主体类型：{typesSubjectsInvolved && typesSubjectsInvolved.desc || null}</p>
                             <p>处罚类别二：{penaltyCategory2 && penaltyCategory2.desc || null}</p>
                             <p>统一社会信用代码：{unifiedSocialCreditCode}</p>
                             <p>地址：{addressConcerned}</p>

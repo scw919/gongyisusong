@@ -32,7 +32,7 @@ class ClueDiscoveryDetail extends React.Component {
         ]
     }
     componentDidMount() {
-        console.log(this.props.match.params.id);
+        // console.log(this.props.match.params.id);
         let query = {
             id: this.props.match.params.id
         }

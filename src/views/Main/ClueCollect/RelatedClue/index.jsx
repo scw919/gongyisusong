@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Button, Input, Radio, Icon, Checkbox } from 'antd';
+import { Modal, Button, Input, Radio, Icon, Checkbox, message } from 'antd';
 const CheckboxGroup = Checkbox.Group;
 const { Search } = Input;
 import { Zlayout } from 'zerod';
@@ -31,8 +31,8 @@ class NewDealClue extends React.Component {
         checkedList: [], //已选的线索
         query: {
             collectionName: "",
-            pageNum: 1,
-            pageSize: 10,
+            current: 1,
+            size: 10,
             pages: 1,
             total: 0,
         },
@@ -138,7 +138,7 @@ class NewDealClue extends React.Component {
     // 搜索
     clueSearch = async (query) => {
         return apis.main.getRelations(query).then(res => {
-            res.data.list.forEach(item => {
+            res.data.respVOs.forEach(item => {
                 item.extend = false;
             })
             return res.data;
@@ -160,22 +160,22 @@ class NewDealClue extends React.Component {
             newQuery.collectionName = "";
         }
         if (initData) {
-            newQuery.pageNum = 1;
+            newQuery.current = 1;
             const data = await this.clueSearch(newQuery);
             newQuery.pages = data.pages;
             newQuery.total = data.total;
             this.setState({
                 query: newQuery,
-                dataList: data.list,
+                dataList: data.respVOs,
                 checkAll: false,
                 checkedList: [],
                 indeterminate: false,
             })
             isLoading = false;
         } else {
-            newQuery.pageNum += 1;
+            newQuery.current += 1;
             console.log(newQuery.pageNum, newQuery.pages, '222222222222222222222222222222')
-            if (newQuery.pageNum > newQuery.pages) {
+            if (newQuery.current > newQuery.pages) {
                 isLoading = false;
                 return false;
             }
@@ -183,7 +183,7 @@ class NewDealClue extends React.Component {
             newQuery.pages = data.pages;
             newQuery.total = data.total;
             let old_dataList = this.state.dataList;
-            old_dataList = old_dataList.concat(data.list);
+            old_dataList = old_dataList.concat(data.respVOs);
             this.setState({
                 query: newQuery,
                 dataList: old_dataList
@@ -232,7 +232,7 @@ class NewDealClue extends React.Component {
         this.setState({ loading: true });
         let data = {
             clueCollectionIds: [],
-            clueId: clueID,
+            clueId: [clueID],
         }
         checkedList.map(item => {
             data['clueCollectionIds'].push(item.id);
@@ -244,6 +244,7 @@ class NewDealClue extends React.Component {
                 keyword: ""
             });
             this.props.toggleModalRel(false);
+            message.success("操作成功");
         })
     };
     // 取消

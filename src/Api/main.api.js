@@ -31,10 +31,6 @@ export default {
         getRelations(query) {
             return httpAjax('post', '/ClueCollection/getRelations', query);
         },
-        // 获取线索集合详情 /ClueCollection/{id}
-        getClueCollection(query) {
-            return httpAjax('get', `/ClueCollection/${query.id}`);
-        },
         // 线索集合名字重复性查询 /ClueCollection/checkName/{name}
         checkCollectionName(query) {
             return httpAjax('get', `/ClueCollection/checkName/${query.name}`);
@@ -46,6 +42,35 @@ export default {
         // 线索关联到集合 /ClueCollection/addClueToColl
         addClueToColl(query) {
             return httpAjax('post', '/ClueCollection/addClueToColl', query);
+        },
+
+        // 线索集合 -分页 /ClueCollection/getCollPage
+        getClueCollection(query) {
+            return httpAjax('post', '/ClueCollection/getCollPage', query);
+        },
+        // 获取线索集合详情 /ClueCollection/{id}
+        getClueCltDetail(query) {
+            return httpAjax('get', `/ClueCollection/${query.id}`);
+        },
+        // 线索集合详情-保存 /ClueCollection/saveColl
+        saveColl(query) {
+            return httpAjax('post', '/ClueCollection/saveColl', query);
+        },
+        // 线索集合 - 废弃 /ClueCollection/disabled/{id}
+        disabledClueCollection(query) {
+            return httpAjax('post', `/ClueCollection/disabled/${query.id}`);
+        },
+        // 线索集合 - 启用 /ClueCollection/enabled/{id}
+        enabledClueCollection(query) {
+            return httpAjax('post', `/ClueCollection/enabled/${query.id}`);
+        },
+        // 线索集合 - 删除 /ClueCollection/{id}
+        deleteClueCollection(query) {
+            return httpAjax('delete', `/ClueCollection/${query.id}`);
+        },
+        // 线索集合详情-线索删除 /ClueCollection/dleCollClue/{id}
+        deleteClue(query) {
+            return httpAjax('delete', `/ClueCollection/dleCollClue/${query.id}`);
         },
     },
 };
