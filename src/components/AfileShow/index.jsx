@@ -25,7 +25,7 @@ class AfileShow extends React.Component {
         size: PropTypes.string,
         name: PropTypes.string,
         url: PropTypes.any,
-        disabled: PropTypes.boolean
+        disabled: PropTypes.bool
     };
     static defaultProps = {
         disabled: false
@@ -40,6 +40,7 @@ class AfileShow extends React.Component {
             type,
             size,
             url,
+            uid,
             disabled
         } = this.props;
         console.log(name, size, url);
@@ -62,7 +63,13 @@ class AfileShow extends React.Component {
                                     e.nativeEvent.stopImmediatePropagation();
                                     downloadFile(url, name)
                                 }} type="download" />
-                            ) : null
+                            ) : (
+                                    <Icon onClick={(e) => {
+                                        e.stopPropagation();
+                                        e.nativeEvent.stopImmediatePropagation();
+                                        this.props.delete(uid)
+                                    }} type="delete" />
+                                )
                         }
                     </div>
                 </div>
