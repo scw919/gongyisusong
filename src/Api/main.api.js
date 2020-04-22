@@ -54,11 +54,7 @@ export default {
         },
         // 线索集合详情-保存 /ClueCollection/saveColl
         saveColl(query) {
-            return httpAjax('post', '/ClueCollection/saveColl', query, {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-                },
-            });
+            return httpAjax('post-params', '/ClueCollection/saveColl', query);
         },
         // 线索集合 - 废弃 /ClueCollection/disabled/{id}
         disabledClueCollection(query) {

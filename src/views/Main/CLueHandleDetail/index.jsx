@@ -16,7 +16,7 @@ import upload from '@/Api/upload.api.js';
 // 通用工具
 import { zTool } from "zerod";
 import commonMethods from '@/zTool/commonMethods.js';
-const { matchUrlToMenu, createBreadCrumb } = commonMethods;
+const { matchUrlToMenu, createBreadCrumb, fileSizeChange } = commonMethods;
 
 import BaseInfo from './BaseInfo';
 import AddClue from './AddClue';
@@ -63,9 +63,13 @@ class ClueDiscoveryDetail extends React.Component {
             id: this.props.match.params.id
         }
         apis.main.getClueCltDetail(query).then(res => {
-            res && res.data ? this.setState({
-                details: res.data
-            }) : null
+            if (res.data) {
+                let fileList = this.getFileList(res.data.collUploadFile);
+                this.setState({
+                    details: res.data,
+                    fileList: fileList,
+                })
+            }
         })
     }
     render() {
@@ -74,7 +78,7 @@ class ClueDiscoveryDetail extends React.Component {
         const addClueOpt = {
             history: history,
             visible: this.state.visible,
-            collectionID: this.props.match.params.id,
+            collectionID: Number(this.props.match.params.id),
             toggleModal: this.toggleModal
         }
         const AclueItmOpt = {
@@ -134,7 +138,7 @@ class ClueDiscoveryDetail extends React.Component {
                         <div className="flex" styleName="file-manage file-list">
                             {fileList.map((file, index) => {
                                 return (
-                                    <AfileShow key={index} {...file} />
+                                    <AfileShow delete={this.deleteFile} key={index} {...file} />
                                 )
                             })}
                             <Upload
@@ -176,18 +180,42 @@ class ClueDiscoveryDetail extends React.Component {
             visible: status
         })
     }
+    // 根据返回的文件字符串解析 list
+    getFileList = (path) => {
+        let pathList = path.split(',');
+        let fileList = [];
+        let nameReg = "?fileName=", uidReg = "?uid=", sizeReg = "?size=";
+        pathList.map((item, index) => {
+            fileList.push({
+                url: item.split(nameReg)[0],
+                name: item.split(nameReg)[1].split(uidReg)[0],
+                uid: item.split(uidReg)[1].split(sizeReg)[0],
+                size: item.split(sizeReg)[1],
+            })
+        })
+        return fileList;
+    }
+    // 根据uid 删除文件
+    deleteFile = (uid) => {
 
+        let fileList = this.state.fileList;
+        fileList = fileList.filter(item => {
+            return item.uid != uid
+        })
+        console.log(uid, fileList);
+        this.setState({
+            fileList: fileList
+        })
+    }
     // 自定义上传  gzwjc-miniprogram-wisdom/file/upload
-    getFileList = (name, uid, size, url) => {
+    getNewFileList = (name, uid, size, url) => {
         const { fileList } = this.state;
         let newFileList = zTool.deepCopy(fileList);
         newFileList.push({
             uid: uid,
             name: name,
-            status: 'done',
-            size: size,
+            size: fileSizeChange(size),
             url: url,
-            thumbUrl: url,
         })
         this.setState({
             fileList: newFileList
@@ -200,8 +228,8 @@ class ClueDiscoveryDetail extends React.Component {
         console.log(params);
         upload.apis.upload(formData, {}).then((res) => {
             // console.log(res.success)
-            let fileList = this.state.fileList;
-            this.getFileList(file.name, file.uid, file.size, res.data);
+            // let fileList = this.state.fileList;
+            this.getNewFileList(file.name, file.uid, file.size, res.data);
         })
     }
     handleChangeFile = (fileList) => {
@@ -218,13 +246,17 @@ class ClueDiscoveryDetail extends React.Component {
     };
     // 保存提交
     saveBaseInfo = (e) => {
-        const { details } = this.state;
+        const { details, fileList } = this.state;
         e.preventDefault();
         const form = this.formRef.props.form;
         form.validateFields((err, fieldsValue) => {
             if (!err) {
                 console.log(fieldsValue);
-                let data = Object.assign({}, fieldsValue, { id: details.id, collUploadFile: details.collUploadFile })
+                let collUploadFile = "";
+                fileList.map((item, index)=> {
+                    collUploadFile += `${index>0?',':''}${item.url}?fileName=${item.name}?uid=${item.uid}?size=${item.size}`
+                })
+                let data = Object.assign({}, fieldsValue, { id: details.id, collUploadFile: collUploadFile })
                 apis.main.saveColl(data).then(res => {
                     message.success('保存成功')
                 })
