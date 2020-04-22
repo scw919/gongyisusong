@@ -61,3 +61,23 @@ export const getCollectedClues = async (value) => {
         },
     };
 };
+// 用户信息存储 - 保存
+export const saveToken = (value) => {
+    localStorage.setItem('token', value);
+    return {
+        type: 'user.saveToken',
+        payload: {
+            value,
+        },
+    };
+};
+// 用户信息存储 - 删除
+export const removeToken = (value) => {
+    localStorage.removeItem('token', value);
+    return {
+        type: 'user.removeToken',
+        payload: {
+            value,
+        },
+    };
+};

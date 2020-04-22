@@ -19,10 +19,9 @@ const matchUrlToMenu = function (match) {
 };
 const createBreadCrumb = function (main, location, mainRoutes) {
     const IndexRoute = { path: main.path, pathName: '线索管理', index: 0 };
-    const reg = /([^：]+)：.*/;
     let curPath = location.pathname,
         matchRoutes = [];
-    curPath = curPath.indexOf(':') > -1 ? curPath.match(reg)[0] : curPath;
+    curPath = curPath.indexOf('Detail/') > -1 ? curPath.split('Detail/')[0]+'Detail/:id' : curPath;
     mainRoutes.map((item) => {
         let index = curPath.lastIndexOf(item.path);
         if (index > -1) {
@@ -36,31 +35,36 @@ const createBreadCrumb = function (main, location, mainRoutes) {
         return a.path.length - b.path.length;
     });
     matchRoutes.unshift(IndexRoute);
-    console.log(matchRoutes, 'commonMethods111111111111111111111');
+    console.log(mainRoutes,matchRoutes, 'commonMethods111111111111111111111');
     // console.log(main, location, mainRoutes, 'commonMethods');
     store.dispatch(changeBreadCrumb(matchRoutes));
 };
 // 文件字节转换
 const fileSizeChange = (limit) => {
-    var size = "";
-    if (limit < 0.1 * 1024) {                            //小于0.1KB，则转化成B
-        size = limit.toFixed(2) + "B"
-    } else if (limit < 0.1 * 1024 * 1024) {            //小于0.1MB，则转化成KB
-        size = (limit / 1024).toFixed(2) + "KB"
-    } else if (limit < 0.1 * 1024 * 1024 * 1024) {        //小于0.1GB，则转化成MB
-        size = (limit / (1024 * 1024)).toFixed(2) + "MB"
-    } else {                                            //其他转化成GB
-        size = (limit / (1024 * 1024 * 1024)).toFixed(2) + "GB"
+    var size = '';
+    if (limit < 0.1 * 1024) {
+        //小于0.1KB，则转化成B
+        size = limit.toFixed(2) + 'B';
+    } else if (limit < 0.1 * 1024 * 1024) {
+        //小于0.1MB，则转化成KB
+        size = (limit / 1024).toFixed(2) + 'KB';
+    } else if (limit < 0.1 * 1024 * 1024 * 1024) {
+        //小于0.1GB，则转化成MB
+        size = (limit / (1024 * 1024)).toFixed(2) + 'MB';
+    } else {
+        //其他转化成GB
+        size = (limit / (1024 * 1024 * 1024)).toFixed(2) + 'GB';
     }
 
-    var sizeStr = size + "";                        //转成字符串
-    var index = sizeStr.indexOf(".");                    //获取小数点处的索引
-    var dou = sizeStr.substr(index + 1, 2)            //获取小数点后两位的值
-    if (dou == "00") {                                //判断后两位是否为00，如果是则删除00                
-        return sizeStr.substring(0, index) + sizeStr.substr(index + 3, 2)
+    var sizeStr = size + ''; //转成字符串
+    var index = sizeStr.indexOf('.'); //获取小数点处的索引
+    var dou = sizeStr.substr(index + 1, 2); //获取小数点后两位的值
+    if (dou == '00') {
+        //判断后两位是否为00，如果是则删除00
+        return sizeStr.substring(0, index) + sizeStr.substr(index + 3, 2);
     }
     return size;
-}
+};
 
 // 根据文件url 下载文件
 const downloadFileByUrl = {
@@ -113,11 +117,46 @@ const downloadFileByUrl = {
         });
     },
 };
+// 根据返回的文件字符串解析 list
+const getFileList = (path, isSlefUpload) => {
+    //isSelfUpload 判断是否是自己上传的 不是 不包含 uid size
+    let fileList = [];
+    if (path && path.length > 0) {
+        let pathList = path.split(',');
+        let nameReg = '?fileName=',
+            uidReg = '?uid=',
+            sizeReg = '?size=';
+        if (isSlefUpload) {
+            pathList.map((item, index) => {
+                fileList.push({
+                    url: item.split(nameReg)[0],
+                    name: item.split(nameReg)[1].split(uidReg)[0],
+                    uid: item.split(uidReg)[1].split(sizeReg)[0],
+                    size: item.split(sizeReg)[1],
+                });
+            });
+            return fileList;
+        } else {
+            pathList.map((item, index) => {
+                fileList.push({
+                    url: item.split(nameReg)[0],
+                    name: item.split(nameReg)[1],
+                    size: '',
+                    uid: '',
+                });
+            });
+            return fileList;
+        }
+    } else {
+        return fileList;
+    }
+};
 
 const commonMethods = {
     matchUrlToMenu: matchUrlToMenu,
     createBreadCrumb: createBreadCrumb,
     downloadFile: downloadFileByUrl.download,
-    fileSizeChange: fileSizeChange
+    fileSizeChange: fileSizeChange,
+    getFileList: getFileList,
 };
 export default commonMethods;

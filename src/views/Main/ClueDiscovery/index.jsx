@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import compnents from '@/components/load-components.js';
 const { AsortButton, AclueItem, AsearchPart } = compnents;
 // import SearchList from './Children/SearchList';
@@ -57,7 +57,7 @@ class ClueDiscovery extends React.Component {
         const { history } = this.props;
         const { dataList, } = this.state;
         return (
-            <Zlayout.Zbody scroll={true} loadMore={this.getData}>
+            <Zlayout.Zbody scroll={true} ref_component={this} loadmore={'ref_component'}>
                 <div className="main-rt-container" style={{ height: '100%' }}>
                     {/* <AseamlessScroll /> */}
                     <AsearchPart searchResult={this.updateOptions} />

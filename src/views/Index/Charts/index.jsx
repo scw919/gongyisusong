@@ -38,6 +38,7 @@ const mapDispatchToProps = (dispatch) => ({
 class ClueDiscovery extends React.Component {
     state = {
         // firstSurvey: {}
+        yearsList: new Array(10).fill(2020).map((item, index) => { return item - index }),
         defaultYears: 2020,
         echartOptions: {
             'part-1': {
@@ -513,7 +514,7 @@ class ClueDiscovery extends React.Component {
     }
     render() {
         const { history, firstSurvey, part_2_tabs } = this.props;
-        const { defaultYears } = this.state;
+        const { defaultYears, yearsList } = this.state;
         console.log(part_2_tabs);
         // const {  } = this.state;
         return (
@@ -627,9 +628,11 @@ class ClueDiscovery extends React.Component {
                                             <Icon type="caret-down" />
                                         }
                                     >
-                                        <Option value="2018">2018</Option>
-                                        <Option value="2019">2019</Option>
-                                        <Option value="2020">2020</Option>
+                                        {
+                                            yearsList.map((item, index) => {
+                                                return <Option key={index} value={item}>{item}</Option>
+                                            })
+                                        }
                                     </Select>
                                 </div>
                                 <div id="data-charts-4" className="flex" styleName="data-charts">

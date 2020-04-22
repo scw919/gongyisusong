@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Button, Input, Radio, Icon, Checkbox, message } from 'antd';
+import { Modal, Button, Input, Icon, Checkbox, message } from 'antd';
 const CheckboxGroup = Checkbox.Group;
 const { Search } = Input;
 import { Zlayout } from 'zerod';
@@ -76,7 +76,7 @@ class AddClue extends React.Component {
                         </div>
                         <div styleName="search-clue-list">
                             <Zlayout flexRow>
-                                <Zlayout.Zbody scroll={true} loadMore={this.getData}>
+                                <Zlayout.Zbody scroll={true} ref_component={this} loadmore={'ref_component'}>
                                     <CheckboxGroup
                                         value={this.state.checkedList}
                                         onChange={this.onChangeSelClue}
@@ -184,6 +184,7 @@ class AddClue extends React.Component {
     handleOk = () => {
         const { history } = this.props;
         const { collectionID, checkedList } = this.state;
+        this.setState({ loading: true });
         let data = {
             clueId: [],
             clueCollectionIds: [collectionID],
@@ -201,7 +202,7 @@ class AddClue extends React.Component {
                 pages: 1,
                 total: 0,
             }
-            this.setState({ visible: false, dataList: [], query: query });
+            this.setState({ loading:false, visible: false, dataList: [], query: query });
             this.props.toggleModal(false);
             message.success("操作成功");
             // history.go(0);

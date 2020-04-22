@@ -1,21 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import compnents from '@/components/load-components.js';
-const { AClueDetailCard, AfileShow } = compnents;
+const { AClueDetailCard, AfileShow, Aupload } = compnents;
 
-import { Icon, Button, Upload } from 'antd';
+import { Button, message } from 'antd';
 
 import { Zlayout } from 'zerod';
 import { connect } from 'react-redux';
-import upload from '@/Api/upload.api.js';
 import { withRouter } from 'react-router-dom';
+// 工具
+import commonMethods from '@/zTool/commonMethods.js';
+const { getFileList } = commonMethods;
 // 接口
 import apis from '@/App.api.js';
 // 样式类
 import './style.scss';
-// 通用工具
-import { zTool } from "zerod";
-
-import detailInfo from '@/assets/images/detail/detail-info.jpg';
 
 const mapStateToProps = (state, ownProps) =>
     // state 是 {userList: [{id: 0, name: '王二'}]}
@@ -27,32 +25,30 @@ class ClueDiscoveryDetail extends React.Component {
     state = {
         // 详情
         details: {},
-        // 文件列表
-        filesList: [
-            { name: '1附件名称.png', type: 'png', size: '2.8M', url: detailInfo },
-            { name: '2附件名称.doc', type: 'word', size: '2.8M', url: detailInfo },
-            { name: '3附件名称.mp4', type: 'video', size: '2.8M', url: detailInfo },
-            { name: '4附件名称.pdf', type: 'pdf', size: '2.8M', url: detailInfo },
-        ],
-        fileList: [
-
-        ]
+        // 文件列表-自己上传
+        fileList: [],
+        // 爬取资源
+        punishmentFileList: [],
     }
+    clueUploadFile = ""; //文件路径字符串
     componentDidMount() {
-        console.log(this.props.match.params.id);
         let query = {
             id: this.props.match.params.id
         }
         apis.main.getDetail(query).then(res => {
-            res && res.data ? this.setState({
-                details: res.data
-            }) : null
+            if (res.data) {
+                let punishmentFileList = this.getFileList(res.data.punishmentFile);
+                this.clueUploadFile = res.data.clueUploadFile;
+                this.setState({
+                    details: res.data,
+                    punishmentFileList: punishmentFileList
+                })
+            }
         })
     }
     render() {
-        const { fileList, details } = this.state;
+        const { punishmentFileList, details } = this.state;
         const { history, routes } = this.props;
-        console.log(this.props, 'clueCollectDetail')
         return (
             <Zlayout.Zbody scroll={true}>
                 <div styleName="main-rt-con-detail" style={{ height: '100%' }}>
@@ -90,80 +86,42 @@ class ClueDiscoveryDetail extends React.Component {
                         <p className="title-line-before" styleName="title bt-line">文件材料</p>
                         <div className="flex" styleName="file-list">
                             {
-                                details.clueUploadFile ? details.clueUploadFile.split(',').map((item, index) => {
-                                    let obj = { type: item.split('.'), name: item, size: item.length, url: item };
+                                punishmentFileList.map((file, index) => {
                                     return (
-                                        <AfileShow disabled={true} key={index} {...obj} />
+                                        <AfileShow disabled={true} key={index} {...file} />
                                     )
-                                }) : null
+                                })
                             }
                         </div>
                     </div>
                     {/* 其他材料 上传 */}
                     <div styleName="main-module">
                         <p className="title-line-before" styleName="title bt-line">其他材料上传</p>
-                        <div className="flex" styleName="file-manage file-list">
-                            {fileList.map((file, index) => {
-                                return (
-                                    <AfileShow key={index} {...file} />
-                                )
-                            })}
-                            <Upload
-                                action=""
-                                customRequest={this.customRequest}
-                                showUploadList={false}
-                                fileList={fileList}
-                                onChange={this.handleChangeFile}
-                            >
-                                <Button styleName="upload-btn">
-                                    <Icon type="upload" />
-                                    支持扩展名： .doc .docx .pdf .jpg
-                                </Button>
-                            </Upload>
-                        </div>
+                        <Aupload filePath={this.clueUploadFile} updateFilePath={this.updateFilePath} />
                     </div>
                     <div className="flex just-con-center" style={{ padding: '45px 0' }}>
-                        <Button type="primary" style={{ marginRight: '24px' }}>保存</Button>
+                        <Button onClick={() => { this.saveBaseInfo() }} type="primary" style={{ marginRight: '24px' }}>保存</Button>
                         <Button onClick={() => { history.goBack() }}>返回</Button>
                     </div>
                 </div>
             </Zlayout.Zbody>
         )
     }
-    // 自定义上传  gzwjc-miniprogram-wisdom/file/upload
-    getFileList = (name, uid, size, url) => {
-        const { fileList } = this.state;
-        let newFileList = zTool.deepCopy(fileList);
-        newFileList.push({
-            uid: uid,
-            name: name,
-            status: 'done',
-            size: size,
-            url: url,
-            thumbUrl: url,
-        })
-        this.setState({
-            fileList: newFileList
-        });
+    // 根据filepath字符串 解析filelist文件列表
+    getFileList = (path, isSelfUpload) => {
+        return getFileList(path, isSelfUpload)
     }
-    customRequest = (params) => {
-        const file = params.file;
-        let formData = new FormData();
-        formData.append("fName", file);
-        console.log(params);
-        upload.apis.upload(formData, {}).then((res) => {
-            // console.log(res.success)
-            let fileList = this.state.fileList;
-            this.getFileList(file.name, file.uid, file.size, res.data);
-        })
+    // 获取文件路径字符串
+    updateFilePath = (clueUploadFile) => {
+        this.clueUploadFile = clueUploadFile;
+        console.log(this.clueUploadFile, 'clueUploadFile');
     }
-    handleChangeFile = (fileList) => {
-        console.log(fileList);
-        // let newFile = fileList.file.response;
-        // let stateFileList = this.state.fileList;
-        // stateFileList.push(newFile);
-        // console.log(stateFileList);
-        // this.setState({ fileList: stateFileList });
+    // 保存提交
+    saveBaseInfo = () => {
+        let data = { clueId: this.props.match.params.id, clueUploadFile: this.clueUploadFile };
+        apis.main.editDetail(data).then(res => {
+            message.success('保存成功')
+        })
     }
 }
 export default connect(mapStateToProps)(withRouter(ClueDiscoveryDetail));

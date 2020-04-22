@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Modal, message } from 'antd';
 const { confirm } = Modal;
-import { Link } from 'react-router-dom';
 // import { zTool } from "zerod";
 import './style.scss';
 // 接口
@@ -48,7 +47,7 @@ class ListItem extends React.Component {
                     <div>
                         <Button onClick={(e) => { this.delete(e, id) }} type="link" className="warning">删除</Button>
                         {
-                            collStatus.code == 0 ?
+                            collStatus&&collStatus.code == 0 ?
                                 <Button onClick={(e) => { this.drop(e, id, true) }} type="link">废弃</Button> :
                                 <Button onClick={(e) => { this.drop(e, id, false) }} type="link">启用</Button>
                         }

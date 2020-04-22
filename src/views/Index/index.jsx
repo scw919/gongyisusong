@@ -15,7 +15,7 @@ import mainRoutes from './load-child-routes.js';
 import compnents from '@/components/load-components.js';
 const { ApageHeader, } = compnents;
 // ant ui
-import { Icon, Breadcrumb, DatePicker } from 'antd';
+import { Breadcrumb, DatePicker } from 'antd';
 const { RangePicker } = DatePicker;
 // import { createFromIconfontCN } from '@ant-design/icons';
 import commonMethods from '@/zTool/commonMethods.js';
@@ -46,7 +46,7 @@ class Main extends React.Component {
         path: this.props.routePath
     });
     query = {
-        startTime: moment().startOf('day').format('YYYY-MM-DD HH:mm:ss'),
+        startTime: moment().startOf('month').format('YYYY-MM-DD HH:mm:ss'),
         endTime: moment().endOf('day').format('YYYY-MM-DD HH:mm:ss')
     }
     componentWillMount() {

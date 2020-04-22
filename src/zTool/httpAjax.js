@@ -7,14 +7,17 @@ import { zTool } from 'zerod';
  * @param {object} query //接口参数，key，value 对应
  * @param {object} config //可配置请求头等，请看下面的config注释
  */
-
-const con = {
+let con = {
     // 基础url前缀
     // baseURL: 'http://172.20.5.220:8762/', // 苑迪
     // baseURL: 'http://172.20.5.233:8762/', // 海超
     baseURL: 'http://172.16.121.73:8762/', //测试环境
+    headers: {
+      auth_token: '',
+    },
 };
 function httpAjax(method, url, query, config) {
+    con['headers']['auth_token'] = localStorage.getItem('token');
     let newConfig = Object.assign({}, con, config);
     const newurl = url; //处理url前缀
     const promise = zTool.httpAjax(method, newurl, query, newConfig);

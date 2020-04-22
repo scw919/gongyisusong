@@ -51,7 +51,7 @@ class Main extends React.Component {
     }
     componentDidMount() {
         matchUrlToMenu(this.match);
-        createBreadCrumb(this.match, this.props.location, mainRoutes);
+        // createBreadCrumb(this.match, this.props.location, mainRoutes);
     }
     render() {
         const { history, userName, collapsed, breadCrumbData } = this.props;

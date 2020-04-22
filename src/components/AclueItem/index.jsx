@@ -50,10 +50,10 @@ class AclueItem extends React.Component {
             <div styleName="search-list-item">
                 <div styleName="search-list-item-title" className="flex flex-between">
                     <div className="ft-18" styleName="title">
-                        {hasChecked ? <Checkbox disabled={hasCollected && !isCollect} value={sub} id={`${sub.id}`} ></Checkbox > : null}
+                        {hasChecked ? <Checkbox style={{ marginRight: '8px' }} disabled={hasCollected && !isCollect} value={sub} id={`${sub.id}`} ></Checkbox > : null}
                         {/* <span onClick={(e) => { this.checkDetail(e, linkUrl) }}>番禺南丰塑料有限公司行政处罚案</span> */}
                         <Link to={`${linkUrl}/${sub.id}`} target="_blank">
-                            <span style={{ marginLeft: '8px' }} dangerouslySetInnerHTML={{ __html: this.highLightRender(sub, 'name') }}></span>
+                            <span dangerouslySetInnerHTML={{ __html: this.highLightRender(sub, 'name') }}></span>
                         </Link>
                     </div>
                     {/* 收录 */}
@@ -120,7 +120,7 @@ class AclueItem extends React.Component {
                                     </div>
                                     <div className="flex flex-1 flex-end" styleName="right-part">
                                         <Link to={`${linkUrl}/${sub.id}`} target="_blank">
-                                            <Button onClick={(e) => { this.checkDetail(e, linkUrl) }} type="primary" style={{ marginRight: '8px' }}>查看</Button>
+                                            <Button type="primary" style={{ marginRight: '8px' }}>查看</Button>
                                         </Link>
                                         <Button onClick={(e) => { this.delete(e) }} type="danger">删除</Button>
                                     </div>
@@ -157,7 +157,6 @@ class AclueItem extends React.Component {
         e.nativeEvent.stopImmediatePropagation();
         const { history } = this.props;
         history.push(linkUrl);
-
     }
     // 删除
     delete = (e) => {

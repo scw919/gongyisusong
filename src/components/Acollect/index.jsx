@@ -21,7 +21,7 @@ export class Acollect extends React.PureComponent {
     render() {
         const { id } = this.props;
         const { hasCollected } = this.state;
-        console.log(hasCollected, 'acollected')
+        // console.log(hasCollected, 'acollected');
         return (
             <div>
                 {

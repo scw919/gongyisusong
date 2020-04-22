@@ -4,14 +4,7 @@ const { TextArea } = Input;
 const { confirm } = Modal;
 // import { zTool } from "zerod";
 import './style.scss';
-const layout = {
-    labelCol: { span: 4 },
-    wrapperCol: { span: 14 },
-};
-const textLayout = {
-    labelCol: { span: 1 },
-    wrapperCol: { span: 23 },
-};
+
 const BaseInfo = Form.create({ name: 'form_in_modal' })(
     // eslint-disable-next-line
     class extends React.Component {
@@ -26,13 +19,14 @@ const BaseInfo = Form.create({ name: 'form_in_modal' })(
             return (
                 <Form
                     styleName="base-info"
-                    {...layout}
+                    // {...layout}
                     name="basic"
                 >
                     <Row styleName="base-info">
                         <Col span={6}>
                             <Form.Item
                                 label="线索类型："
+                                labelAlign={'left'}
                                 name="soluClueType"
                             >
                                 {getFieldDecorator('soluClueType', {
@@ -48,6 +42,7 @@ const BaseInfo = Form.create({ name: 'form_in_modal' })(
                         <Col span={6}>
                             <Form.Item
                                 label="线索领域："
+                                labelAlign={'left'}
                                 name="soluClueDomain"
                                 rules={[]}
                             >
@@ -65,8 +60,9 @@ const BaseInfo = Form.create({ name: 'form_in_modal' })(
                     <Row>
                         <Col span={24}>
                             <Form.Item
-                                {...textLayout}
+                                // {...textLayout}
                                 label="线索描述："
+                                labelAlign={'left'}
                                 name="soluClueDes"
                                 rules={[]}
                             >

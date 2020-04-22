@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Button, Modal } from 'antd';
+import { Icon, Modal } from 'antd';
 import './style.scss';
 import commonMethods from '@/zTool/commonMethods.js';
 const { downloadFile } = commonMethods;
@@ -11,15 +11,7 @@ import wordIcon from '@/assets/images/detail/word.png';
 // import doc from '@/assets/doc.doc';
 import mp4 from '@/assets/mp4.mp4';
 
-function getBase64(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-    });
-}
-class AfileShow extends React.Component {
+export class AfileShow extends React.Component {
     static propTypes = {
         type: PropTypes.string,
         size: PropTypes.string,
@@ -51,25 +43,29 @@ class AfileShow extends React.Component {
                 {/* handleIcon */}
                 <div className="absolute" styleName="handle-modal">
                     <div className="flex align-item-center just-con-center">
-                        <Icon onClick={(e) => {
-                            e.stopPropagation();
-                            e.nativeEvent.stopImmediatePropagation();
-                            this.handlePreview(url)
-                        }} type="eye" />
                         {
-                            disabled ? (
+                            this.getFileType(name, 'docx') ? null
+                                : <Icon onClick={(e) => {
+                                    e.stopPropagation();
+                                    e.nativeEvent.stopImmediatePropagation();
+                                    this.handlePreview(url)
+                                }} type="eye" />
+                        }
+                        {
+                            disabled || this.getFileType(name, 'docx') ?
                                 <Icon onClick={(e) => {
                                     e.stopPropagation();
                                     e.nativeEvent.stopImmediatePropagation();
                                     downloadFile(url, name)
-                                }} type="download" />
-                            ) : (
-                                    <Icon onClick={(e) => {
-                                        e.stopPropagation();
-                                        e.nativeEvent.stopImmediatePropagation();
-                                        this.props.delete(uid)
-                                    }} type="delete" />
-                                )
+                                }} type="download" /> : null
+                        }
+                        {
+                            !disabled ?
+                                <Icon onClick={(e) => {
+                                    e.stopPropagation();
+                                    e.nativeEvent.stopImmediatePropagation();
+                                    this.props.delete(uid)
+                                }} type="delete" /> : null
                         }
                     </div>
                 </div>

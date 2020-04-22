@@ -10,21 +10,8 @@ import { zTool } from 'zerod';
 // 接口
 import apis from '@/App.api.js';
 let isLoading = false;
-const plainOptions = [
-    { name: 'apple0', menuid: 0, type: '行政处罚' },
-    { name: 'apple1', menuid: 1, type: '行政处罚' },
-    { name: 'apple2apple2apple2apple2apple2applapple2apple2', menuid: 2, type: '行政处罚' },
-    { name: 'apple0', menuid: 3, type: '行政处罚' },
-    { name: 'apple1', menuid: 4, type: '行政处罚' },
-    { name: 'apple2apple2apple2apple2e2apple2apple2apple2', menuid: 5, type: '行政处罚' },
-    { name: 'apple0', menuid: 6, type: '行政处罚' },
-    { name: 'apple1', menuid: 7, type: '行政处罚' },
-    { name: 'apple2apple2apple2apple2apple2apple2apple2', menuid: 8, type: '行政处罚' },
-    { name: 'apple0', menuid: 9, type: '行政处罚' },
-    { name: 'apple1', menuid: 10, type: '行政处罚' },
-    { name: 'apple2apple2appleppapple2apple2apple2apple2apple2', menuid: 11, type: '行政处罚' },
-];
-class NewDealClue extends React.Component {
+
+class NewDealClue extends React.PureComponent {
     static propTypes = {
         visible: PropTypes.bool,
         clueName: PropTypes.string,
@@ -51,19 +38,21 @@ class NewDealClue extends React.Component {
         },
         dataList: []
     }
-    componentWillReceiveProps(props, nextProps) {
-        this.setState({
-            visible: props.visible,
-            clueName: props.clueName
-        })
-        this.getData(true);
+    componentWillReceiveProps(nextProps, prevProps) {
+        if (nextProps.visible) {
+            this.setState({
+                visible: nextProps.visible,
+                clueName: nextProps.clueName
+            });
+            this.getData(true);
+        }
     }
     componentDidMount() {
         // this.getData(true)
     }
     render() {
+        console.log("newDeal render");
         const { visible, loading, title, isRelate, dataList, keyword, clueName } = this.state;
-        console.log(dataList);
         return (
             <div>
                 <Modal
@@ -107,7 +96,7 @@ class NewDealClue extends React.Component {
                                 </div>
                                 <div styleName="search-clue-list">
                                     <Zlayout flexRow>
-                                        <Zlayout.Zbody scroll={true} loadMore={this.getData}>
+                                        <Zlayout.Zbody scroll={true} ref_component={this} loadmore={'ref_component'}>
                                             <CheckboxGroup
                                                 value={this.state.checkedList}
                                                 onChange={this.onChangeSelClue}
@@ -121,7 +110,7 @@ class NewDealClue extends React.Component {
                                                                     <div className="ellipsis" title={sub.caseName}>{sub.caseName}</div>
                                                                     <div className="flex-1 text-right ellipsis" title={this.subLables(sub.lables)}>
                                                                         {
-                                                                           this.subLables(sub.lables)
+                                                                            this.subLables(sub.lables)
                                                                         }
                                                                     </div>
                                                                 </div>
@@ -212,11 +201,11 @@ class NewDealClue extends React.Component {
             const data = await this.clueSearch(newQuery);
             newQuery.pages = data.pages;
             newQuery.total = data.total;
-            let old_dataList = this.state.dataList;
-            old_dataList = old_dataList.concat(data.list);
+            let old_dataList = this.state.dataList, new_dataList;
+            new_dataList = old_dataList.concat(data.list);
             this.setState({
                 query: newQuery,
-                dataList: old_dataList
+                dataList: new_dataList
             })
             isLoading = false;
         }
@@ -245,6 +234,7 @@ class NewDealClue extends React.Component {
     // 确定
     handleOk = () => {
         const { checkedList } = this.state;
+        this.setState({ loading: true });
         let data = {
             collectionName: this.state.clueName,
             ids: [this.props.clueID]

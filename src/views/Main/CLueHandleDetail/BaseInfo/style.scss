@@ -6,5 +6,15 @@
         .ant-form-item-required:before{
             display: none;
         }
+        .ant-form-item{
+            display: flex;
+            flex-flow: row;
+            &:not([name="soluClueDes"]){
+                padding-right: 70px;
+            }
+            .ant-form-item-control-wrapper{
+                flex: 1;
+            }
+        }
     }
 }

@@ -1,14 +1,26 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button } from 'antd';
 import './style.scss';
 import avator from '@/assets/images/procurator.png';
 import logo from '@/assets/images/login/logo.png';
+import com_const from '@/zTool/commonConsts.js';
+// actions
+import store from '@/store';
+import { saveToken } from '@/store/actions';
+// 接口
+import apis from '@/App.api.js';
+const baseURL = "http://172.16.121.73:8763";
+
 class LoginMain extends React.PureComponent {
     // 定义初始state
     state = {
         validateCode: avator
     };
+    componentDidMount() {
+        this.getValidateCode()
+    }
     render() {
         const { getFieldDecorator } = this.props.form;
         const userIcon = <span styleName="validate-icon user"></span>
@@ -25,33 +37,39 @@ class LoginMain extends React.PureComponent {
                     <div styleName="login-box-title">登录</div>
                     <Form onSubmit={this.handleSubmit} styleName="login-form">
                         <Form.Item>
-                            {getFieldDecorator('username', {
-                                rules: [{ required: true, message: 'Please input your username!' }],
+                            {getFieldDecorator('account', {
+                                rules: [{ required: true, message: '请输入用户名' }],
                             })(
                                 <Input
                                     prefix={userIcon}
                                     placeholder="请输入用户名"
+                                    autoComplete="off"
                                 />,
                             )}
                         </Form.Item>
                         <Form.Item>
                             {getFieldDecorator('password', {
-                                rules: [{ required: true, message: 'Please input your Password!' }],
+                                rules: [
+                                    { required: true, message: '请输入密码' },
+                                    // { pattern: com_const.reg_pwd, message: '密码格式错误' }
+                                ],
                             })(
                                 <Input.Password
                                     prefix={pwdIcon}
                                     placeholder="请输入密码"
+                                    autoComplete="new-password"
                                 />
                             )}
                         </Form.Item>
                         <Form.Item>
-                            {getFieldDecorator('valicode', {
-                                rules: [{ required: true, message: 'Please input your validate code!' }],
+                            {getFieldDecorator('captcha', {
+                                rules: [{ required: true, message: '请输入验证码' }],
                             })(
                                 <Input
                                     prefix={validateIcon}
                                     suffix={validateCode}
                                     placeholder="请输入验证码"
+                                    autoComplete="off"
                                 />,
                             )}
                         </Form.Item>
@@ -66,10 +84,10 @@ class LoginMain extends React.PureComponent {
         );
     }
     // 获取验证码
-    changeValidateCode = () => {
-        let isLogo = this.state.validateCode == logo;
+    getValidateCode = () => {
+        let validateCode = baseURL + '/login/getKaptcha?t=' + new Date();
         this.setState({
-            validateCode: isLogo ? avator : logo
+            validateCode: validateCode,
         })
     }
     // 提交登录
@@ -78,8 +96,14 @@ class LoginMain extends React.PureComponent {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
-                history.push('/index');
+                // console.log('Received values of form: ', values);
+                apis.login.login(values).then(res => {
+                    let userInfo = res.data;
+                    // this.props.saveUserInfo(JSON.stringify(userInfo));
+                    localStorage.setItem('userInfo',JSON.stringify(userInfo));
+                    store.dispatch(saveToken(userInfo.token));
+                    history.push('/index');
+                })
             }
         });
     };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col, Pagination } from 'antd';
+import { Row, Col, Pagination } from 'antd';
 import { Zlayout } from 'zerod';
 import SearchForm from './SearchForm';
 import ListItem from './ListItem';
@@ -16,11 +16,7 @@ class ClueHandle extends React.Component {
             pages: 1,
             total: 0,
         },
-        resultList: [
-            { status: 0 }, { status: 1 }, { status: 2 }, { status: 3 },
-            { status: 0 }, { status: 1 }, { status: 2 }, { status: 3 },
-            { status: 0 }, { status: 1 }, { status: 2 }, { status: 3 },
-        ]
+        resultList: [ ]
     }
     render() {
         const { history } = this.props;
@@ -46,8 +42,8 @@ class ClueHandle extends React.Component {
                             }
                         </Row>
                     </div>
-                    <div className="text-right">
-                        <Pagination size="small" defaultPageSize={12} pageSizeOptions={["8", "12", "16", "20"]} current={query.pageNum} showSizeChanger showQuickJumper total={query.total} onShowSizeChange={this.onShowSizeChange} onChange={this.pageChange} />
+                    <div className="text-right" style={{marginTop: '10px'}}>
+                        <Pagination size="small" defaultPageSize={12} pageSizeOptions={["8", "12", "16"]} current={query.pageNum} showSizeChanger showQuickJumper total={query.total} onShowSizeChange={this.onShowSizeChange} onChange={this.pageChange} />
                     </div>
                 </div>
             </Zlayout.Zbody >

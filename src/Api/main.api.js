@@ -27,6 +27,10 @@ export default {
         getDetail(query) {
             return httpAjax('get', `/clue/getDetail/${query.id}`);
         },
+        // 修改线索详情 /clue/editDetail
+        editDetail(query) {
+            return httpAjax('post', '/clue/editDetail', query);
+        },
         // 获取线索集合展示列表 /ClueCollection/getRelations
         getRelations(query) {
             return httpAjax('post', '/ClueCollection/getRelations', query);

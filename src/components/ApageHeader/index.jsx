@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 // zerod
 import { Zlayout, ZmainHOC } from 'zerod';
 // actions
-import { changeCollapsed, changeMenuIndex } from '@/store/actions';
+import { changeCollapsed, changeMenuIndex, removeToken } from '@/store/actions';
 import { Link } from 'react-router-dom';
 // import { Breadcrumb } from 'antd';
 import { Icon, Dropdown, Menu, Button } from 'antd';
@@ -20,6 +20,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch) => ({
     changeCollapsed: (...args) => dispatch(changeCollapsed(...args)),
     changeMenuIndex: (...args) => dispatch(changeMenuIndex(...args)),
+    removeToken: (...args) => dispatch(removeToken(...args)),
 });
 class ApageHeader extends React.Component {
     static propTypes = {
@@ -49,7 +50,7 @@ class ApageHeader extends React.Component {
                             }
                         </Zlayout.Template>
                     </div>
-                    <div><UserDropdown /></div>
+                    <div><UserDropdown removeToken={this.props.removeToken} /></div>
                 </div>
             </Zlayout.Zheader >
         );
@@ -68,14 +69,24 @@ class ApageHeader extends React.Component {
     };
 }
 class UserDropdown extends React.Component {
+    state = {
+        userInfo: {}
+    }
+    componentDidMount() {
+        let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        this.setState({
+            userInfo: userInfo
+        })
+    }
     render() {
+        const { userInfo } = this.state;
         return (
             <Dropdown className='z-drop-down' overlay={this.dropdownMenu} trigger={['click']} placement="bottomRight">
                 <Zlayout.ZheaderBtn className="z-margin-right-15">
                     <span className="z-icon-circle z-margin-right-8 head-avator">
                         <img src={avator} alt="" />
                     </span>
-                    <span className={cssClass['z-my-class']}>用户名</span>
+                    <span className={cssClass['z-my-class']}>{userInfo.account}</span>
                 </Zlayout.ZheaderBtn>
             </Dropdown>
         );
@@ -84,6 +95,7 @@ class UserDropdown extends React.Component {
         //用户dropdown按钮点击触发
         onMenuClick: (item) => {
             if (item.key === '/logout') {
+                this.props.removeToken()
                 window.location.assign('/login');
                 // window.open('/main/home'); //打开新的页面
                 // window.location.assign('http://www.runoob.com');
@@ -97,7 +109,7 @@ class UserDropdown extends React.Component {
             selectedKeys={[]}
             onClick={this.methods.onMenuClick && this.methods.onMenuClick}
         >
-            <Menu.Item disabled>
+            {/* <Menu.Item disabled>
                 <Icon type="user" />
                 个人中心
             </Menu.Item>
@@ -105,7 +117,7 @@ class UserDropdown extends React.Component {
                 <Icon type="setting" />
                 设置
             </Menu.Item>
-            <Menu.Divider />
+            <Menu.Divider /> */}
             <Menu.Item key="/logout">
                 <Icon type="logout" />
                 退出登录

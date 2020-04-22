@@ -16,13 +16,14 @@ const pageConfig = {
             redirect: true,
             path: '/index',
             to: '/index/charts',
+            keepAlive: true,
         },
-        
+
         {
             path: '/main',
             component: Main,
         },
-        
+
         {
             redirect: true,
             path: '/main',

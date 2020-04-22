@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Button, Input, Radio, Icon, Checkbox, message } from 'antd';
+import { Modal, Button, Input, Icon, Checkbox, message } from 'antd';
 const CheckboxGroup = Checkbox.Group;
 const { Search } = Input;
 import { Zlayout } from 'zerod';
@@ -10,13 +10,8 @@ import { zTool } from 'zerod';
 // 接口
 import apis from '@/App.api.js';
 let isLoading = false;
-const plainOptions11 = [
-    { name: 'apple0', menuid: 0, type: '行政处罚', extend: true },
-    { name: 'apple1', menuid: 1, type: '行政处罚', extend: true },
-    { name: 'apple2apple2apple2apple2apple2applapple2apple2', menuid: 2, type: '行政处罚', extend: true },
-    { name: 'apple0', menuid: 3, type: '行政处罚', extend: true },
-];
-class NewDealClue extends React.Component {
+
+class NewDealClue extends React.PureComponent {
     static propTypes = {
         visible: PropTypes.bool,
         clueID: PropTypes.number,
@@ -44,14 +39,17 @@ class NewDealClue extends React.Component {
             { name: 'apple0', menuid: 3, type: '行政处罚', extend: true },
         ]
     }
-    componentWillReceiveProps(props, nextProps) {
-        this.setState({
-            visible: props.visible,
-            clueID: props.clueID
-        })
-        this.getData(true);
+    componentWillReceiveProps(nextProps, prevProps) {
+        if (nextProps.visible) {
+            this.setState({
+                visible: nextProps.visible,
+                clueID: nextProps.clueID
+            })
+            this.getData(true);
+        }
     }
     render() {
+        console.log("related render");
         const { visible, loading, title, isRelate, dataList } = this.state;
         return (
             <div>
@@ -81,7 +79,7 @@ class NewDealClue extends React.Component {
                         </div>
                         <div styleName="search-clue-list">
                             <Zlayout flexRow>
-                                <Zlayout.Zbody scroll={true} loadMore={this.getData}>
+                                <Zlayout.Zbody scroll={true} ref_component={this} loadmore={'ref_component'}>
                                     <CheckboxGroup
                                         value={this.state.checkedList}
                                         onChange={this.onChangeSelClue}

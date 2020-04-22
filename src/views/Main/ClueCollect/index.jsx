@@ -49,9 +49,8 @@ class ClueDiscovery extends React.Component {
     render() {
         const { history, routes } = this.props;
         const { newVisible, relatedVisible } = this.state;
-        console.log(this.props, 'clueCollect')
         return (
-            <Zlayout.Zbody scroll={true} loadMore={this.getData}>
+            <Zlayout.Zbody scroll={true} ref_component={this} loadmore={'ref_component'}>
                 <div className="main-rt-container" style={{ height: '100%' }}>
                     {/* <AseamlessScroll /> */}
                     <AsearchPart searchResult={this.updateOptions} />

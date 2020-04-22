@@ -9,6 +9,9 @@
     font-size: 14px;
     .name{
         color: #565A60;
+        &:hover{
+            color: #80a8ff;
+        }
     }
     .unit,.type{
         color: #9EA9C8;

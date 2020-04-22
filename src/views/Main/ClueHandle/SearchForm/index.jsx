@@ -1,8 +1,7 @@
 import React from 'react';
-import { Row, Col, Form, Icon, Input, Button, Select, DatePicker } from 'antd';
+import { Row, Col, Form, Input, Button, Select, DatePicker } from 'antd';
 const { RangePicker } = DatePicker;
 import { zTool } from "zerod";
-import moment from 'moment';
 const { Option } = Select;
 import './style.scss';
 const layout = {
@@ -23,17 +22,29 @@ class SearchForm extends React.Component {
         e.preventDefault();
         this.props.form.validateFields((err, fieldsValue) => {
             if (!err) {
-                let values = zTool.deepCopy(fieldsValue);
-                if (fieldsValue['createTime']) {
-                    values['createStart'] = fieldsValue['createTime'][0].format('YYYY-MM-DD');
-                    values['createEnd'] = fieldsValue['createTime'][1].format('YYYY-MM-DD');
+                // let values = zTool.deepCopy(fieldsValue);
+                if (fieldsValue['createTime'] && fieldsValue['createTime'].length > 1) {
+                    fieldsValue['createStart'] = fieldsValue['createTime'][0].format('YYYY-MM-DD');
+                    fieldsValue['createEnd'] = fieldsValue['createTime'][1].format('YYYY-MM-DD');
+                    delete fieldsValue['createTime'];
+                } else {
+                    fieldsValue['createStart'] = "";
+                    fieldsValue['createEnd'] = "";
                 }
-                if (fieldsValue['updateTime']) {
-                    values['updateStart'] = fieldsValue['updateTime'][0].format('YYYY-MM-DD');
-                    values['updateEnd'] = fieldsValue['updateTime'][1].format('YYYY-MM-DD');
+                if (fieldsValue['updateTime'] && fieldsValue['updateTime'].length > 1) {
+                    fieldsValue['updateStart'] = fieldsValue['updateTime'][0].format('YYYY-MM-DD');
+                    fieldsValue['updateEnd'] = fieldsValue['updateTime'][1].format('YYYY-MM-DD');
+                    delete fieldsValue['updateTime'];
+                }else{
+                    fieldsValue['updateStart']= "";
+                    fieldsValue['updateEnd'] = "";
                 }
-                values.pageNum = 1;
-                this.props.submit(values);
+                // fieldsValue['createTime'] = null;
+                // fieldsValue['updateTime'] = null;
+
+
+                fieldsValue.pageNum = 1;
+                this.props.submit(fieldsValue);
             }
         });
     };
