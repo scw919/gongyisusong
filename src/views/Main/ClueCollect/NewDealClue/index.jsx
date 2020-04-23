@@ -252,7 +252,7 @@ class NewDealClue extends React.PureComponent {
                 pages: 1,
                 total: 0,
             }
-            this.setState({ loading: false, dataList: [], query: query });
+            this.setState({ loading: false, visible: false, dataList: [], query: query });
             this.props.toggleModalNew(false);
             message.success("新建成功");
         })

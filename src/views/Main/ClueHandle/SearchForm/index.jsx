@@ -35,8 +35,8 @@ class SearchForm extends React.Component {
                     fieldsValue['updateStart'] = fieldsValue['updateTime'][0].format('YYYY-MM-DD');
                     fieldsValue['updateEnd'] = fieldsValue['updateTime'][1].format('YYYY-MM-DD');
                     delete fieldsValue['updateTime'];
-                }else{
-                    fieldsValue['updateStart']= "";
+                } else {
+                    fieldsValue['updateStart'] = "";
                     fieldsValue['updateEnd'] = "";
                 }
                 // fieldsValue['createTime'] = null;
@@ -67,6 +67,8 @@ class SearchForm extends React.Component {
                             })(
                                 <Input
                                     placeholder="请输入"
+                                    autoComplete="off"
+                                    allowClear
                                 />,
                             )}
                         </Form.Item>

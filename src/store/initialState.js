@@ -12,4 +12,5 @@ export default {
     part_3_data_index: {}, //首页可视化数据3
     collectClues: [], //用户已收录线索
     token: null, //用户token信息
+    isLogin: false, //用户登录态
 };

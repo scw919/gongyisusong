@@ -8,7 +8,7 @@ import logo from '@/assets/images/login/logo.png';
 import com_const from '@/zTool/commonConsts.js';
 // actions
 import store from '@/store';
-import { saveToken } from '@/store/actions';
+import { setToken } from '@/store/actions';
 // 接口
 import apis from '@/App.api.js';
 const baseURL = "http://172.16.121.73:8763";
@@ -26,7 +26,7 @@ class LoginMain extends React.PureComponent {
         const userIcon = <span styleName="validate-icon user"></span>
         const pwdIcon = <span styleName="validate-icon pwd"></span>
         const validateIcon = <span styleName="validate-icon validate"></span>
-        const validateCode = <span styleName="validate-icon code"><img src={this.state.validateCode} alt="" /></span>
+        const validateCode = <span styleName="validate-icon code" onClick={()=>{this.getValidateCode()}}><img src={this.state.validateCode} alt="" /></span>
 
         return (
             <div styleName="login-box">
@@ -101,7 +101,7 @@ class LoginMain extends React.PureComponent {
                     let userInfo = res.data;
                     // this.props.saveUserInfo(JSON.stringify(userInfo));
                     localStorage.setItem('userInfo',JSON.stringify(userInfo));
-                    store.dispatch(saveToken(userInfo.token));
+                    store.dispatch(setToken(userInfo.token));
                     history.push('/index');
                 })
             }

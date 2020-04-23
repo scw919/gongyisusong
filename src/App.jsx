@@ -11,28 +11,30 @@ const pageConfig = {
         {
             path: '/index',
             component: Index,
+            isAuth: true,
         },
         {
             redirect: true,
             path: '/index',
             to: '/index/charts',
-            keepAlive: true,
+            isAuth: true
         },
-
         {
             path: '/main',
             component: Main,
+            isAuth: true
         },
-
         {
             redirect: true,
             path: '/main',
-            to: '/main/clueDiscovery'
+            to: '/main/clueDiscovery',
+            isAuth: true
         },
         {
             redirect: true,
             path: '/main/clueDiscovery',
-            to: '/main/clueDiscovery/byClue'
+            to: '/main/clueDiscovery/byClue',
+            isAuth: true
         },
         {
             path: '/login',

@@ -5,6 +5,7 @@ export default [
     {
         path: '/charts',
         component: Charts,
+        isAuth: true,
         notFilterByMenu: true,
     },
 ];

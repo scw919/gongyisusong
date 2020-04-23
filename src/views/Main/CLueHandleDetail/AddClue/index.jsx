@@ -142,7 +142,7 @@ class AddClue extends React.Component {
             isLoading = false;
         } else {
             newQuery.pageNum += 1;
-            console.log(newQuery.pageNum, newQuery.pages, '222222222222222222222222222222')
+            // console.log(newQuery.pageNum, newQuery.pages, '222222222222222222222222222222')
             if (newQuery.pageNum > newQuery.pages) {
                 isLoading = false;
                 return false;
@@ -202,8 +202,8 @@ class AddClue extends React.Component {
                 pages: 1,
                 total: 0,
             }
-            this.setState({ loading:false, visible: false, dataList: [], query: query });
-            this.props.toggleModal(false);
+            this.setState({ loading: false, visible: false, dataList: [], query: query });
+            this.props.toggleModal(false, checkedList);
             message.success("操作成功");
             // history.go(0);
         })

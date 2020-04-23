@@ -1,17 +1,12 @@
 export default {
     name: 'user',
     mutations: {
-        saveToken(state, action) {
+        setToken (state, action) {
             return {
                 ...state,
                 token: action.payload.value,
+                isLogin: Boolean(action.payload.value)
             };
-        },
-        removeToken(state, action) {
-            return {
-                ...state,
-                token: null,
-            };
-        },
+        }
     },
 };

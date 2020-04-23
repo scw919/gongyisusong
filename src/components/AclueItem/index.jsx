@@ -18,7 +18,7 @@ class AclueItem extends React.Component {
     static propTypes = {
         sub: PropTypes.object,
         onClick: PropTypes.func,
-        refresh: PropTypes.bool, // 刷新
+        callback: PropTypes.func, //回调
         toggleModal: PropTypes.func,
         hasCollected: PropTypes.bool, //是否已收藏
         hasChecked: PropTypes.bool, // 是否可勾选
@@ -160,7 +160,7 @@ class AclueItem extends React.Component {
     }
     // 删除
     delete = (e) => {
-        const { sub, refresh } = this.props;
+        const { sub, callback } = this.props;
         e.stopPropagation();
         e.nativeEvent.stopImmediatePropagation()
         confirm({
@@ -173,7 +173,7 @@ class AclueItem extends React.Component {
                 // console.log('OK');
                 apis.main.deleteClue({ id: sub.id }).then(res => {
                     message.success('操作成功');
-                    // refresh && window.location.reload();
+                    callback && callback(sub.id);
                 })
             },
             onCancel() {

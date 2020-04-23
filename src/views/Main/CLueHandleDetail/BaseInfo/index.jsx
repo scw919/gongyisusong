@@ -1,7 +1,6 @@
 import React from 'react';
-import { Button, Modal, Form, Row, Col, Input } from 'antd';
+import { Form, Row, Col, Input } from 'antd';
 const { TextArea } = Input;
-const { confirm } = Modal;
 // import { zTool } from "zerod";
 import './style.scss';
 
@@ -30,8 +29,8 @@ const BaseInfo = Form.create({ name: 'form_in_modal' })(
                                 name="soluClueType"
                             >
                                 {getFieldDecorator('soluClueType', {
-                                    rules: [{ required: true, message: '请输入线索类型' }],
-                                    initialValue: soluClueType,
+                                    // rules: [{ required: true, message: '请输入线索类型' }],
+                                    initialValue: soluClueType||"",
                                 })(
                                     <Input
                                         placeholder="请输入"
@@ -47,8 +46,8 @@ const BaseInfo = Form.create({ name: 'form_in_modal' })(
                                 rules={[]}
                             >
                                 {getFieldDecorator('soluClueDomain', {
-                                    rules: [{ required: true, message: '请输入线索领域' }],
-                                    initialValue: soluClueDomain,
+                                    // rules: [{ required: true, message: '请输入线索领域' }],
+                                    initialValue: soluClueDomain||"",
                                 })(
                                     <Input
                                         placeholder="请输入"
@@ -67,8 +66,8 @@ const BaseInfo = Form.create({ name: 'form_in_modal' })(
                                 rules={[]}
                             >
                                 {getFieldDecorator('soluClueDes', {
-                                    rules: [{ required: true, message: '请输入线索描述' }],
-                                    initialValue: soluClueDes,
+                                    // rules: [{ required: true, message: '请输入线索描述' }],
+                                    initialValue: soluClueDes||"",
                                 })(
                                     <TextArea
                                         autoSize={{ minRows: 5, maxRows: 6 }}

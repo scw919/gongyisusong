@@ -31,7 +31,7 @@ class ListItem extends React.Component {
         return (
             <div onClick={(e) => { this.checkDetail(e, id) }} className="ft-16 relative" styleName="item-box">
                 <div className="absolute" styleName={iconName}></div>
-                <p className="ellipsis" styleName="title">{collectionName}</p>
+                <p className="ellipsis" styleName="title" title={collectionName}>{collectionName}</p>
                 <p styleName="tags">
                     {
                         counts.length > 0 ? counts.map((item, index) => {
@@ -47,7 +47,7 @@ class ListItem extends React.Component {
                     <div>
                         <Button onClick={(e) => { this.delete(e, id) }} type="link" className="warning">删除</Button>
                         {
-                            collStatus&&collStatus.code == 0 ?
+                            collStatus && collStatus.code == 0 ?
                                 <Button onClick={(e) => { this.drop(e, id, true) }} type="link">废弃</Button> :
                                 <Button onClick={(e) => { this.drop(e, id, false) }} type="link">启用</Button>
                         }
@@ -86,8 +86,8 @@ class ListItem extends React.Component {
     checkDetail = (e, id) => {
         e.stopPropagation();
         const { history } = this.props;
-        // history.push(`/main/myClue/clueHandle/clueHandleDetail/${id}`);
-        window.open(`/main/myClue/clueHandle/clueHandleDetail/${id}`);
+        history.push(`/main/myClue/clueHandle/clueHandleDetail/${id}`);
+        // window.open(`/main/myClue/clueHandle/clueHandleDetail/${id}`);
     }
     // 删除
     delete = (e, id) => {

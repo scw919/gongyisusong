@@ -355,13 +355,13 @@ class ClueDiscovery extends React.Component {
 
                     },
                     data: [
-                        { value: 235, name: '生态资源' },
-                        { value: 274, name: '食药安全' },
-                        { value: 310, name: '国有财产' },
-                        { value: 335, name: '国有土地' },
-                        { value: 400, name: '英烈权益' },
-                        { value: 335, name: '疫情相关' },
-                        { value: 400, name: '其他' }
+                        // { value: 235, name: '生态资源' },
+                        // { value: 274, name: '食药安全' },
+                        // { value: 310, name: '国有财产' },
+                        // { value: 335, name: '国有土地' },
+                        // { value: 400, name: '英烈权益' },
+                        // { value: 335, name: '疫情相关' },
+                        // { value: 400, name: '其他' }
                     ]
                 }
             ]
@@ -427,10 +427,10 @@ class ClueDiscovery extends React.Component {
                         }
                     },
                     data: [
-                        { value: 335, name: '调查取证中' },
-                        { value: 310, name: '呈请立案中' },
-                        { value: 310, name: '已立案' },
-                        { value: 234, name: '立案审批未通过' },
+                        // { value: 335, name: '调查取证中' },
+                        // { value: 310, name: '呈请立案中' },
+                        // { value: 310, name: '已立案' },
+                        // { value: 234, name: '立案审批未通过' },
                     ]
                 }
             ]

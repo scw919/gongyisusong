@@ -35,7 +35,7 @@ class ClueDiscoveryDetail extends React.Component {
     match = matchPath(this.props.location.pathname, { //路由信息
         path: this.props.routePath
     });
-    collUploadFile = ""; 文件路径字符串
+    collUploadFile = ""; //文件路径字符串
     componentDidMount() {
         // console.log(this.match, mainRoutes,this.props.location);
         // createBreadCrumb(this.match, this.props.location, mainRoutes);
@@ -65,7 +65,7 @@ class ClueDiscoveryDetail extends React.Component {
             canCollect: false,
             isHandle: true,
             history: history,
-            refresh: true
+            callback: this.filterClues
         }
         return (
             <Zlayout.Zbody scroll={true}>
@@ -135,11 +135,30 @@ class ClueDiscoveryDetail extends React.Component {
     }
 
     // 添加线索弹窗 显示隐藏
-    toggleModal = (status) => {
+    toggleModal = (status, checkedList) => {
         console.log(status);
+        let details = this.state.details;
+        if (checkedList && checkedList.length > 0) {
+            checkedList.forEach(item => {
+                item.penaltyDecisionDate = item.showDateTime;
+                item.labels = item.lables;
+            })
+            details.clues = details.clues.concat(checkedList);
+        }
         this.setState({
-            visible: status
+            visible: status,
+            details: details,  //添加线索后刷新当前线索展示
         })
+    }
+    // 删除线索 回调
+    filterClues = (id) => {
+        let details = this.state.details;
+        details.clues = details.clues.filter(item => {
+            return item.id != id
+        })
+        this.setState({
+            details: details
+        });
     }
     // 获取文件路径字符串
     updateFilePath = (collUploadFile) => {
@@ -152,15 +171,17 @@ class ClueDiscoveryDetail extends React.Component {
     };
     // 保存提交
     saveBaseInfo = (e) => {
+        const { history } = this.props;
         const { details, fileList } = this.state;
         e.preventDefault();
         const form = this.formRef.props.form;
         form.validateFields((err, fieldsValue) => {
             if (!err) {
                 // console.log(fieldsValue);
-                let data = Object.assign({}, fieldsValue, { id: details.id, collUploadFile: this.collUploadFile })
+                let data = Object.assign({}, fieldsValue, { id: details.id, collUploadFile: this.collUploadFile||"" })
                 apis.main.saveColl(data).then(res => {
-                    message.success('保存成功')
+                    message.success('保存成功');
+                    history.go(-1);
                 })
             }
         });
