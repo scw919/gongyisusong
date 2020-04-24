@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 import './style.scss';
 import avator from '@/assets/images/procurator.png';
 import logo from '@/assets/images/login/logo.png';
@@ -26,7 +26,7 @@ class LoginMain extends React.PureComponent {
         const userIcon = <span styleName="validate-icon user"></span>
         const pwdIcon = <span styleName="validate-icon pwd"></span>
         const validateIcon = <span styleName="validate-icon validate"></span>
-        const validateCode = <span styleName="validate-icon code" onClick={()=>{this.getValidateCode()}}><img src={this.state.validateCode} alt="" /></span>
+        const validateCode = <span styleName="validate-icon code" onClick={() => { this.getValidateCode() }}><img src={this.state.validateCode} alt="" /></span>
 
         return (
             <div styleName="login-box">
@@ -66,6 +66,7 @@ class LoginMain extends React.PureComponent {
                                 rules: [{ required: true, message: '请输入验证码' }],
                             })(
                                 <Input
+                                    maxLength={4}
                                     prefix={validateIcon}
                                     suffix={validateCode}
                                     placeholder="请输入验证码"
@@ -100,9 +101,14 @@ class LoginMain extends React.PureComponent {
                 apis.login.login(values).then(res => {
                     let userInfo = res.data;
                     // this.props.saveUserInfo(JSON.stringify(userInfo));
-                    localStorage.setItem('userInfo',JSON.stringify(userInfo));
+                    localStorage.setItem('userInfo', JSON.stringify(userInfo));
                     store.dispatch(setToken(userInfo.token));
                     history.push('/index');
+                    // history.go(0)
+                }).catch(res => {
+                    // console.log(res, 'login_err')
+                    message.warning(res.msg);
+                    this.getValidateCode();
                 })
             }
         });

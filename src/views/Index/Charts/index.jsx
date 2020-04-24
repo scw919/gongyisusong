@@ -268,6 +268,17 @@ class ClueDiscovery extends React.Component {
         { type: 'registered', name: '已立案的线索量', counts: 23955, unit: '条' },
         { type: 'failedFiling', name: '立案审批未通过的线索量', counts: 23955, unit: '条' },
     ]
+    // 保存第二部分图表数据
+    part_2_data = {
+        domainVos: [], //领域
+        sourceVos: [], //来源
+    };
+    part_3_data = {
+        domainVos: [], //领域
+        stageVos: [], //阶段
+    };
+
+    // echarts options
     echartOptions = {
         'part-1': {
             tooltip: {
@@ -325,7 +336,7 @@ class ClueDiscovery extends React.Component {
                 left: '60%',
                 // padding: [10, 0],
                 itemGap: 20,
-                data: ['生态资源', '食药安全', '国有财产', '国有土地', '英烈权益', '疫情相关', '其他']
+                data: ['环境资源', '食药安全', '国有财产', '国有土地', '英烈权益', '疫情相关', '其他']
             },
             color: ['#8B5DFF', '#5155FB', '#F9658E', '#42B6FF', '#FF9554', '#17CFB7', '#FFC732'],
             series: [
@@ -355,7 +366,7 @@ class ClueDiscovery extends React.Component {
 
                     },
                     data: [
-                        // { value: 235, name: '生态资源' },
+                        // { value: 235, name: '环境资源' },
                         // { value: 274, name: '食药安全' },
                         // { value: 310, name: '国有财产' },
                         // { value: 335, name: '国有土地' },
@@ -483,8 +494,10 @@ class ClueDiscovery extends React.Component {
             ]
         }
     }
-    componentWillReceiveProps(nextProps) {
-        this.resetSecondSurvey(nextProps.secondSurvey);
+    componentWillReceiveProps(nextProps, prevProps) {
+        if (nextProps.secondSurvey) {
+            this.resetSecondSurvey(nextProps.secondSurvey);
+        }
     }
     componentDidMount() {
         const { secondSurvey } = this.props;
@@ -510,12 +523,12 @@ class ClueDiscovery extends React.Component {
         // this.myChart_3.setOption(this.echartOptions['part-3']);
         // this.myChart_4.setOption(this.echartOptions['part-4']);
         this.resetSecondSurvey(secondSurvey);
-        this.changeYears(2020);  // part-4 图标渲染
+        this.changeYears(2020);  // part-4 图表渲染
     }
     render() {
         const { history, firstSurvey, part_2_tabs } = this.props;
         const { defaultYears, yearsList } = this.state;
-        console.log(part_2_tabs);
+        // console.log(part_2_tabs);
         // const {  } = this.state;
         return (
             <Zlayout.Zbody scroll={true}>
@@ -532,7 +545,7 @@ class ClueDiscovery extends React.Component {
                                             <div className="flex" styleName="desc">
                                                 <p>{item.name}</p>
                                                 <p>
-                                                    <span className="ft-24 mar-r-5" styleName="counts">{firstSurvey[item.type] || firstSurvey['allClue'] || 0}</span>
+                                                    <span className="ft-24 mar-r-5" styleName="counts">{firstSurvey[item.type] || 0}</span>
                                                     <span className="ft-14" styleName="unit">{item.unit}</span>
                                                 </p>
                                             </div>
@@ -576,8 +589,8 @@ class ClueDiscovery extends React.Component {
                                 <div className="flex flex-end" styleName="data-type">
                                     <div styleName="data-type-handle">
                                         <Radio.Group onChange={(e) => { this.changeTabs(e, 'clueIncluded') }} defaultValue={part_2_tabs.clueIncluded} size="small" buttonStyle="solid">
-                                            <Radio.Button value="0">领域</Radio.Button>
-                                            <Radio.Button value="1">来源</Radio.Button>
+                                            <Radio.Button value="domainVos">领域</Radio.Button>
+                                            <Radio.Button value="sourceVos">来源</Radio.Button>
                                         </Radio.Group>
                                     </div>
                                 </div>
@@ -597,8 +610,8 @@ class ClueDiscovery extends React.Component {
                                 <div className="flex flex-end" styleName="data-type">
                                     <div styleName="data-type-handle">
                                         <Radio.Group onChange={(e) => { this.changeTabs(e, 'clueDispose') }} defaultValue={part_2_tabs.clueDispose} size="small" buttonStyle="solid">
-                                            <Radio.Button value="0">处置阶段</Radio.Button>
-                                            <Radio.Button value="1">领域</Radio.Button>
+                                            <Radio.Button value="stageVos">处置阶段</Radio.Button>
+                                            <Radio.Button value="domainVos">领域</Radio.Button>
                                         </Radio.Group>
                                     </div>
                                 </div>
@@ -673,35 +686,81 @@ class ClueDiscovery extends React.Component {
         obj[type] = e.target.value;
         console.log(obj);
         changetabs_part_2(obj);
+        switch(type){
+            case 'clueIncluded':
+                this.echartOptions['part-2'].series[0]['data'] = this.part_2_data[e.target.value];
+                this.myChart_2.setOption(this.echartOptions['part-2']);
+                break;
+            case 'clueDispose':
+                this.echartOptions['part-3'].series[0]['data'] = this.part_3_data[e.target.value];
+                this.myChart_3.setOption(this.echartOptions['part-3']);
+                break;
+        }
     }
     // part-1-2-3 三个图表数据处理
     resetSecondSurvey = (data) => {
-        console.log(data);
-        if (data.clueIncludedVo && data.clueIncludedVo.length > 0) {
-            let clueIncludedVo = data.clueIncludedVo; //线索收录情况 part-2
-            let part_2_data = this.echartOptions['part-2'].series[0]['data'];
-            clueIncludedVo.map(item => {
-                let index = item.domainEnum.code,
-                    name = item.domainEnum.desc,
-                    cnt = item.cnt;
-                let newItem = { name: name, value: cnt }
-                part_2_data[index] = newItem;
+        const { part_2_tabs } = this.props;
+        // console.log(this.props.part_2_tabs)
+        if (data.clueIncludedVo) {
+            let domainVos = data.clueIncludedVo.domainVos || [];
+            let sourceVos = data.clueIncludedVo.sourceVos || [];
+            let part_2_domainVos = [], // 领域
+                part_2_sourceVos = []; // 来源
+            domainVos.map(item => {
+                if (item.domainEnum) {
+                    let index = item.domainEnum.code,
+                        name = item.domainEnum.desc,
+                        cnt = item.domainCnt;
+                    let newItem = { name: name, value: cnt }
+                    part_2_domainVos[index] = newItem;
+                }
             })
+            sourceVos.map(item => {
+                if (item.sourceEnum) {
+                    let index = item.sourceEnum.code,
+                        name = item.sourceEnum.desc,
+                        cnt = item.sourceCnt;
+                    let newItem = { name: name, value: cnt }
+                    part_2_sourceVos[index] = newItem;
+                }
+            })
+            this.part_2_data = {
+                domainVos: part_2_domainVos,
+                sourceVos: part_2_sourceVos
+            }
+            this.echartOptions['part-2'].series[0]['data'] = this.part_2_data[part_2_tabs.clueIncluded];
             this.myChart_2.setOption(this.echartOptions['part-2']);
         }
-        if (data.clueDisposeVo && data.clueDisposeVo.length > 0) {
-            let clueDisposeVo = data.clueDisposeVo; //线索处置情况 part-3
-            let part_3_data = this.echartOptions['part-3'].series[0]['data'];
-            clueDisposeVo.map(item => {
-                let index = item.collStageEnum.code,
-                    name = item.collStageEnum.desc,
-                    cnt = item.cnt;
-                let newItem = { name: name, value: cnt }
-                part_3_data[index] = newItem;
+        if (data.clueDisposeVo) {
+            let domainVos = data.clueDisposeVo.domainVos || [];
+            let stageVos = data.clueDisposeVo.stageVos || [];
+            let part_3_domainVos = [], // 领域
+                part_3_stageVos = []; // 阶段
+            domainVos.map(item => {
+                if (item.domainEnum) {
+                    let index = item.domainEnum.code,
+                        name = item.domainEnum.desc,
+                        cnt = item.cnt;
+                    let newItem = { name: name, value: cnt }
+                    part_3_domainVos[index] = newItem;
+                }
             })
+            stageVos.map(item => {
+                if (item.collStageEnum) {
+                    let index = item.collStageEnum.code,
+                        name = item.collStageEnum.desc,
+                        cnt = item.cnt;
+                    let newItem = { name: name, value: cnt }
+                    part_3_stageVos[index] = newItem;
+                }
+            })
+            this.part_3_data = {
+                domainVos: part_3_domainVos,
+                stageVos: part_3_stageVos
+            }
+            this.echartOptions['part-3'].series[0]['data'] = this.part_3_data[part_2_tabs.clueDispose];
             this.myChart_3.setOption(this.echartOptions['part-3']);
         }
-
     }
     // part-4
     // 数据重组

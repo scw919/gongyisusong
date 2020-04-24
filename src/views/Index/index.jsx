@@ -49,9 +49,6 @@ class Main extends React.Component {
         startTime: moment().startOf('month').format('YYYY-MM-DD HH:mm:ss'),
         endTime: moment().endOf('day').format('YYYY-MM-DD HH:mm:ss')
     }
-    componentWillMount() {
-        // console.log(this.props.location, this.match, '11112222');
-    }
     componentDidMount() {
         matchUrlToMenu(this.match);
         this.getData();
@@ -59,7 +56,6 @@ class Main extends React.Component {
     render() {
         const { history, collapsed, menuIndex } = this.props;
         const mainBody = this.props.getMaimRouteTemplate();
-        console.log(mainBody);
         //自定义主页布局，经过ZmainHOC包装的组件，会this.props.getSideMenuTemplate和this.props.getMaimRouteTemplate两个方法
         return (
             <Zlayout>
@@ -102,7 +98,7 @@ class Main extends React.Component {
     // getData
     getData = () => {
         const { getIndexData_part_1, getIndexData_part_2 } = this.props;
-        let query_part_2 = Object.assign({}, this.query, this.props.part_2_tabs);
+        let query_part_2 = Object.assign({}, this.query);
         // console.log(this.query,query_part_2);
         try {
             apis.index.getFirstSurvey(this.query).then(res => { // part-1

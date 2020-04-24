@@ -82,7 +82,10 @@ export const AsearchPart = (props) => {
 		// getClueSuggestion();
 		getClueParamsInit();
 	}, [])
-
+	useEffect(() => {
+		// getClueSuggestion();
+		updateSearchOptions(keyWord)
+	}, [tags])
 	// 关闭单个已选条件
 	function handleClose(removedTag) {
 		const newTags = tags.filter(tag => tag !== removedTag);
@@ -115,6 +118,7 @@ export const AsearchPart = (props) => {
 	}
 	// 更新搜索条件
 	function updateSearchOptions(keyWord) {
+		console.log(tags);
 		let newSearchOptions = [];
 		tags.forEach(item => {
 			let option = {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ZpureComponent from 'zerod/components/ZpureComponent';
 import compnents from '@/components/load-components.js';
-const { AsortButton, AclueItem, AsearchPart } = compnents;
+const { AsortButton, AclueItem, AsearchPart, AscrollContent } = compnents;
 // import SearchList from '../ClueDiscovery/Children/SearchList';
 import NewDealClue from './NewDealClue';
 import RelatedClue from './RelatedClue';
@@ -50,7 +50,7 @@ class ClueDiscovery extends React.Component {
         const { history, routes } = this.props;
         const { newVisible, relatedVisible } = this.state;
         return (
-            <Zlayout.Zbody scroll={true} ref_component={this} loadmore={'ref_component'}>
+            <AscrollContent scroll={true} ref_component={this} loadmore={'ref_component'}>
                 <div className="main-rt-container" style={{ height: '100%' }}>
                     {/* <AseamlessScroll /> */}
                     <AsearchPart searchResult={this.updateOptions} />
@@ -101,7 +101,7 @@ class ClueDiscovery extends React.Component {
                     {/* 关联线索收录 */}
                     <RelatedClue visible={relatedVisible} clueName={this.state.clueName} clueID={this.state.clueID} toggleModalRel={this.toggleModalRel} />
                 </div>
-            </Zlayout.Zbody>
+            </AscrollContent>
         )
     }
     // 搜索

@@ -2,6 +2,8 @@ import React from 'react';
 import { Modal, Button, Input, Icon, Checkbox, message } from 'antd';
 const CheckboxGroup = Checkbox.Group;
 const { Search } = Input;
+import compnents from '@/components/load-components.js';
+const { AscrollContent } = compnents;
 import { Zlayout } from 'zerod';
 import PropTypes from 'prop-types';
 import './style.scss';
@@ -13,8 +15,8 @@ let isLoading = false;
 
 class NewDealClue extends React.PureComponent {
     static propTypes = {
-        visible: PropTypes.bool,
-        clueID: PropTypes.number,
+        visible: PropTypes.bool, // 弹窗 状态
+        clueID: PropTypes.number, // 收录的线索id
     };
     state = {
         loading: false,
@@ -79,7 +81,7 @@ class NewDealClue extends React.PureComponent {
                         </div>
                         <div styleName="search-clue-list">
                             <Zlayout flexRow>
-                                <Zlayout.Zbody scroll={true} ref_component={this} loadmore={'ref_component'}>
+                                <AscrollContent scroll={true} ref_component={this} loadmore={'ref_component'}>
                                     <CheckboxGroup
                                         value={this.state.checkedList}
                                         onChange={this.onChangeSelClue}
@@ -117,7 +119,7 @@ class NewDealClue extends React.PureComponent {
                                             })
                                         }
                                     </CheckboxGroup>
-                                </Zlayout.Zbody>
+                                </AscrollContent>
                             </Zlayout>
                         </div>
                     </div>

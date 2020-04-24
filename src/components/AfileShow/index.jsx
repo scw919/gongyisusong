@@ -9,7 +9,6 @@ import pdfIcon from '@/assets/images/detail/pdf.png';
 import videoIcon from '@/assets/images/detail/video.png';
 import wordIcon from '@/assets/images/detail/word.png';
 // import doc from '@/assets/doc.doc';
-import mp4 from '@/assets/mp4.mp4';
 
 export class AfileShow extends React.Component {
     static propTypes = {
@@ -91,11 +90,11 @@ export class AfileShow extends React.Component {
     }
     // 关闭预览窗口
     handleCancel = (e) => {
-        console.log('cancel');
+        // console.log('cancel');
         e.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
         this.setState({ previewVisible: false }, () => {
-            console.log(this.state.previewVisible);
+            // console.log(this.state.previewVisible);
         });
     }
     // 渲染对应文件的icon
@@ -131,7 +130,7 @@ export class AfileShow extends React.Component {
             return <img style={{ width: '100%' }} src={url} alt="" />
         } else if (type == 'video') {
             return (
-                <video src={mp4} width="720" height="500" controls>
+                <video src={url} width="720" height="500" controls>
                     您的浏览器不支持 video 标签。
                 </video>
             )

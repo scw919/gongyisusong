@@ -1,3 +1,5 @@
+import React from 'react';
+import { Redirect } from 'react-router-dom';
 import store from '@/store';
 import { zTool } from 'zerod';
 // actions
@@ -21,7 +23,7 @@ const createBreadCrumb = function (main, location, mainRoutes) {
     const IndexRoute = { path: main.path, pathName: '线索管理', index: 0 };
     let curPath = location.pathname,
         matchRoutes = [];
-    curPath = curPath.indexOf('Detail/') > -1 ? curPath.split('Detail/')[0]+'Detail/:id' : curPath;
+    curPath = curPath.indexOf('Detail/') > -1 ? curPath.split('Detail/')[0] + 'Detail/:id' : curPath;
     mainRoutes.map((item) => {
         let index = curPath.lastIndexOf(item.path);
         if (index > -1) {
@@ -35,7 +37,7 @@ const createBreadCrumb = function (main, location, mainRoutes) {
         return a.path.length - b.path.length;
     });
     matchRoutes.unshift(IndexRoute);
-    console.log(mainRoutes,matchRoutes, 'commonMethods111111111111111111111');
+    console.log(mainRoutes, matchRoutes, 'commonMethods111111111111111111111');
     // console.log(main, location, mainRoutes, 'commonMethods');
     store.dispatch(changeBreadCrumb(matchRoutes));
 };
@@ -152,11 +154,25 @@ const getFileList = (path, isSlefUpload) => {
     }
 };
 
+// 自定重定向
+const redict_path = '/login';
+const redirectDeal = (options) => {
+    let isLogin = Boolean(localStorage.getItem('token') && localStorage.getItem('token') != 'null');
+    return isLogin
+        ? options
+        : Object.assign(options, {
+              render: () => {
+                  return <Redirect to={redict_path}></Redirect>;
+              },
+          });
+};
+
 const commonMethods = {
     matchUrlToMenu: matchUrlToMenu,
     createBreadCrumb: createBreadCrumb,
     downloadFile: downloadFileByUrl.download,
     fileSizeChange: fileSizeChange,
     getFileList: getFileList,
+    redirectDeal: redirectDeal,
 };
 export default commonMethods;

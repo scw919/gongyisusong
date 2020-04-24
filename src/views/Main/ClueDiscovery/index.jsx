@@ -1,6 +1,6 @@
 import React from 'react';
 import compnents from '@/components/load-components.js';
-const { AsortButton, AclueItem, AsearchPart } = compnents;
+const { AsortButton, AclueItem, AsearchPart, AscrollContent } = compnents;
 // import SearchList from './Children/SearchList';
 import { Checkbox } from 'antd';
 const CheckboxGroup = Checkbox.Group;
@@ -57,7 +57,7 @@ class ClueDiscovery extends React.Component {
         const { history } = this.props;
         const { dataList, } = this.state;
         return (
-            <Zlayout.Zbody scroll={true} ref_component={this} loadmore={'ref_component'}>
+            <AscrollContent scroll={true} ref_component={this} loadmore={'ref_component'}>
                 <div className="main-rt-container" style={{ height: '100%' }}>
                     {/* <AseamlessScroll /> */}
                     <AsearchPart searchResult={this.updateOptions} />
@@ -100,7 +100,7 @@ class ClueDiscovery extends React.Component {
                     </div>
                     {/* <SearchList data={this.state.dataList} history={history} /> */}
                 </div>
-            </Zlayout.Zbody>
+            </AscrollContent>
         )
     }
     // 搜索

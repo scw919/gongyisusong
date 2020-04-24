@@ -2,6 +2,8 @@ import React from 'react';
 import { Modal, Button, Input, Radio, Icon, Checkbox, message } from 'antd';
 const { Search } = Input;
 const CheckboxGroup = Checkbox.Group;
+import compnents from '@/components/load-components.js';
+const { AscrollContent } = compnents;
 import { Zlayout } from 'zerod';
 import PropTypes from 'prop-types';
 import './style.scss';
@@ -96,7 +98,7 @@ class NewDealClue extends React.PureComponent {
                                 </div>
                                 <div styleName="search-clue-list">
                                     <Zlayout flexRow>
-                                        <Zlayout.Zbody scroll={true} ref_component={this} loadmore={'ref_component'}>
+                                        <AscrollContent scroll={true} ref_component={this} loadmore={'ref_component'}>
                                             <CheckboxGroup
                                                 value={this.state.checkedList}
                                                 onChange={this.onChangeSelClue}
@@ -119,7 +121,7 @@ class NewDealClue extends React.PureComponent {
                                                     })
                                                 }
                                             </CheckboxGroup>
-                                        </Zlayout.Zbody>
+                                        </AscrollContent>
                                     </Zlayout>
                                 </div>
                             </div>
@@ -139,13 +141,14 @@ class NewDealClue extends React.PureComponent {
         }
         apis.main.checkCollectionName(query).then(res => {
             if (res.code == 0) {
-                return true;
-            } else {
                 message.warning('线索名称已存在，请重新输入');
                 this.setState({
                     clueName: null
                 });
+            } else {
+                return true;
             }
+
         });
     }
     // 切换是否需要关联
