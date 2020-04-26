@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import compnents from '@/components/load-components.js';
-// const { Acollect } = compnents;
+import { AlabelTags } from '../AlabelTags';
 import { Acollect } from '../Acollect';
 import { Icon, Button, Checkbox, Modal, message } from 'antd';
 const { confirm } = Modal;
@@ -9,6 +8,7 @@ import { Link } from 'react-router-dom';
 import './style.scss';
 // 接口
 import apis from '@/App.api.js';
+
 const linkTypes = {
     collectDetail: '/main/myClue/clueCollect/clueCollectDetail',
     discoveryDetail: '/main/clueDiscovery/byClue/clueDiscoveryDetail',
@@ -69,15 +69,7 @@ class AclueItem extends React.Component {
                 <div className="flex flex-between">
                     <div styleName="left-part">
                         <Icon className="mar-r-5" type="book" />
-                        <div className="ft-16 inline-block">
-                            {
-                                sub.lables ? Object.keys(sub.lables).map(key => {
-                                    return <span key={key} className={`tags-self ${sub.lables[key]}`}>{key}</span>
-                                    // <span className="tags-self tag-yellow">其他案件</span>
-                                    // <span className="tags-self tag-red">罚款</span>
-                                }) : null
-                            }
-                        </div>
+                        <AlabelTags labels={sub.lables} />
                     </div>
                     {/* <div></div> */}
                 </div>

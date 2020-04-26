@@ -5,6 +5,7 @@ import './style.scss';
 import apis from '@/App.api.js';
 import store from '@/store';
 import { getCollectedClues } from '@/store/actions';
+// //at.alicdn.com/t/font_1740380_epha2kuvmm.js
 export class Acollect extends React.PureComponent {
     static propTypes = {
         id: PropTypes.number,
@@ -28,13 +29,15 @@ export class Acollect extends React.PureComponent {
                     hasCollected ?
                         (
                             <div onClick={(e) => { this.handleCollected(e, id) }} styleName="collect collected" className="ft-16 pointer">
-                                <Icon type="heartFill" className="mar-r-5" />
+                                {/* <Icon type="heartFill" className="mar-r-5" /> */}
+                                <span className="iconfont icon-heartFill mar-r-5" styleName="iconfont"></span>
                                 已收录
                             </div>
                         ) :
                         (
                             <div onClick={(e) => { this.handleCollected(e, id) }} styleName="collect" className="ft-16 pointer">
-                                <Icon type="heart" className="mar-r-5" />
+                                {/* <Icon type="heart" className="mar-r-5" /> */}
+                                <span className="iconfont icon-heart mar-r-5" styleName="iconfont"></span>
                                 收录
                             </div>
                         )

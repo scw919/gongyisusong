@@ -1,11 +1,15 @@
 import React from 'react';
 // import { Link } from 'react-router-dom';
-import { Carousel } from 'antd';
+// import { Carousel } from 'antd';
 import PropTypes from 'prop-types';
-import './style.scss';
+
+import { AlabelTags } from '../AlabelTags';
 import { Acollect } from '../Acollect';
 import SelfCarousel from './CarouselSelf';
+
 import detailInfo from '@/assets/images/detail/detail-info.jpg';
+import './style.scss';
+
 // 工具
 import { zTool } from "zerod";
 
@@ -79,7 +83,7 @@ class AClueDetailCard extends React.PureComponent {
         } = this.props;
         const snapShots = snapshot && snapshot.length > 0 && snapshot.split(',') || [];
         const hasCollected = Boolean(isIncluded);
-        console.log(hasCollected, snapShots, 'AclueDetailCard');
+        // console.log(hasCollected, snapShots, 'AclueDetailCard');
         return (
             <div className="flex" styleName="card-box">
                 <SelfCarousel files={snapShots} />
@@ -91,18 +95,12 @@ class AClueDetailCard extends React.PureComponent {
                             <Acollect hasCollected={hasCollected} id={Number(id)} />
                         </div>
                         <p className="ft-24">{caseName}</p>
-                        <div>
-                            {
-                                lables ? Object.keys(lables).map(key => {
-                                    return <span key={key} className={`tags-self ${lables[key]}`}>{key}</span>
-                                }) : null
-                            }
-                        </div>
+                        <AlabelTags labels={lables} />
                     </div>
                     {/* 简介 */}
                     <div className="flex ft-16" styleName="info">
                         <div>
-                            <p>线索来源：{source}</p>
+                            <p>线索来源：{source&&source.desc}</p>
                             <p>行政处罚决定文书号：{documentDecisionNumber}</p>
                             <p>处罚类别一：{penaltyCategory1 && penaltyCategory1.desc || null}</p>
                             <p>行政相对人名称：{partyName}</p>

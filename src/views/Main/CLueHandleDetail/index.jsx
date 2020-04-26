@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { matchPath } from 'react-router-dom';
 import compnents from '@/components/load-components.js';
-const { AclueItem, Aupload } = compnents;
+const { AclueItem, Aupload, AlabelTags } = compnents;
 import { Button, message } from 'antd';
 
 import { Zlayout } from 'zerod';
@@ -72,13 +72,16 @@ class ClueDiscoveryDetail extends React.Component {
                 <div styleName="main-rt-con-detail" style={{ height: '100%' }}>
                     <div className="text-center" styleName="detail-title">
                         <p className="ft-24">{details.collectionName}</p>
-                        <p className="mar-t-15">
+                        <div className="mar-t-15">
+                            <AlabelTags labels={details.doMainsLabels} />
+                        </div>
+                        {/* <p className="mar-t-15">
                             {
                                 details.doMainsLabels ? details.doMainsLabels.map((item, index) => {
                                     return <span key={index} className={`tags-self ${item.color}`}>{item.desc}</span>
                                 }) : null
                             }
-                        </p>
+                        </p> */}
                     </div>
                     {/* 基本概况 */}
                     <div className="ft-16" styleName="main-module">
@@ -178,7 +181,7 @@ class ClueDiscoveryDetail extends React.Component {
         form.validateFields((err, fieldsValue) => {
             if (!err) {
                 // console.log(fieldsValue);
-                let data = Object.assign({}, fieldsValue, { id: details.id, collUploadFile: this.collUploadFile||"" })
+                let data = Object.assign({}, fieldsValue, { id: details.id, collUploadFile: this.collUploadFile || "" })
                 apis.main.saveColl(data).then(res => {
                     message.success('保存成功');
                     history.go(-1);

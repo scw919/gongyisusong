@@ -16,6 +16,8 @@ export const AsearchPart = (props) => {
 	const [tags, setTags] = useState([
 		// {name: '全部',counts: 123, type: 'diyu'},{name: '天河区', counts: 222, type: 'lingyu'}
 	]);
+	// 是否 unmount 
+	let unmount = false;
 	// 已选条件对象
 	const [searchOptions, setSearchOptions] = useState({});
 	// 地域
@@ -57,20 +59,21 @@ export const AsearchPart = (props) => {
 	// 获取条件筛选列表数据
 	async function getClueParamsInit() {
 		await apis.main.clueParams().then(res => {
+
 			let data = res.data;
 			data.forEach((item, index) => {
 				switch (item.dimension) {
 					case 'region':
-						setAreaDiyu(item)
+						!unmount ? setAreaDiyu(item) : null;
 						break;
 					case 'domain':
-						setAreaLingyu(item)
+						!unmount ? setAreaLingyu(item) : null;
 						break;
 					case 'clue_type':
-						setAreaLeibie(item)
+						!unmount ? setAreaLeibie(item) : null;
 						break;
 					case 'time':
-						setAreaTime(item)
+						!unmount ? setAreaTime(item) : null;
 						break;
 				}
 			})
@@ -81,10 +84,19 @@ export const AsearchPart = (props) => {
 	useEffect(() => {
 		// getClueSuggestion();
 		getClueParamsInit();
+		document.onclick = () => {
+			setClueSuggestionVisible(false)
+		};
+		return () => {
+			unmount = true;
+		}
 	}, [])
 	useEffect(() => {
 		// getClueSuggestion();
-		updateSearchOptions(keyWord)
+		updateSearchOptions(keyWord);
+		return () => {
+			unmount = true;
+		}
 	}, [tags])
 	// 关闭单个已选条件
 	function handleClose(removedTag) {
@@ -104,7 +116,7 @@ export const AsearchPart = (props) => {
 	// 清除所有已选条件
 	function clearTags() {
 		setTags([]);
-		childDiyu.current.setSelectedAreaIndex(null);
+		// childDiyu.current.setSelectedAreaIndex(null);
 		childLingyu.current.setSelectedAreaIndex(null);
 		childLeibie.current.setSelectedAreaIndex(null);
 		childTimer.current.setSelectedAreaIndex(null);
@@ -118,7 +130,7 @@ export const AsearchPart = (props) => {
 	}
 	// 更新搜索条件
 	function updateSearchOptions(keyWord) {
-		console.log(tags);
+		// console.log(tags);
 		let newSearchOptions = [];
 		tags.forEach(item => {
 			let option = {
@@ -132,7 +144,7 @@ export const AsearchPart = (props) => {
 			paramValue: keyWord
 		}) : null;
 		// setSearchOptions(newSearchOptions);
-		props.searchResult(newSearchOptions);
+		!unmount ? props.searchResult(newSearchOptions) : null;
 		// console.log(newSearchOptions,searchOptions);
 	}
 	// 点击搜索
@@ -168,7 +180,7 @@ export const AsearchPart = (props) => {
 	}
 	return (
 		<div styleName="search-box" className="flex align-item-center just-con-center flex-col">
-			<div styleName="search-top-ipt" className="flex align-item-center">
+			<div onClick={(e) => { e.nativeEvent.stopImmediatePropagation() }} styleName="search-top-ipt" className="flex align-item-center">
 				<Search
 					className="search-ipt"
 					size="large"
@@ -179,9 +191,9 @@ export const AsearchPart = (props) => {
 					onFocus={() => { setClueSuggestionVisible(true) }}
 					enterButton
 				/>
-				<div styleName="input-relate" style={{ display: clueSuggestion.length > 0 && clueSuggestionVisible ? 'block' : 'none' }}>
+				<div id="suggestion-box" styleName="input-relate" style={{ display: clueSuggestion.length > 0 && clueSuggestionVisible ? 'block' : 'none' }}>
 					{clueSuggestion.map((item, index) => {
-						return <p onClick={() => { setKeyWord(item); setClueSuggestionVisible(false) }} key={index}>{item}</p>
+						return <p onClick={(e) => { setKeyWord(item); setClueSuggestionVisible(false) }} key={index}>{item}</p>
 					})}
 				</div>
 			</div>
@@ -215,7 +227,7 @@ export const AsearchPart = (props) => {
 			</div>
 			<div styleName="border-box search-bottom-check" styleName={isCollapse ? 'collapse' : 'extend'}>
 				<div styleName="slide-box">
-					<SelectItem ref={childDiyu} {...areaDiyu} selectedChange={changeSel} />
+					{/* <SelectItem ref={childDiyu} {...areaDiyu} selectedChange={changeSel} /> */}
 					<SelectItem ref={childLingyu} {...areaLingyu} selectedChange={changeSel} />
 					<SelectItem ref={childLeibie} {...areaLeibie} selectedChange={changeSel} />
 					<SelectItem ref={childTimer} {...areaTime} selectedChange={changeSel}>

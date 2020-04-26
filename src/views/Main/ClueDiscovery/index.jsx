@@ -42,7 +42,7 @@ class ClueDiscovery extends React.Component {
         ],
         sortByFilter: '', //默认筛选时间
         sortByCollect: '', //默认采集时间
-        collectClues: [],//已收录的线索
+        collectClues: this.props.collectClues,//已收录的线索
     }
     componentDidMount() {
         this.props.getCollectedClues().then(action => {
@@ -52,6 +52,9 @@ class ClueDiscovery extends React.Component {
                 collectClues: action.payload.collectClues
             })
         });
+    }
+    componentWillUnmount() {
+        this.setState = () => false;
     }
     render() {
         const { history } = this.props;
@@ -219,7 +222,8 @@ class ClueDiscovery extends React.Component {
     // 判断是否收录
     hasCollected = (id) => {
         const { collectClues } = this.props;
-        return collectClues.collectClues.indexOf(id) > -1;
+        // console.log(collectClues);
+        return collectClues.indexOf(id) > -1;
     }
     // 收录 / 取消收录
     handleCollected = (value) => {

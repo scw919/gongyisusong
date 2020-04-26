@@ -103,12 +103,12 @@ class Main extends React.Component {
         try {
             apis.index.getFirstSurvey(this.query).then(res => { // part-1
                 //axios返回的数据是用response.data包括的，和jquery不一样
-                console.log(res.data);
+                // console.log(res.data);
                 getIndexData_part_1(res.data);
             })
             apis.index.getEachSituation(query_part_2).then(res => { // part-2
                 //axios返回的数据是用response.data包括的，和jquery不一样
-                console.log(res.data);
+                // console.log(res.data);
                 getIndexData_part_2(res.data);
             })
         } catch (error) {

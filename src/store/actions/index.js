@@ -53,12 +53,10 @@ export const getCollectedClues = async (value) => {
     const collectClues = await apis.main.clueFindUserClue().then((res) => {
         return res && res.data;
     });
-    // console.log(collectClues);
+    // console.log(collectClues, '请求用户已收藏');
     return {
         type: 'find.getCollectedClues',
-        payload: {
-            collectClues,
-        },
+        payload: collectClues,
     };
 };
 // 用户信息存储 

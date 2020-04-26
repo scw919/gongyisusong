@@ -140,7 +140,7 @@ class NewDealClue extends React.PureComponent {
             return;
         }
         apis.main.checkCollectionName(query).then(res => {
-            if (res.code == 0) {
+            if (res.data) {
                 message.warning('线索名称已存在，请重新输入');
                 this.setState({
                     clueName: null

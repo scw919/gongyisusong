@@ -1,17 +1,17 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+// import { connect } from 'react-redux';
+// import PropTypes from 'prop-types';
 import { Form, Input, Button, message } from 'antd';
 import './style.scss';
 import avator from '@/assets/images/procurator.png';
 import logo from '@/assets/images/login/logo.png';
-import com_const from '@/zTool/commonConsts.js';
+// import com_const from '@/zTool/commonConsts.js';
 // actions
 import store from '@/store';
-import { setToken } from '@/store/actions';
+import { setToken, getCollectedClues } from '@/store/actions';
 // 接口
 import apis from '@/App.api.js';
-const baseURL = "http://172.16.121.73:8763";
+const baseURL = "http://172.16.121.73:8765/user";
 
 class LoginMain extends React.PureComponent {
     // 定义初始state
@@ -19,7 +19,8 @@ class LoginMain extends React.PureComponent {
         validateCode: avator
     };
     componentDidMount() {
-        this.getValidateCode()
+        this.getValidateCode();
+        console.log(this.props.history)
     }
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -104,6 +105,8 @@ class LoginMain extends React.PureComponent {
                     localStorage.setItem('userInfo', JSON.stringify(userInfo));
                     store.dispatch(setToken(userInfo.token));
                     history.push('/index');
+                    // 获取用户已收录列表
+                    store.dispatch(getCollectedClues());
                     // history.go(0)
                 }).catch(res => {
                     // console.log(res, 'login_err')

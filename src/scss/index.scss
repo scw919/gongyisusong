@@ -134,8 +134,8 @@
         }
     }
     .ant-menu {
-        .ant-menu-inline{
-            .ant-menu-item{
+        .ant-menu-inline {
+            .ant-menu-item {
                 margin: 0;
             }
         }
@@ -210,7 +210,8 @@
         .ant-btn-link {
             color: #3988ff;
         }
-        [type='button'],&[type='button'] {
+        [type='button'],
+        &[type='button'] {
             display: inline-block;
             height: 32px;
             line-height: 32px;
@@ -219,7 +220,7 @@
             background: rgba(35, 87, 161, 1);
             border-radius: 2px;
             border: none;
-            &:hover{
+            &:hover {
                 background: #386ab3;
             }
         }
@@ -241,25 +242,45 @@
         padding: 0 8px;
         border-radius: 2px;
         font-size: 12px;
+        &.domain {
+            background: rgba(226, 248, 239, 1);
+            color: #1bc27a;
+        }
+        &.clueType {
+            background: rgba(252, 246, 235, 1);
+            color: #ffb12d;
+        }
+        &.PenaltyCategoryOne{
+            background: rgba(254, 241, 243, 1);
+            color: #ef374f;
+        }
+        &.PenaltyCategoryTwo{
+            background:rgba(237,244,255,1);
+            color: #7F93B2;
+        }
         &.GREEN {
             background: rgba(226, 248, 239, 1);
             color: #1bc27a;
         }
-        &.YELLOW, &.GOLD {
+        &.YELLOW {
             background: rgba(252, 246, 235, 1);
             color: #ffb12d;
+        }
+        &.GOLD {
+            background: rgba(252, 246, 235, 1);
+            color: #dcd581;
         }
         &.RED {
             background: rgba(254, 241, 243, 1);
             color: #ef374f;
         }
-        &.BLUE{
+        &.BLUE {
             background: rgb(227, 223, 249, 1);
             color: blue;
         }
         &.BLACK {
-            background:rgba(234,237,245,1);
-            color: #62697D;
+            background: rgba(234, 237, 245, 1);
+            color: #62697d;
         }
         &.tag-grey {
             background: rgba(235, 238, 245, 1);
@@ -332,10 +353,9 @@
                     margin: 0 auto;
                 }
             }
-            
         }
     }
-    .ant-modal-footer{
+    .ant-modal-footer {
         padding: 16px 24px;
     }
     // 日历

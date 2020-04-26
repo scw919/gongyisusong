@@ -37,7 +37,7 @@ const createBreadCrumb = function (main, location, mainRoutes) {
         return a.path.length - b.path.length;
     });
     matchRoutes.unshift(IndexRoute);
-    console.log(mainRoutes, matchRoutes, 'commonMethods111111111111111111111');
+    // console.log(mainRoutes, matchRoutes, 'commonMethods111111111111111111111');
     // console.log(main, location, mainRoutes, 'commonMethods');
     store.dispatch(changeBreadCrumb(matchRoutes));
 };
@@ -158,6 +158,7 @@ const getFileList = (path, isSlefUpload) => {
 const redict_path = '/login';
 const redirectDeal = (options) => {
     let isLogin = Boolean(localStorage.getItem('token') && localStorage.getItem('token') != 'null');
+    console.log(isLogin, 'isLogin status');
     return isLogin
         ? options
         : Object.assign(options, {

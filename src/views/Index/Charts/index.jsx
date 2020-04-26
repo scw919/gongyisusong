@@ -501,6 +501,7 @@ class ClueDiscovery extends React.Component {
     }
     componentDidMount() {
         const { secondSurvey } = this.props;
+        
         let chart_1 = document.getElementById('data-charts-1');
         let chart_2 = document.getElementById('data-charts-2');
         let chart_3 = document.getElementById('data-charts-3');

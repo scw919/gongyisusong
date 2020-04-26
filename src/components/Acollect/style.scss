@@ -1,6 +1,10 @@
+
 .collect {
     color: #565a60;
     &.collected {
         color: #ff4f69;
+    }
+    .iconfont {
+        font-size: 22px;
     }
 }
