@@ -40,8 +40,8 @@ class ClueDiscovery extends React.Component {
         dataList: [
 
         ],
-        sortByFilter: '', //默认筛选时间
-        sortByCollect: '', //默认采集时间
+        sortByFilter: 'desc', //默认筛选时间
+        sortByCollect: 'desc', //默认采集时间
         collectClues: [],//已收录的线索
         newVisible: false, //新建处置 弹窗
         relatedVisible: false, //关联线索 弹窗
@@ -51,56 +51,61 @@ class ClueDiscovery extends React.Component {
         const { newVisible, relatedVisible } = this.state;
         return (
             <AscrollContent scroll={true} ref_component={this} loadmore={'ref_component'}>
-                <div className="main-rt-container" style={{ height: '100%' }}>
-                    {/* <AseamlessScroll /> */}
-                    <AsearchPart searchResult={this.updateOptions} />
-                    <div className="mar-t-20" styleName="search-list">
-                        <div className="flex flex-between" styleName="search-list-top">
-                            <div className="primary_self">
-                                <Checkbox
-                                    indeterminate={this.state.indeterminate}
-                                    onChange={this.onCheckAllChange}
-                                    checked={this.state.checkAll}
-                                />
-                                <span onClick={() => { this.includeAll() }} type="button" style={{ marginLeft: '10px' }}>取消收录</span>
-                                <span styleName="total-counts">共收录{this.state.query.total}个案件</span>
-                            </div>
-                            <div className="flex">
-                                <AsortButton sortType={this.state.sortByFilter} sortName={'筛选时间'} clickEvent={this.changeSortType1} />
-                                <AsortButton sortType={this.state.sortByCollect} sortName={'采集时间'} clickEvent={this.changeSortType2} />
-                            </div>
-                        </div>
-                        <div styleName="search-list-results">
-                            {
-                                <CheckboxGroup value={this.state.checkedList} onChange={this.onChange}>
+                <div className="main-rt-div1">
+                    <div className="main-rt-div2">
+                        <div className="main-rt-container" style={{ height: '100%' }}>
+                            {/* <AseamlessScroll /> */}
+                            <AsearchPart searchResult={this.updateOptions} />
+                            <div className="mar-t-20" styleName="search-list">
+                                <div className="flex flex-between" styleName="search-list-top">
+                                    <div className="primary_self">
+                                        <Checkbox
+                                            indeterminate={this.state.indeterminate}
+                                            onChange={this.onCheckAllChange}
+                                            checked={this.state.checkAll}
+                                        />
+                                        <span onClick={() => { this.includeAll() }} type="button" style={{ marginLeft: '10px' }}>取消收录</span>
+                                        <span styleName="total-counts">共收录{this.state.query.total}个案件</span>
+                                    </div>
+                                    <div className="flex">
+                                        <AsortButton sortType={this.state.sortByFilter} sortName={'筛选时间'} clickEvent={this.changeSortType1} />
+                                        <AsortButton sortType={this.state.sortByCollect} sortName={'收录时间'} clickEvent={this.changeSortType2} />
+                                    </div>
+                                </div>
+                                <div styleName="search-list-results">
                                     {
-                                        this.state.dataList.map((sub, subKey) => {
-                                            return (
-                                                <AclueItem
-                                                    history={history}
-                                                    key={subKey}
-                                                    sub={sub}
-                                                    isCollect={true}
-                                                    hasChecked={true}
-                                                    hasCollected={true}
-                                                    toggleModalNew={this.toggleModalNew}
-                                                    toggleModalRel={this.toggleModalRel}
-                                                    clickEvent={this.handleCollected}>
-                                                </AclueItem>
-                                            )
-                                        })
+                                        <CheckboxGroup value={this.state.checkedList} onChange={this.onChange}>
+                                            {
+                                                this.state.dataList.map((sub, subKey) => {
+                                                    return (
+                                                        <AclueItem
+                                                            history={history}
+                                                            key={subKey}
+                                                            sub={sub}
+                                                            isCollect={true}
+                                                            hasChecked={true}
+                                                            hasCollected={true}
+                                                            toggleModalNew={this.toggleModalNew}
+                                                            toggleModalRel={this.toggleModalRel}
+                                                            clickEvent={this.handleCollected}>
+                                                        </AclueItem>
+                                                    )
+                                                })
+                                            }
+                                        </CheckboxGroup >
                                     }
-                                </CheckboxGroup >
-                            }
 
+                                </div>
+                            </div>
+                            {/* <SearchList toggleModalNew={this.toggleModalNew} toggleModalRel={this.toggleModalRel} data={this.state.dataList} isCollect={true} history={history} /> */}
+                            {/* 新建 线索收录 */}
+                            <NewDealClue visible={newVisible} clueName={this.state.clueName} clueID={this.state.clueID} toggleModalNew={this.toggleModalNew} />
+                            {/* 关联线索收录 */}
+                            <RelatedClue visible={relatedVisible} clueName={this.state.clueName} clueID={this.state.clueID} toggleModalRel={this.toggleModalRel} />
                         </div>
                     </div>
-                    {/* <SearchList toggleModalNew={this.toggleModalNew} toggleModalRel={this.toggleModalRel} data={this.state.dataList} isCollect={true} history={history} /> */}
-                    {/* 新建 线索收录 */}
-                    <NewDealClue visible={newVisible} clueName={this.state.clueName} clueID={this.state.clueID} toggleModalNew={this.toggleModalNew} />
-                    {/* 关联线索收录 */}
-                    <RelatedClue visible={relatedVisible} clueName={this.state.clueName} clueID={this.state.clueID} toggleModalRel={this.toggleModalRel} />
                 </div>
+
             </AscrollContent>
         )
     }
@@ -114,6 +119,7 @@ class ClueDiscovery extends React.Component {
     }
     // 子组件 更新搜索条件
     updateOptions = (paramsList) => {
+        console.log('updateOptions');
         let newQuery = zTool.deepCopy(this.state.query);
         newQuery.list = paramsList;
         this.setState({
@@ -131,7 +137,7 @@ class ClueDiscovery extends React.Component {
         let sortList = [
             sortByCollect ? {
                 order: sortByCollect,
-                sortFiled: "createdTime"
+                sortFiled: "includeTime"
             } : null, sortByFilter ? {
                 order: sortByFilter,
                 sortFiled: "uniteSortTime"
@@ -147,7 +153,6 @@ class ClueDiscovery extends React.Component {
             newQuery.pages = data.pages;
             newQuery.total = data.total;
             this.setState({
-                isMyClue: 1,
                 query: newQuery,
                 dataList: data.list,
                 checkAll: false,

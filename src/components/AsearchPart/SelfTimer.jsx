@@ -29,6 +29,7 @@ class SelfTimer extends React.Component {
         return (
             <div>
                 <Modal
+                    centered={true}
                     width={430}
                     styleName="new-deal-box"
                     visible={visible}
@@ -80,7 +81,7 @@ class SelfTimer extends React.Component {
             messages = "请选择开始时间";
         } else if (!endTime) {
             messages = "请选择结束时间"
-        }else if(moment(startTime).valueOf()>moment(endTime).valueOf() ){
+        } else if (moment(startTime).valueOf() > moment(endTime).valueOf()) {
             messages = "开始时间不能大于结束时间"
         }
         if (messages) {

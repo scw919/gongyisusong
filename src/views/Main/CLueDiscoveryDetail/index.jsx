@@ -42,54 +42,58 @@ class ClueDiscoveryDetail extends React.Component {
         const { details, punishmentFileList } = this.state;
         return (
             <Zlayout.Zbody scroll={true}>
-                <div styleName="main-rt-con-detail" style={{ height: '100%' }}>
-                    <AClueDetailCard id={this.props.match.params.id} {...details} />
-                    {/* 线索其他内容 */}
-                    <div className="ft-16" styleName="clue-other main-module">
-                        <p className="title-line-before" styleName="title bt-line">线索其他内容</p>
-                        <div styleName="clue-other-item">
-                            <div>
-                                <p styleName="title">处理事由：</p>
-                                <p styleName="content">
-                                    {details.punishmentCause}
-                                </p>
+                <div className="main-rt-div1">
+                    <div className="main-rt-div2">
+                        <div styleName="main-rt-con-detail" style={{ height: '100%' }}>
+                            <AClueDetailCard id={this.props.match.params.id} {...details} />
+                            {/* 线索其他内容 */}
+                            <div className="ft-16" styleName="clue-other main-module">
+                                <p className="title-line-before" styleName="title bt-line">线索其他内容</p>
+                                <div styleName="clue-other-item">
+                                    <div>
+                                        <p styleName="title">处理事由：</p>
+                                        <p styleName="content">
+                                            {details.punishmentCause}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div styleName="clue-other-item">
+                                    <div>
+                                        <p styleName="title">处罚依据：</p>
+                                        <p styleName="content">
+                                            {details.punishmentBasis}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div styleName="clue-other-item">
+                                    <div>
+                                        <p styleName="title">处罚结果：</p>
+                                        <p styleName="content">
+                                            {details.penaltyResult}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div styleName="clue-other-item">
-                            <div>
-                                <p styleName="title">处罚依据：</p>
-                                <p styleName="content">
-                                    {details.punishmentBasis}
-                                </p>
+                            {/* 文件材料 */}
+                            <div styleName="main-module">
+                                <p className="title-line-before" styleName="title bt-line">文件材料</p>
+                                <div className="flex" styleName="file-list">
+                                    {
+                                        punishmentFileList.map((file, index) => {
+                                            return (
+                                                <AfileShow disabled={true} key={index} {...file} />
+                                            )
+                                        })
+                                    }
+                                </div>
                             </div>
-                        </div>
-                        <div styleName="clue-other-item">
-                            <div>
-                                <p styleName="title">处罚结果：</p>
-                                <p styleName="content">
-                                    {details.penaltyResult}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    {/* 文件材料 */}
-                    <div styleName="main-module">
-                        <p className="title-line-before" styleName="title bt-line">文件材料</p>
-                        <div className="flex" styleName="file-list">
-                            {
-                                punishmentFileList.map((file, index) => {
-                                    return (
-                                        <AfileShow disabled={true} key={index} {...file} />
-                                    )
-                                })
-                            }
                         </div>
                     </div>
                 </div>
                 {/* <div className="text-center mar-b-20">
                     <Button onClick={() => { history.goBack() }} >返回</Button>
                 </div> */}
-                
+
             </Zlayout.Zbody >
         )
     }

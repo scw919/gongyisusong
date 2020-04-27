@@ -51,57 +51,61 @@ class ClueDiscoveryDetail extends React.Component {
         const { history, routes } = this.props;
         return (
             <Zlayout.Zbody scroll={true}>
-                <div styleName="main-rt-con-detail" style={{ height: '100%' }}>
-                    <AClueDetailCard id={this.props.match.params.id} {...details} />
-                    {/* 线索其他内容 */}
-                    <div className="ft-16" styleName="clue-other main-module">
-                        <p className="title-line-before" styleName="title bt-line">线索其他内容</p>
-                        <div styleName="clue-other-item">
-                            <div>
-                                <p styleName="title">处理事由：</p>
-                                <p styleName="content">
-                                    {details.punishmentCause}
-                                </p>
+                <div className="main-rt-div1">
+                    <div className="main-rt-div2">
+                        <div styleName="main-rt-con-detail" style={{ height: '100%' }}>
+                            <AClueDetailCard id={this.props.match.params.id} {...details} />
+                            {/* 线索其他内容 */}
+                            <div className="ft-16" styleName="clue-other main-module">
+                                <p className="title-line-before" styleName="title bt-line">线索其他内容</p>
+                                <div styleName="clue-other-item">
+                                    <div>
+                                        <p styleName="title">处理事由：</p>
+                                        <p styleName="content">
+                                            {details.punishmentCause}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div styleName="clue-other-item">
+                                    <div>
+                                        <p styleName="title">处罚依据：</p>
+                                        <p styleName="content">
+                                            {details.punishmentBasis}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div styleName="clue-other-item">
+                                    <div>
+                                        <p styleName="title">处罚结果：</p>
+                                        <p styleName="content">
+                                            {details.penaltyResult}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* 文件材料 */}
+                            <div styleName="main-module">
+                                <p className="title-line-before" styleName="title bt-line">文件材料</p>
+                                <div className="flex" styleName="file-list">
+                                    {
+                                        punishmentFileList.map((file, index) => {
+                                            return (
+                                                <AfileShow disabled={true} key={index} {...file} />
+                                            )
+                                        })
+                                    }
+                                </div>
+                            </div>
+                            {/* 其他材料 上传 */}
+                            <div styleName="main-module">
+                                <p className="title-line-before" styleName="title bt-line">其他材料上传</p>
+                                <Aupload filePath={this.clueUploadFile} updateFilePath={this.updateFilePath} />
+                            </div>
+                            <div className="flex just-con-center" style={{ padding: '45px 0' }}>
+                                <Button onClick={() => { this.saveBaseInfo() }} type="primary" style={{ marginRight: '24px' }}>保存</Button>
+                                <Button onClick={() => { history.goBack() }}>返回</Button>
                             </div>
                         </div>
-                        <div styleName="clue-other-item">
-                            <div>
-                                <p styleName="title">处罚依据：</p>
-                                <p styleName="content">
-                                    {details.punishmentBasis}
-                                </p>
-                            </div>
-                        </div>
-                        <div styleName="clue-other-item">
-                            <div>
-                                <p styleName="title">处罚结果：</p>
-                                <p styleName="content">
-                                    {details.penaltyResult}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    {/* 文件材料 */}
-                    <div styleName="main-module">
-                        <p className="title-line-before" styleName="title bt-line">文件材料</p>
-                        <div className="flex" styleName="file-list">
-                            {
-                                punishmentFileList.map((file, index) => {
-                                    return (
-                                        <AfileShow disabled={true} key={index} {...file} />
-                                    )
-                                })
-                            }
-                        </div>
-                    </div>
-                    {/* 其他材料 上传 */}
-                    <div styleName="main-module">
-                        <p className="title-line-before" styleName="title bt-line">其他材料上传</p>
-                        <Aupload filePath={this.clueUploadFile} updateFilePath={this.updateFilePath} />
-                    </div>
-                    <div className="flex just-con-center" style={{ padding: '45px 0' }}>
-                        <Button onClick={() => { this.saveBaseInfo() }} type="primary" style={{ marginRight: '24px' }}>保存</Button>
-                        <Button onClick={() => { history.goBack() }}>返回</Button>
                     </div>
                 </div>
             </Zlayout.Zbody>

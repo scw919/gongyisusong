@@ -16,36 +16,41 @@ class ClueHandle extends React.Component {
             pages: 1,
             total: 0,
         },
-        resultList: [ ]
+        resultList: []
     }
     render() {
         const { history } = this.props;
         const { resultList, query } = this.state;
         return (
             <Zlayout.Zbody scroll={true}>
-                <div styleName="main-rt-con-detail" style={{ height: '100%' }}>
-                    <div styleName="search-box">
-                        <div>
-                            <SearchForm submit={this.submit} />
+                <div className="main-rt-div1">
+                    <div className="main-rt-div2">
+                        <div styleName="main-rt-con-detail" style={{ height: '100%' }}>
+                            <div styleName="search-box">
+                                <div>
+                                    <SearchForm submit={this.submit} />
+                                </div>
+                            </div >
+                            <div styleName="result-box">
+                                <Row>
+                                    {
+                                        resultList.map((item, index) => {
+                                            return (
+                                                <Col key={index} span={6}>
+                                                    <ListItem refresh={this.submit} {...item} history={history} />
+                                                </Col>
+                                            )
+                                        })
+                                    }
+                                </Row>
+                            </div>
+                            <div className="text-right" style={{ marginTop: '10px' }}>
+                                <Pagination size="small" defaultPageSize={12} pageSizeOptions={["8", "12", "16"]} current={query.pageNum} showSizeChanger showQuickJumper total={query.total} onShowSizeChange={this.onShowSizeChange} onChange={this.pageChange} />
+                            </div>
                         </div>
-                    </div >
-                    <div styleName="result-box">
-                        <Row>
-                            {
-                                resultList.map((item, index) => {
-                                    return (
-                                        <Col key={index} span={6}>
-                                            <ListItem refresh={this.submit} {...item} history={history} />
-                                        </Col>
-                                    )
-                                })
-                            }
-                        </Row>
-                    </div>
-                    <div className="text-right" style={{marginTop: '10px'}}>
-                        <Pagination size="small" defaultPageSize={12} pageSizeOptions={["8", "12", "16"]} current={query.pageNum} showSizeChanger showQuickJumper total={query.total} onShowSizeChange={this.onShowSizeChange} onChange={this.pageChange} />
                     </div>
                 </div>
+
             </Zlayout.Zbody >
         )
     }

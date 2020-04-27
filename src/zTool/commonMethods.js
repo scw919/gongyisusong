@@ -20,6 +20,7 @@ const matchUrlToMenu = function (match) {
     store.dispatch(changeMenuIndex(newMenuIndex));
 };
 const createBreadCrumb = function (main, location, mainRoutes) {
+    console.log('createBreadCrumb   commonMethods111111111111111111111');
     const IndexRoute = { path: main.path, pathName: '线索管理', index: 0 };
     let curPath = location.pathname,
         matchRoutes = [];
@@ -163,7 +164,16 @@ const redirectDeal = (options) => {
         ? options
         : Object.assign(options, {
               render: () => {
-                  return <Redirect to={redict_path}></Redirect>;
+                  return (
+                      <Redirect
+                          to={{
+                              pathname: redict_path,
+                              state: {
+                                  isRedirect: true,
+                              },
+                          }}
+                      ></Redirect>
+                  );
               },
           });
 };

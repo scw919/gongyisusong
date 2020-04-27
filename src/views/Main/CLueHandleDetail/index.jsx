@@ -36,9 +36,7 @@ class ClueDiscoveryDetail extends React.Component {
         path: this.props.routePath
     });
     collUploadFile = ""; //文件路径字符串
-    componentDidMount() {
-        // console.log(this.match, mainRoutes,this.props.location);
-        // createBreadCrumb(this.match, this.props.location, mainRoutes);
+    didMount = () => {
         let query = {
             id: this.props.match.params.id
         }
@@ -51,6 +49,11 @@ class ClueDiscoveryDetail extends React.Component {
             }
         })
     }
+    componentDidMount() {
+        // console.log(this.match, mainRoutes,this.props.location);
+        // createBreadCrumb(this.match, this.props.location, mainRoutes);
+        this.didMount()
+    }
     render() {
         const { details, fileList } = this.state;
         const { history } = this.props;
@@ -58,6 +61,7 @@ class ClueDiscoveryDetail extends React.Component {
             history: history,
             visible: this.state.visible,
             collectionID: Number(this.props.match.params.id),
+            relateClues: details.clues,
             toggleModal: this.toggleModal
         }
         const AclueItmOpt = {
@@ -69,69 +73,73 @@ class ClueDiscoveryDetail extends React.Component {
         }
         return (
             <Zlayout.Zbody scroll={true}>
-                <div styleName="main-rt-con-detail" style={{ height: '100%' }}>
-                    <div className="text-center" styleName="detail-title">
-                        <p className="ft-24">{details.collectionName}</p>
-                        <div className="mar-t-15">
-                            <AlabelTags labels={details.doMainsLabels} />
-                        </div>
-                        {/* <p className="mar-t-15">
+                <div className="main-rt-div1">
+                    <div className="main-rt-div2">
+                        <div styleName="main-rt-con-detail" style={{ height: '100%' }}>
+                            <div className="text-center" styleName="detail-title">
+                                <p className="ft-24">{details.collectionName}</p>
+                                <div className="mar-t-15">
+                                    <AlabelTags labels={details.doMainsLabels} />
+                                </div>
+                                {/* <p className="mar-t-15">
                             {
                                 details.doMainsLabels ? details.doMainsLabels.map((item, index) => {
                                     return <span key={index} className={`tags-self ${item.color}`}>{item.desc}</span>
                                 }) : null
                             }
                         </p> */}
-                    </div>
-                    {/* 基本概况 */}
-                    <div className="ft-16" styleName="main-module">
-                        <p className="title-line-before" styleName="title bt-line">基本概况</p>
-                        <BaseInfo
-                            {...details}
-                            wrappedComponentRef={this.saveFormRef}
-                        />
-                    </div>
-                    {/* 线索详情 */}
-                    <div className="ft-16" styleName="main-module">
-                        <p className="title-line-before" styleName="title bt-line">线索详情</p>
-                        <div className="primary_self mar-t-10">
-                            <Button onClick={() => { this.toggleModal(true) }} type="deepBlue">
-                                添加其他线索
+                            </div>
+                            {/* 基本概况 */}
+                            <div className="ft-16" styleName="main-module">
+                                <p className="title-line-before" styleName="title bt-line">基本概况</p>
+                                <BaseInfo
+                                    {...details}
+                                    wrappedComponentRef={this.saveFormRef}
+                                />
+                            </div>
+                            {/* 线索详情 */}
+                            <div className="ft-16" styleName="main-module">
+                                <p className="title-line-before" styleName="title bt-line">线索详情</p>
+                                <div className="primary_self mar-t-10">
+                                    <Button onClick={() => { this.toggleModal(true) }} type="deepBlue">
+                                        添加其他线索
                             </Button>
-                        </div>
-                        <div styleName="other-clue">
-                            {
-                                details.clues ? details.clues.map((item, index) => {
-                                    return <AclueItem key={index} {...AclueItmOpt} sub={item} />
-                                }) : null
-                            }
-                        </div>
-                    </div>
-                    {/* 事态进程 */}
-                    <div className="ft-16" styleName="main-module">
-                        <p className="title-line-before" styleName="title bt-line">事态进程</p>
-                        <div styleName="event-procedure">
-                            <EventProcedure clues={details.clues} history={history} />
-                        </div>
-                    </div>
-                    {/* 其他材料 上传 */}
-                    <div styleName="main-module">
-                        <p className="title-line-before" styleName="title bt-line">其他材料上传</p>
-                        <Aupload filePath={this.collUploadFile} updateFilePath={this.updateFilePath} />
-                    </div>
-                    <div className="text-center" styleName="handle-btn-box">
-                        <Button className="primary_self" disabled type="primary">
-                            呈请立案
+                                </div>
+                                <div styleName="other-clue">
+                                    {
+                                        details.clues ? details.clues.map((item, index) => {
+                                            return <AclueItem key={index} {...AclueItmOpt} sub={item} />
+                                        }) : null
+                                    }
+                                </div>
+                            </div>
+                            {/* 事态进程 */}
+                            <div className="ft-16" styleName="main-module">
+                                <p className="title-line-before" styleName="title bt-line">事态进程</p>
+                                <div styleName="event-procedure">
+                                    <EventProcedure clues={details.clues} history={history} />
+                                </div>
+                            </div>
+                            {/* 其他材料 上传 */}
+                            <div styleName="main-module">
+                                <p className="title-line-before" styleName="title bt-line">其他材料上传</p>
+                                <Aupload filePath={this.collUploadFile} updateFilePath={this.updateFilePath} />
+                            </div>
+                            <div className="text-center" styleName="handle-btn-box">
+                                <Button className="primary_self" disabled type="primary">
+                                    呈请立案
                         </Button>
-                        <Button onClick={this.saveBaseInfo} ghost type="primary">
-                            保存
+                                <Button onClick={this.saveBaseInfo} ghost type="primary">
+                                    保存
                         </Button>
-                        {/* <Button onClick={}>
+                                {/* <Button onClick={}>
                             返回
                         </Button> */}
+                            </div>
+                            {/* 添加其他线索 */}
+                            <AddClue {...addClueOpt} />
+                        </div>
                     </div>
-                    {/* 添加其他线索 */}
-                    <AddClue {...addClueOpt} />
                 </div>
             </Zlayout.Zbody>
         )
@@ -146,11 +154,13 @@ class ClueDiscoveryDetail extends React.Component {
                 item.penaltyDecisionDate = item.showDateTime;
                 item.labels = item.lables;
             })
-            details.clues = details.clues.concat(checkedList);
+            details.clues = checkedList;
         }
         this.setState({
             visible: status,
             details: details,  //添加线索后刷新当前线索展示
+        }, () => {
+            this.didMount()
         })
     }
     // 删除线索 回调

@@ -14,3 +14,8 @@
     background: transparent !important;
     color: #fff;
 }
+.reset_layout_body{
+    :global(.z-layout-body){
+        top: 64px;
+    }
+}

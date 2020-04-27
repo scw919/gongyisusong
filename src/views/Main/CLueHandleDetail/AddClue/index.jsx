@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Modal, Button, Input, Icon, Checkbox, message } from 'antd';
 const CheckboxGroup = Checkbox.Group;
 const { Search } = Input;
@@ -6,17 +7,25 @@ import compnents from '@/components/load-components.js';
 const { AscrollContent } = compnents;
 import { Zlayout } from 'zerod';
 import PropTypes from 'prop-types';
+// actions
+// import { changeCollapsed, changeMenuIndex, setToken } from '@/store/actions';
 import './style.scss';
 // 工具
 import { zTool } from 'zerod';
 // 接口
 import apis from '@/App.api.js';
+
+const mapStateToProps = (state, ownProps) => ({
+    collectClues: state.collectClues,
+});
+
 let isLoading = false;
 class AddClue extends React.Component {
     static propTypes = {
         visible: PropTypes.bool,
         collectionID: PropTypes.number,
         toggleModal: PropTypes.func,
+        relateClues: PropTypes.array,
     };
     state = {
         visible: this.props.visible,
@@ -38,10 +47,15 @@ class AddClue extends React.Component {
         },
         dataList: []
     }
-    componentWillReceiveProps(nextprops, prevProps) {
-        if (nextprops.visible) {
+    static defaultProps = {
+        relateClues: []
+    }
+    checkedList = [];
+    componentWillReceiveProps(nextProps, prevProps) {
+        if (nextProps.visible) {
+            console.log(nextProps.relateClues)
             this.setState({
-                visible: nextprops.visible,
+                visible: nextProps.visible,
             })
             this.getData(true);
         }
@@ -51,6 +65,7 @@ class AddClue extends React.Component {
         return (
             <div>
                 <Modal
+                    centered={true}
                     styleName="new-deal-box"
                     visible={visible}
                     title={title}
@@ -87,7 +102,7 @@ class AddClue extends React.Component {
                                             dataList.map((sub, subKey) => {
                                                 return (
                                                     <div key={subKey} className="flex" styleName="search-clue-item">
-                                                        <Checkbox className="mar-r-5" value={sub} onChange={this.onChangeSelClue} />
+                                                        <Checkbox className="mar-r-5" disabled={sub.checked} value={sub} onChange={this.onChangeSelClue} />
                                                         <div className="flex flex-1">
                                                             <span className="ellipsis" styleName="item-tit" title={sub.caseName}>{sub.caseName}</span>
                                                             <span className="text-right ellipsis" styleName="item-tag" title={this.subLables(sub.lables)}>{this.subLables(sub.lables)}</span>
@@ -108,8 +123,22 @@ class AddClue extends React.Component {
 
     // 搜索
     clueSearch = async (query) => {
+        const { relateClues } = this.props;
+        console.log(relateClues)
         return apis.main.clueSearch(query).then(res => {
-            return res.data;
+            // return res.data;
+            let dataList = res.data.list.map(item => {
+                relateClues.map(relateItem => {
+                    if (item.id == relateItem.id) {
+                        item.checked = true;
+                        this.checkedList.push(item);
+                    }
+                })
+                return item;
+            })
+            res.data.list = dataList;
+            console.log(res.data.list);
+            return res.data
         }).catch(err => {
             // console.log(err)
         })
@@ -138,8 +167,8 @@ class AddClue extends React.Component {
                 query: newQuery,
                 dataList: data.list,
                 checkAll: false,
-                checkedList: [],
                 indeterminate: false,
+                checkedList: this.checkedList
             })
             isLoading = false;
         } else {
@@ -156,7 +185,8 @@ class AddClue extends React.Component {
             old_dataList = old_dataList.concat(data.list);
             this.setState({
                 query: newQuery,
-                dataList: old_dataList
+                dataList: old_dataList,
+                checkedList: this.checkedList
             })
             isLoading = false;
         }
@@ -225,4 +255,4 @@ class AddClue extends React.Component {
         this.props.toggleModal(false);
     };
 }
-export default AddClue;
+export default connect(mapStateToProps)(AddClue);

@@ -58,6 +58,7 @@ class NewDealClue extends React.PureComponent {
         return (
             <div>
                 <Modal
+                    centered={true}
                     styleName="new-deal-box"
                     visible={visible}
                     title={title}

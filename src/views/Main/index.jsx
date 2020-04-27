@@ -43,6 +43,7 @@ class Main extends React.Component {
     });
     location = null;
     componentDidUpdate() {
+        console.log(this.location, this.props.location.pathname, 'componentDidUpdate    ');
         if (this.location && (this.location.pathname == this.props.location.pathname)) {
             return;
         }
@@ -51,7 +52,7 @@ class Main extends React.Component {
     }
     componentDidMount() {
         matchUrlToMenu(this.match);
-        // createBreadCrumb(this.match, this.props.location, mainRoutes);
+        createBreadCrumb(this.match, this.props.location, mainRoutes);
     }
     render() {
         const { history, userName, collapsed, breadCrumbData } = this.props;
@@ -60,7 +61,7 @@ class Main extends React.Component {
             <Zlayout>
                 <ApageHeader history={history} />
                 <Zlayout.Zbody scroll={false} className="layout-container">
-                    <Zlayout flexRow >
+                    <Zlayout>
                         <Zlayout.Zheader className="bread-crumb ft-16">
                             <Breadcrumb>
                                 {/* <Breadcrumb.Item>线索管理</Breadcrumb.Item>

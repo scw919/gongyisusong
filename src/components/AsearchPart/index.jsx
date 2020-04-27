@@ -79,10 +79,11 @@ export const AsearchPart = (props) => {
 			})
 		});
 		// 初始化搜索
-		props.searchResult([])
+		// props.searchResult([])
 	}
 	useEffect(() => {
 		// getClueSuggestion();
+		console.log('getClueParamsInit 111111111111111111111111')
 		getClueParamsInit();
 		document.onclick = () => {
 			setClueSuggestionVisible(false)
@@ -92,6 +93,7 @@ export const AsearchPart = (props) => {
 		}
 	}, [])
 	useEffect(() => {
+		console.log('updateSearchOptions 111111111111111111111111')
 		// getClueSuggestion();
 		updateSearchOptions(keyWord);
 		return () => {

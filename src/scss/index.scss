@@ -80,6 +80,9 @@
     .mar-b-20 {
         margin-bottom: 20px;
     }
+    .pad-0-80 {
+        padding: 0 80px;
+    }
     .ft-16 {
         font-size: 16px;
     }
@@ -250,13 +253,13 @@
             background: rgba(252, 246, 235, 1);
             color: #ffb12d;
         }
-        &.PenaltyCategoryOne{
+        &.PenaltyCategoryOne {
             background: rgba(254, 241, 243, 1);
             color: #ef374f;
         }
-        &.PenaltyCategoryTwo{
-            background:rgba(237,244,255,1);
-            color: #7F93B2;
+        &.PenaltyCategoryTwo {
+            background: rgba(237, 244, 255, 1);
+            color: #7f93b2;
         }
         &.GREEN {
             background: rgba(226, 248, 239, 1);
@@ -337,7 +340,7 @@
 // 页面跟路由央视设置
 :global {
     .layout-container {
-        padding: 0 80px;
+        padding: 0 0 0 80px;
         background: #f0f2f5;
         .bread-crumb {
             height: 48px !important;
@@ -345,8 +348,23 @@
             align-items: center;
         }
         .main-container {
+            background: #f0f2f5;
             .z-layout-body {
-                background: #fff;
+                .z-body-scroll {
+                    >div,>div>section{
+                    height: 100%;
+
+                    }
+                }
+                .main-rt-div1 {
+                    height: 100%;
+                    padding-right: 80px;
+                    background: #f0f2f5;
+                    .main-rt-div2 {
+                        min-height: 100%;
+                        background: #fff;
+                    }
+                }
                 .main-rt-container {
                     width: 1200px;
                     padding-bottom: 50px;
@@ -369,6 +387,12 @@
         .ant-calendar-picker-container {
             left: 0 !important;
             right: auto !important;
+        }
+    }
+    // loading
+    .z-loading{
+        &.is-hide{
+            display:  none;
         }
     }
 }

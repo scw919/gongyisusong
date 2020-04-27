@@ -18,20 +18,18 @@ require('echarts/lib/component/tooltip');
 require('echarts/lib/component/title');
 require('echarts/lib/component/legend');
 // React.$echarts = echarts;
-import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/lib/integration/react';
+import { persistor } from './store';
 import App from './App';
 import './antd-vars.less';
 import './app.scss';
 
-const persistor = persistStore(store);
-
 function didRoot(App) {
     render(
         <Provider store={store}>
-            {/* <PersistGate loading={null} persistor={persistor}> */}
+            <PersistGate loading={null} persistor={persistor}>
                 <App />
-            {/* </PersistGate> */}
+            </PersistGate>
         </Provider>,
         document.querySelector('#app'),
     );

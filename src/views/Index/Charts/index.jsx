@@ -21,6 +21,8 @@ import apis from '@/App.api.js';
 
 
 const mapStateToProps = (state, ownProps) => {
+    console.log(state.part_1_data_index, '/n');//可持续更新
+    console.log(state.part_2_tabs, '/n');
     return ({
         collapsed: state.collapsed,
         menuIndex: state.menuIndex,
@@ -501,7 +503,7 @@ class ClueDiscovery extends React.Component {
     }
     componentDidMount() {
         const { secondSurvey } = this.props;
-        
+
         let chart_1 = document.getElementById('data-charts-1');
         let chart_2 = document.getElementById('data-charts-2');
         let chart_3 = document.getElementById('data-charts-3');
@@ -532,131 +534,128 @@ class ClueDiscovery extends React.Component {
         // console.log(part_2_tabs);
         // const {  } = this.state;
         return (
-            <Zlayout.Zbody scroll={true}>
-                <div styleName="index-container" style={{ height: '100%' }}>
-
-                    {/* part-1 */}
-                    <div styleName="col-div-box part-1">
-                        <div styleName="col-div-box-child">
-                            {
-                                this.iconLists.map((item, index) => {
-                                    return (
-                                        <div key={index} className="flex align-item-center ft-16" styleName="col-div">
-                                            <div styleName={this.renderIcon(item.type)}></div>
-                                            <div className="flex" styleName="desc">
-                                                <p>{item.name}</p>
-                                                <p>
-                                                    <span className="ft-24 mar-r-5" styleName="counts">{firstSurvey[item.type] || 0}</span>
-                                                    <span className="ft-14" styleName="unit">{item.unit}</span>
-                                                </p>
-                                            </div>
+            <div styleName="index-container" style={{ height: '100%',}}>
+                {/* part-1 */}
+                <div styleName="col-div-box part-1">
+                    <div styleName="col-div-box-child">
+                        {
+                            this.iconLists.map((item, index) => {
+                                return (
+                                    <div key={index} className="flex align-item-center ft-16" styleName="col-div">
+                                        <div styleName={this.renderIcon(item.type)}></div>
+                                        <div className="flex" styleName="desc">
+                                            <p>{item.name}</p>
+                                            <p>
+                                                <span className="ft-24 mar-r-5" styleName="counts">{firstSurvey[item.type] || 0}</span>
+                                                <span className="ft-14" styleName="unit">{item.unit}</span>
+                                            </p>
                                         </div>
-                                    )
-                                })
-                            }
-                        </div>
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
-                    {/* part-2 */}
-                    <div className="flex ft-16" styleName="col-div-box part-2">
-                        <div className="flex flex-col" styleName="col-div">
-                            <div className="flex align-item-center flex-between" styleName="col-div-head">
-                                <span className="relative" styleName="head-tit">检察建议情况</span>
-                                <Button type="link" icon="upload">
-                                    导出
+                </div>
+                {/* part-2 */}
+                <div className="flex ft-16" styleName="col-div-box part-2">
+                    <div className="flex flex-col" styleName="col-div">
+                        <div className="flex align-item-center flex-between" styleName="col-div-head">
+                            <span className="relative" styleName="head-tit">检察建议情况</span>
+                            <Button type="link" icon="upload">
+                                导出
                                 </Button>
-                            </div>
-                            <div className="flex-1" styleName="col-div-content">
-                                <div className="flex flex-end" styleName="data-type">
-                                    <div styleName="data-type-handle">
-                                        <Radio.Group onChange={(e) => { this.changeTabs(e, 'proAdvise') }} defaultValue={part_2_tabs.proAdvise} size="small" buttonStyle="solid">
-                                            <Radio.Button value="0">行政机关</Radio.Button>
-                                            <Radio.Button value="1">领域</Radio.Button>
-                                        </Radio.Group>
-                                    </div>
-                                </div>
-                                <div id="data-charts-1" className="flex" styleName="data-charts">
-
-                                </div>
-                            </div>
                         </div>
-                        <div className="flex flex-col" styleName="col-div">
-                            <div className="flex align-item-center flex-between" styleName="col-div-head">
-                                <span className="relative" styleName="head-tit">线索收录情况</span>
-                                <Button type="link" icon="upload">
-                                    导出
-                                </Button>
-                            </div>
-                            <div className="flex-1" styleName="col-div-content">
-                                <div className="flex flex-end" styleName="data-type">
-                                    <div styleName="data-type-handle">
-                                        <Radio.Group onChange={(e) => { this.changeTabs(e, 'clueIncluded') }} defaultValue={part_2_tabs.clueIncluded} size="small" buttonStyle="solid">
-                                            <Radio.Button value="domainVos">领域</Radio.Button>
-                                            <Radio.Button value="sourceVos">来源</Radio.Button>
-                                        </Radio.Group>
-                                    </div>
+                        <div className="flex-1" styleName="col-div-content">
+                            <div className="flex flex-end" styleName="data-type">
+                                <div styleName="data-type-handle">
+                                    <Radio.Group onChange={(e) => { this.changeTabs(e, 'proAdvise') }} defaultValue={part_2_tabs.proAdvise} size="small" buttonStyle="solid">
+                                        <Radio.Button value="0">行政机关</Radio.Button>
+                                        <Radio.Button value="1">领域</Radio.Button>
+                                    </Radio.Group>
                                 </div>
-                                <div id="data-charts-2" className="flex" styleName="data-charts">
+                            </div>
+                            <div id="data-charts-1" className="flex" styleName="data-charts">
 
-                                </div>
-                            </div>
-                        </div>
-                        <div className="flex flex-col" styleName="col-div">
-                            <div className="flex align-item-center flex-between" styleName="col-div-head">
-                                <span className="relative" styleName="head-tit">线索处置情况</span>
-                                <Button type="link" icon="upload">
-                                    导出
-                                </Button>
-                            </div>
-                            <div className="flex-1" styleName="col-div-content">
-                                <div className="flex flex-end" styleName="data-type">
-                                    <div styleName="data-type-handle">
-                                        <Radio.Group onChange={(e) => { this.changeTabs(e, 'clueDispose') }} defaultValue={part_2_tabs.clueDispose} size="small" buttonStyle="solid">
-                                            <Radio.Button value="stageVos">处置阶段</Radio.Button>
-                                            <Radio.Button value="domainVos">领域</Radio.Button>
-                                        </Radio.Group>
-                                    </div>
-                                </div>
-                                <div id="data-charts-3" className="flex" styleName="data-charts">
-
-                                </div>
                             </div>
                         </div>
                     </div>
-                    {/* part-3 */}
-                    <div className="ft-16 relative" styleName="col-div-box part-3">
-                        <div className="flex flex-col" styleName="col-div">
-                            <div className="flex align-item-center flex-between" styleName="col-div-head">
-                                <span className="relative" styleName="head-tit">公益诉讼线索总体趋势</span>
-                                <Button type="link" icon="upload">
-                                    导出
+                    <div className="flex flex-col" styleName="col-div">
+                        <div className="flex align-item-center flex-between" styleName="col-div-head">
+                            <span className="relative" styleName="head-tit">线索收录情况</span>
+                            <Button type="link" icon="upload">
+                                导出
                                 </Button>
+                        </div>
+                        <div className="flex-1" styleName="col-div-content">
+                            <div className="flex flex-end" styleName="data-type">
+                                <div styleName="data-type-handle">
+                                    <Radio.Group onChange={(e) => { this.changeTabs(e, 'clueIncluded') }} defaultValue={part_2_tabs.clueIncluded} size="small" buttonStyle="solid">
+                                        <Radio.Button value="domainVos">领域</Radio.Button>
+                                        <Radio.Button value="sourceVos">来源</Radio.Button>
+                                    </Radio.Group>
+                                </div>
                             </div>
-                            <div className="flex-1" styleName="col-div-content">
-                                <div className="absolute" style={{ top: '40px', left: '160px', zIndex: 1000000 }}>
-                                    <Select
-                                        defaultValue={defaultYears}
-                                        style={{ width: 90 }}
-                                        onChange={this.changeYears}
-                                        getPopupContainer={triggerNode => triggerNode.parentNode}
-                                        suffixIcon={
-                                            <Icon type="caret-down" />
-                                        }
-                                    >
-                                        {
-                                            yearsList.map((item, index) => {
-                                                return <Option key={index} value={item}>{item}</Option>
-                                            })
-                                        }
-                                    </Select>
-                                </div>
-                                <div id="data-charts-4" className="flex" styleName="data-charts">
+                            <div id="data-charts-2" className="flex" styleName="data-charts">
 
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex flex-col" styleName="col-div">
+                        <div className="flex align-item-center flex-between" styleName="col-div-head">
+                            <span className="relative" styleName="head-tit">线索处置情况</span>
+                            <Button type="link" icon="upload">
+                                导出
+                                </Button>
+                        </div>
+                        <div className="flex-1" styleName="col-div-content">
+                            <div className="flex flex-end" styleName="data-type">
+                                <div styleName="data-type-handle">
+                                    <Radio.Group onChange={(e) => { this.changeTabs(e, 'clueDispose') }} defaultValue={part_2_tabs.clueDispose} size="small" buttonStyle="solid">
+                                        <Radio.Button value="stageVos">处置阶段</Radio.Button>
+                                        <Radio.Button value="domainVos">领域</Radio.Button>
+                                    </Radio.Group>
                                 </div>
+                            </div>
+                            <div id="data-charts-3" className="flex" styleName="data-charts">
+
                             </div>
                         </div>
                     </div>
                 </div>
-            </Zlayout.Zbody>
+                {/* part-3 */}
+                <div className="ft-16 relative" styleName="col-div-box part-3">
+                    <div className="flex flex-col" styleName="col-div">
+                        <div className="flex align-item-center flex-between" styleName="col-div-head">
+                            <span className="relative" styleName="head-tit">公益诉讼线索总体趋势</span>
+                            <Button type="link" icon="upload">
+                                导出
+                                </Button>
+                        </div>
+                        <div className="flex-1" styleName="col-div-content">
+                            <div className="absolute" style={{ top: '40px', left: '160px', zIndex: 1000000 }}>
+                                <Select
+                                    defaultValue={defaultYears}
+                                    style={{ width: 90 }}
+                                    onChange={this.changeYears}
+                                    getPopupContainer={triggerNode => triggerNode.parentNode}
+                                    suffixIcon={
+                                        <Icon type="caret-down" />
+                                    }
+                                >
+                                    {
+                                        yearsList.map((item, index) => {
+                                            return <Option key={index} value={item}>{item}</Option>
+                                        })
+                                    }
+                                </Select>
+                            </div>
+                            <div id="data-charts-4" className="flex" styleName="data-charts">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         )
     }
     // 页面缩放导致鼠标悬停错位处理
@@ -687,7 +686,7 @@ class ClueDiscovery extends React.Component {
         obj[type] = e.target.value;
         console.log(obj);
         changetabs_part_2(obj);
-        switch(type){
+        switch (type) {
             case 'clueIncluded':
                 this.echartOptions['part-2'].series[0]['data'] = this.part_2_data[e.target.value];
                 this.myChart_2.setOption(this.echartOptions['part-2']);

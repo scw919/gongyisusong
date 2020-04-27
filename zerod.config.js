@@ -49,15 +49,15 @@ const config = {
         // 前缀路径, npm run dev --basepath=/mypath/的basepath优先级大于此
         assetsPublicPath: '/',
         // devServer的反代理配置
-        proxyTable: {
-            '/webapi/clue': {
-                target: 'http://172.16.121.73:8762/',
-                changeOrigin: true,
-                pathRewrite: {
-                    '^/webapi': '/',
-                },
-            },
-        },
+        // proxyTable: {
+        //     '/webapi/clue': {
+        //         target: 'http://172.16.121.73:8762/',
+        //         changeOrigin: true,
+        //         pathRewrite: {
+        //             '^/webapi': '/',
+        //         },
+        //     },
+        // },
         host: '0.0.0.0',
         port: 33000,
         //启动服务后是否自动打开浏览器,可以是浏览器文件如 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'

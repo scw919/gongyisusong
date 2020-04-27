@@ -4,9 +4,9 @@ import promise from 'redux-promise';
 import rootReducer from './reducers';
 import initialState from './initialState';
 // redux - persist
-import { persistReducer } from 'redux-persist';
+import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/es/storage';
-import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
+// import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 const storageConfig = {
     key: 'root', // 必须有的
     storage, // storage is now required
@@ -20,8 +20,8 @@ const storageConfig = {
 
 const configureStore = function () {
     const createMyStore = applyMiddleware(thunk, promise)(createStore);
-    // const store = createMyStore(persistReducer(storageConfig, rootReducer, initialState));
-    const store = createMyStore(rootReducer, initialState);
+    const store = createMyStore(persistReducer(storageConfig, rootReducer), initialState);
+    // const store = createMyStore(rootReducer, initialState);
     if (module.hot) {
         // Enable Webpack hot module replacement for reducers
         module.hot.accept('./reducers', () => {
@@ -33,4 +33,5 @@ const configureStore = function () {
     return store;
 };
 const store = configureStore();
+export const persistor = persistStore(store);
 export default store;

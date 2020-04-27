@@ -1,6 +1,7 @@
 import React from 'react';
 import ZpureComponent from 'zerod/components/ZpureComponent';
 import PropTypes from 'prop-types';
+import { Spin } from 'antd';
 import 'zerod/zero-icon/iconfont.css';
 import { BuildScroll, listenDivSizeChange, addClass, removeClass, once } from './create.js';
 import debounce from 'lodash/debounce';
@@ -11,18 +12,40 @@ class AscrollContent extends ZpureComponent {
         getScrollInstance: PropTypes.func,
         getWrapperEl: PropTypes.func, //获取最外层包裹元素
         insertToScrollWraper: PropTypes.any,
-        useCustomScroll: PropTypes.bool
+        useCustomScroll: PropTypes.bool,
+        hideLoading: PropTypes.func, // 加载完隐藏loading
     };
     state = {
         scrollAreaStyle: {},
         scrollAreaClassName: ''
     };
+    hasNext = true;
+    isLoading = true;
     hasShowToTop = false;
     backToTop = () => {
         this.scroollInstance.scroll.scrollTo(0, 0, 200);
     };
+    showIsLoading = () => {
+        if (Math.abs(this.scroollInstance.scroll.y) > this.scroollInstance.scroll.maxScrollY - 50) {
+            this.props.loadmore && typeof (this.props[this.props.loadmore].getData) == 'function' && this.props[this.props.loadmore].getData();
+            // if (!this.isLoading && this.hasNext) {
+            //     addClass(this.loadingEl, 'is-animate-start');
+            //     removeClass(this.loadingEl, 'is-hide');
+            //     this.isLoading = true;
+            //     this.props.loadmore && typeof (this.props[this.props.loadmore].getData) == 'function' && this.props[this.props.loadmore].getData().then(res => {
+            //         console.log(res);
+            //         if (res) {
+            //             addClass(this.loadingEl, `is-hide`);
+            //         } else {
+            //             this.hasNext = false;
+            //             removeClass(this.hasNextEl, 'is-hide');
+            //         }
+            //     });
+            // }
+        } 
+    }
     showBackToTop = () => {
-        if (this.scroollInstance.scroll&&this.scroollInstance.scroll.y < -100) {
+        if (this.scroollInstance.scroll && this.scroollInstance.scroll.y < -100) {
             if (!this.hasShowToTop) {
                 addClass(this.toTopBtnEl, 'is-animate-start');
                 removeClass(this.toTopBtnEl, 'is-hide');
@@ -67,9 +90,10 @@ class AscrollContent extends ZpureComponent {
             });
             this.scroollInstance.scroll.on('scrollEnd', () => {
                 this.showBackToTop();
-                if (Math.abs(this.scroollInstance.scroll.y) > this.scroollInstance.scroll.maxScrollY - 50) {
-                    this.props.loadmore&&typeof(this.props[this.props.loadmore].getData) == 'function'&&this.props[this.props.loadmore].getData();
-                }
+                this.showIsLoading();
+                // if (Math.abs(this.scroollInstance.scroll.y) > this.scroollInstance.scroll.maxScrollY - 50) {
+                //     this.props.loadmore && typeof (this.props[this.props.loadmore].getData) == 'function' && this.props[this.props.loadmore].getData();
+                // }
                 // console.log(this.scroollInstance.scroll.y, this.scroollInstance.scroll.maxScrollY);
             });
             this.props.getScrollInstance && this.props.getScrollInstance(this.scroollInstance);
@@ -169,6 +193,7 @@ class AscrollContent extends ZpureComponent {
         } = this.props;
         return (
             <section
+                className="relative"
                 {...others}
                 className={`z-layout-body ${className ? className : ''}`}
                 ref={(el) => (this.wrapperEl = el)}>
@@ -193,7 +218,10 @@ class AscrollContent extends ZpureComponent {
                     ref={(el) => (this.toTopBtnEl = el)}
                     onClick={this.backToTop}
                 />
-            </section>
+                {/* <span style={{ position: 'absolute', bottom: '20px', left: 'calc( 50%  )', transform: 'translateX(-50%)' }} ref={(el) => (this.loadingEl = el)} className={`z-loading ${this.isLoading ? 'is-hide' : ''}`}>
+                    <Spin tip="加载中..."></Spin>
+                </span> */}
+            </section >
         );
     }
 }

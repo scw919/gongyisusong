@@ -44,15 +44,15 @@ class ClueDiscovery extends React.Component {
         sortByCollect: '', //默认采集时间
         collectClues: this.props.collectClues,//已收录的线索
     }
-    componentDidMount() {
-        this.props.getCollectedClues().then(action => {
-            // console.log(action.payload.collectClues);
-            // this.collectClues = action.payload.collectClues;
-            this.setState({
-                collectClues: action.payload.collectClues
-            })
-        });
-    }
+    // componentDidMount() {
+    //     this.props.getCollectedClues().then(action => {
+    //         // console.log(action.payload.collectClues);
+    //         // this.collectClues = action.payload.collectClues;
+    //         this.setState({
+    //             collectClues: action.payload.collectClues
+    //         })
+    //     });
+    // }
     componentWillUnmount() {
         this.setState = () => false;
     }
@@ -60,50 +60,57 @@ class ClueDiscovery extends React.Component {
         const { history } = this.props;
         const { dataList, } = this.state;
         return (
-            <AscrollContent scroll={true} ref_component={this} loadmore={'ref_component'}>
-                <div className="main-rt-container" style={{ height: '100%' }}>
-                    {/* <AseamlessScroll /> */}
-                    <AsearchPart searchResult={this.updateOptions} />
-                    <div className="mar-t-20" styleName="search-list">
-                        <div className="flex flex-between" styleName="search-list-top">
-                            <div className="primary_self">
-                                <Checkbox
-                                    indeterminate={this.state.indeterminate}
-                                    onChange={this.onCheckAllChange}
-                                    checked={this.state.checkAll}
-                                />
-                                <span onClick={() => { this.includeAll() }} type="button" style={{ marginLeft: '10px' }}>全部收录</span>
-                                <span styleName="total-counts">共找到{this.state.query.total}个结果</span>
+            <div>
+                <AscrollContent scroll={true} ref_component={this} loadmore={'ref_component'}>
+                    <div className="main-rt-div1">
+                        <div className="main-rt-div2">
+                            <div className="main-rt-container">
+                                {/* <AseamlessScroll /> */}
+                                <AsearchPart searchResult={this.updateOptions} />
+                                <div className="mar-t-20" styleName="search-list">
+                                    <div className="flex flex-between" styleName="search-list-top">
+                                        <div className="primary_self">
+                                            <Checkbox
+                                                indeterminate={this.state.indeterminate}
+                                                onChange={this.onCheckAllChange}
+                                                checked={this.state.checkAll}
+                                            />
+                                            <span onClick={() => { this.includeAll() }} type="button" style={{ marginLeft: '10px' }}>全部收录</span>
+                                            <span styleName="total-counts">共找到{this.state.query.total}个结果</span>
+                                        </div>
+                                        <div className="flex">
+                                            <AsortButton sortType={this.state.sortByFilter} sortName={'筛选时间'} clickEvent={this.changeSortType1} />
+                                            <AsortButton sortType={this.state.sortByCollect} sortName={'采集时间'} clickEvent={this.changeSortType2} />
+                                        </div>
+                                    </div>
+                                    <div styleName="search-list-results">
+                                        {
+                                            <CheckboxGroup value={this.state.checkedList} onChange={this.onChange}>
+                                                {
+                                                    dataList && dataList.length > 0 ? dataList.map((sub, subKey) => {
+                                                        return (
+                                                            <AclueItem
+                                                                history={history}
+                                                                key={subKey}
+                                                                sub={sub}
+                                                                hasCollected={this.hasCollected(sub.id)}
+                                                                hasChecked={true}
+                                                                clickEvent={this.handleCollected}>
+                                                            </AclueItem>
+                                                        )
+                                                    }) : null
+                                                }
+                                            </CheckboxGroup >
+                                        }
+                                    </div>
+                                </div>
+                                {/* <SearchList data={this.state.dataList} history={history} /> */}
                             </div>
-                            <div className="flex">
-                                <AsortButton sortType={this.state.sortByFilter} sortName={'筛选时间'} clickEvent={this.changeSortType1} />
-                                <AsortButton sortType={this.state.sortByCollect} sortName={'采集时间'} clickEvent={this.changeSortType2} />
-                            </div>
-                        </div>
-                        <div styleName="search-list-results">
-                            {
-                                <CheckboxGroup value={this.state.checkedList} onChange={this.onChange}>
-                                    {
-                                        dataList && dataList.length > 0 ? dataList.map((sub, subKey) => {
-                                            return (
-                                                <AclueItem
-                                                    history={history}
-                                                    key={subKey}
-                                                    sub={sub}
-                                                    hasCollected={this.hasCollected(sub.id)}
-                                                    hasChecked={true}
-                                                    clickEvent={this.handleCollected}>
-                                                </AclueItem>
-                                            )
-                                        }) : null
-                                    }
-                                </CheckboxGroup >
-                            }
                         </div>
                     </div>
-                    {/* <SearchList data={this.state.dataList} history={history} /> */}
-                </div>
-            </AscrollContent>
+                </AscrollContent>
+            </div>
+
         )
     }
     // 搜索
@@ -158,7 +165,6 @@ class ClueDiscovery extends React.Component {
             isLoading = false;
         } else {
             newQuery.pageNum += 1;
-            console.log(newQuery.pageNum, newQuery.pages, '222222222222222222222222222222')
             if (newQuery.pageNum > newQuery.pages) {
                 isLoading = false;
                 return false;

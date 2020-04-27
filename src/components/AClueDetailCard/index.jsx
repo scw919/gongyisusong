@@ -100,7 +100,7 @@ class AClueDetailCard extends React.PureComponent {
                     {/* 简介 */}
                     <div className="flex ft-16" styleName="info">
                         <div>
-                            <p>线索来源：{source&&source.desc}</p>
+                            <p>线索来源：{source && source.desc}</p>
                             <p>行政处罚决定文书号：{documentDecisionNumber}</p>
                             <p>处罚类别一：{penaltyCategory1 && penaltyCategory1.desc || null}</p>
                             <p>行政相对人名称：{partyName}</p>
@@ -108,8 +108,15 @@ class AClueDetailCard extends React.PureComponent {
                             <p>行政处罚机关：{punishmentOrganization}</p>
                         </div>
                         <div>
-                            <p>网站链接：
-                                <a href={siteLink}>{siteLink}</a>
+                            <p>
+                                {
+                                    source && source.code == 0 ? (<p>&nbsp;</p>) : (
+                                        <p>
+                                            网站链接：
+                                            <a href={siteLink}>{siteLink}</a>
+                                        </p>
+                                    )
+                                }
                             </p>
                             <p>涉事主体类型：{typesSubjectsInvolved && typesSubjectsInvolved.desc || null}</p>
                             <p>处罚类别二：{penaltyCategory2 && penaltyCategory2.desc || null}</p>

@@ -55,42 +55,37 @@ class Main extends React.Component {
     }
     render() {
         const { history, collapsed, menuIndex } = this.props;
-        const mainBody = this.props.getMaimRouteTemplate();
+        // const mainBody = this.props.getMaimRouteTemplate();
         //自定义主页布局，经过ZmainHOC包装的组件，会this.props.getSideMenuTemplate和this.props.getMaimRouteTemplate两个方法
         return (
             <Zlayout>
                 <ApageHeader history={history} />
-                <Zlayout.Zbody scroll={false} className="layout-container">
-                    <div className="" style={{ position: 'fixed', top: "22px", left: '40px', color: 'red', zIndex: 100000000 }}>定位元素</div>
-                    <Zlayout flexRow >
-                        <Zlayout.Zheader>
-                            <div style={{ width: '100%', height: '100%' }} className="flex flex-between align-item-center">
-                                <Breadcrumb className="ft-16">
-                                    <Breadcrumb.Item>首页</Breadcrumb.Item>
-                                </Breadcrumb>
-                                <div style={{ width: '400px' }} className="align-right flex align-item-center">
-                                    <div style={{ width: '90px' }}>选择日期：</div>
-                                    <RangePicker
-                                        style={{ width: '300px' }}
-                                        defaultValue={[moment(this.query.startTime, dateFormat), moment(this.query.endTime, dateFormat)]}
-                                        format="YYYY-MM-DD HH:mm:ss"
-                                        showTime={{
-                                            hideDisabledOptions: true,
-                                            defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('11:59:59', 'HH:mm:ss')],
-                                        }}
-                                        getCalendarContainer={triggerNode => triggerNode.parentNode}
-                                        onChange={this.onChange}
-                                        onOk={this.onOk}
-                                    />
-                                </div>
+                <Zlayout.Zbody scroll={true}>
+                    <Zlayout.Zheader>
+                        <div style={{ width: '100%', height: '100%', background: '#f0f2f5' }} className="flex flex-between align-item-center pad-0-80">
+                            <Breadcrumb className="ft-16">
+                                <Breadcrumb.Item>首页</Breadcrumb.Item>
+                            </Breadcrumb>
+                            <div style={{ width: '400px' }} className="align-right flex align-item-center">
+                                <div style={{ width: '90px' }}>选择日期：</div>
+                                <RangePicker
+                                    style={{ width: '300px' }}
+                                    defaultValue={[moment(this.query.startTime, dateFormat), moment(this.query.endTime, dateFormat)]}
+                                    format="YYYY-MM-DD HH:mm:ss"
+                                    showTime={{
+                                        hideDisabledOptions: true,
+                                        defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('11:59:59', 'HH:mm:ss')],
+                                    }}
+                                    getCalendarContainer={triggerNode => triggerNode.parentNode}
+                                    onChange={this.onChange}
+                                    onOk={this.onOk}
+                                />
                             </div>
-                        </Zlayout.Zheader>
-                        <Zlayout.Zbody>
-                            <Zlayout flexRow>
-                                <Zlayout className="main-container">{mainBody}</Zlayout>
-                            </Zlayout>
-                        </Zlayout.Zbody>
-                    </Zlayout>
+                        </div>
+                    </Zlayout.Zheader>
+                    <div styleName="reset_layout_body">
+                        {this.props.getMaimRouteTemplate()}
+                    </div>
                 </Zlayout.Zbody>
             </Zlayout>
         );

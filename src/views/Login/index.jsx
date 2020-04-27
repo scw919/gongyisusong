@@ -20,15 +20,21 @@ class LoginMain extends React.PureComponent {
     };
     componentDidMount() {
         this.getValidateCode();
-        console.log(this.props.history)
+        // console.log(this.props.history)
     }
     render() {
+        const { location, history } = this.props;
         const { getFieldDecorator } = this.props.form;
         const userIcon = <span styleName="validate-icon user"></span>
         const pwdIcon = <span styleName="validate-icon pwd"></span>
         const validateIcon = <span styleName="validate-icon validate"></span>
         const validateCode = <span styleName="validate-icon code" onClick={() => { this.getValidateCode() }}><img src={this.state.validateCode} alt="" /></span>
-
+        // 根据重定向参数判断是否重新刷新以生成新的路由
+        if (location.state && location.state.isRedirect) {
+            history.replace(this.props.location.pathname, { isRedirect: false })
+            history.go(0);
+            return;
+        }
         return (
             <div styleName="login-box">
                 <div styleName="logo-div">
@@ -111,6 +117,9 @@ class LoginMain extends React.PureComponent {
                 }).catch(res => {
                     // console.log(res, 'login_err')
                     message.warning(res.msg);
+                    this.props.form.setFieldsValue({
+                        "captcha": ""
+                    });
                     this.getValidateCode();
                 })
             }
