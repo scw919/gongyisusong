@@ -42,16 +42,16 @@ class ClueDiscoveryDetail extends React.Component {
         }
         apis.main.getClueCltDetail(query).then(res => {
             if (res.data) {
-                this.collUploadFile = res.data.collUploadFile;
+                this.collUploadFile = this.collUploadFile?this.collUploadFile:res.data.collUploadFile;
+                let details = res.data;
+                details.labels = this.filterLabels(details);
                 this.setState({
-                    details: res.data,
+                    details: details,
                 })
             }
         })
     }
     componentDidMount() {
-        // console.log(this.match, mainRoutes,this.props.location);
-        // createBreadCrumb(this.match, this.props.location, mainRoutes);
         this.didMount()
     }
     render() {
@@ -79,15 +79,8 @@ class ClueDiscoveryDetail extends React.Component {
                             <div className="text-center" styleName="detail-title">
                                 <p className="ft-24">{details.collectionName}</p>
                                 <div className="mar-t-15">
-                                    <AlabelTags labels={details.doMainsLabels} />
+                                    <AlabelTags labels={details.labels} />
                                 </div>
-                                {/* <p className="mar-t-15">
-                            {
-                                details.doMainsLabels ? details.doMainsLabels.map((item, index) => {
-                                    return <span key={index} className={`tags-self ${item.color}`}>{item.desc}</span>
-                                }) : null
-                            }
-                        </p> */}
                             </div>
                             {/* 基本概况 */}
                             <div className="ft-16" styleName="main-module">
@@ -144,17 +137,27 @@ class ClueDiscoveryDetail extends React.Component {
             </Zlayout.Zbody>
         )
     }
-
+    // filter labels
+    filterLabels = (details) => {
+        return {
+            domain: details.doMains || [
+                // '领域'
+            ],
+            clueType: details.clueTypes || [
+                // '类别'
+            ]
+        }
+    }
     // 添加线索弹窗 显示隐藏
     toggleModal = (status, checkedList) => {
         console.log(status);
         let details = this.state.details;
         if (checkedList && checkedList.length > 0) {
-            checkedList.forEach(item => {
-                item.penaltyDecisionDate = item.showDateTime;
-                item.labels = item.lables;
-            })
-            details.clues = checkedList;
+            // checkedList.forEach(item => {
+            //     item.penaltyDecisionDate = item.showDateTime;
+            //     item.labels = item.lables;
+            // })
+            // details.clues = checkedList;
         }
         this.setState({
             visible: status,
@@ -176,7 +179,7 @@ class ClueDiscoveryDetail extends React.Component {
     // 获取文件路径字符串
     updateFilePath = (collUploadFile) => {
         this.collUploadFile = collUploadFile;
-        console.log(this.collUploadFile, 'collUploadFile');
+        // console.log(this.collUploadFile, 'collUploadFile');
     }
     // 表单
     saveFormRef = formRef => {

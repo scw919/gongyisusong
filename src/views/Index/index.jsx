@@ -29,7 +29,7 @@ import './style.scss';
 // import { withRouter } from 'react-router-dom';
 // import mainRoutes from '@/Main/load-child-routes.js';
 
-const dateFormat = 'YYYY/MM/DD hh:mm:ss';
+const dateFormat = 'YYYY-MM-DD';
 
 const mapStateToProps = (state, ownProps) => ({
     collapsed: state.collapsed,
@@ -66,16 +66,16 @@ class Main extends React.Component {
                             <Breadcrumb className="ft-16">
                                 <Breadcrumb.Item>首页</Breadcrumb.Item>
                             </Breadcrumb>
-                            <div style={{ width: '400px' }} className="align-right flex align-item-center">
-                                <div style={{ width: '90px' }}>选择日期：</div>
+                            <div style={{ paddingRight: '8px' }} className="align-right flex align-item-center">
+                                <div>选择日期：</div>
                                 <RangePicker
-                                    style={{ width: '300px' }}
+                                    style={{ width: '300px', }}
                                     defaultValue={[moment(this.query.startTime, dateFormat), moment(this.query.endTime, dateFormat)]}
-                                    format="YYYY-MM-DD HH:mm:ss"
-                                    showTime={{
-                                        hideDisabledOptions: true,
-                                        defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('11:59:59', 'HH:mm:ss')],
-                                    }}
+                                    format={dateFormat}
+                                    // showTime={{
+                                    //     hideDisabledOptions: false,
+                                    //     defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('11:59:59', 'HH:mm:ss')],
+                                    // }}
                                     getCalendarContainer={triggerNode => triggerNode.parentNode}
                                     onChange={this.onChange}
                                     onOk={this.onOk}
@@ -112,13 +112,15 @@ class Main extends React.Component {
     }
     onChange = (date, dateString) => {
         this.query = {
-            startTime: dateString[0],
-            endTime: dateString[1],
+            startTime: dateString[0] + ' 00:00:00',
+            endTime: dateString[1] + ' 23:59:59',
         }
-    }
-    onOk = () => {
         this.getData();
     }
+    // onOk = () => {
+    //     console.log('onOk')
+    //     this.getData();
+    // }
     ToggleSiderWidth() {
         return this.props.collapsed ? '80px' : '200px';
     }

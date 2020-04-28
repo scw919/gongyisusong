@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ZpureComponent from 'zerod/components/ZpureComponent';
+// import ZpureComponent from 'zerod/components/ZpureComponent';
 import compnents from '@/components/load-components.js';
 const { AsortButton, AclueItem, AsearchPart, AscrollContent } = compnents;
 // import SearchList from '../ClueDiscovery/Children/SearchList';
@@ -7,8 +7,9 @@ import NewDealClue from './NewDealClue';
 import RelatedClue from './RelatedClue';
 import { Checkbox } from 'antd';
 const CheckboxGroup = Checkbox.Group;
-
-import { Zlayout } from 'zerod';
+// actions
+import { getCollectedClues } from '@/store/actions';
+// import { Zlayout } from 'zerod';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 // 样式类
@@ -24,6 +25,9 @@ const mapStateToProps = (state, ownProps) =>
         userName: state.userName,
         collapsed: state.collapsed
     });
+const mapDispatchToProps = (dispatch) => ({
+    getCollectedClues: (...args) => dispatch(getCollectedClues(...args)),
+});
 let isLoading = false;
 class ClueDiscovery extends React.Component {
     state = {
@@ -55,7 +59,7 @@ class ClueDiscovery extends React.Component {
                     <div className="main-rt-div2">
                         <div className="main-rt-container" style={{ height: '100%' }}>
                             {/* <AseamlessScroll /> */}
-                            <AsearchPart searchResult={this.updateOptions} />
+                            <AsearchPart isMyClue={true} searchResult={this.updateOptions} />
                             <div className="mar-t-20" styleName="search-list">
                                 <div className="flex flex-between" styleName="search-list-top">
                                     <div className="primary_self">
@@ -234,6 +238,7 @@ class ClueDiscovery extends React.Component {
             query['clueIds'].push(item.id);
         })
         apis.main.includedClue(query).then(_ => {
+            this.props.getCollectedClues();
             // this.props.getCollectedClues().then(action => {
             this.setState({
                 // collectClues: action.payload.collectClues,
@@ -278,4 +283,4 @@ class ClueDiscovery extends React.Component {
         }, () => { this.getData(true) })
     }
 }
-export default connect(mapStateToProps)(withRouter(ClueDiscovery));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ClueDiscovery));

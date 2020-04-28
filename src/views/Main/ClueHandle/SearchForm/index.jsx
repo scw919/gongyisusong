@@ -53,12 +53,14 @@ class SearchForm extends React.Component {
         const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
         return (
             <Form
+                className="search-form"
                 {...layout}
                 name="basic"
                 onSubmit={this.handleSubmit}>
                 <Row>
                     <Col span={6}>
                         <Form.Item
+                            className="label"
                             label="线索名称："
                             name="collectionName"
                         >
@@ -75,6 +77,7 @@ class SearchForm extends React.Component {
                     </Col>
                     <Col span={6}>
                         <Form.Item
+                            className="label"
                             label="涉事主体："
                             name="typesSubjectsInvolved"
                             rules={[]}
@@ -87,14 +90,16 @@ class SearchForm extends React.Component {
                                     allowClear
                                 >
                                     <Option value="0">企业</Option>
-                                    <Option value="1">社会组织</Option>
-                                    <Option value="2">其他</Option>
+                                    <Option value="1">自然人</Option>
+                                    <Option value="2">社会组织</Option>
+                                    <Option value="3">其他</Option>
                                 </Select>
                             )}
                         </Form.Item>
                     </Col>
                     <Col span={6}>
                         <Form.Item
+                            className="label"
                             label="涉及公益诉讼领域："
                             name="domain"
                             rules={[{ required: true, message: 'Please input your username!' }]}
@@ -118,6 +123,7 @@ class SearchForm extends React.Component {
                     </Col>
                     <Col span={6}>
                         <Form.Item
+                            className="label"
                             label="线索类别："
                             name="clueType"
                         >
@@ -141,6 +147,7 @@ class SearchForm extends React.Component {
                 <Row>
                     <Col span={6}>
                         <Form.Item
+                            className="label"
                             label="线索阶段："
                             name="collStage"
                         >
@@ -161,6 +168,7 @@ class SearchForm extends React.Component {
                     </Col>
                     <Col span={6}>
                         <Form.Item
+                            className="label"
                             label="线索状态："
                             name="collStatus"
                             rules={[]}
@@ -180,6 +188,7 @@ class SearchForm extends React.Component {
                     </Col>
                     <Col span={6} className="align-right">
                         <Form.Item
+                            className="label"
                             label="更新时间："
                             name="updateTime"
                         >
@@ -193,6 +202,7 @@ class SearchForm extends React.Component {
                     </Col>
                     <Col span={6} className="align-right">
                         <Form.Item
+                            className="label"
                             label="创建时间："
                             name="createTime"
                         >

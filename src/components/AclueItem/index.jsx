@@ -49,10 +49,10 @@ class AclueItem extends React.Component {
         return (
             <div styleName="search-list-item">
                 <div styleName="search-list-item-title" className="flex flex-between">
-                    <div className="ft-18" styleName="title">
-                        {hasChecked ? <Checkbox style={{ marginRight: '8px' }} disabled={hasCollected && !isCollect} value={sub} id={`${sub.id}`} ></Checkbox > : null}
+                    <div className="ft-18 flex flex-start" styleName="title">
+                        {hasChecked ? <Checkbox styleName="item-check" disabled={hasCollected && !isCollect} value={sub} id={`${sub.id}`} ></Checkbox > : null}
                         {/* <span onClick={(e) => { this.checkDetail(e, linkUrl) }}>番禺南丰塑料有限公司行政处罚案</span> */}
-                        <Link to={`${linkUrl}/${sub.id}`} target="_blank">
+                        <Link styleName="item-link" to={`${linkUrl}/${sub.id}`} target="_blank">
                             <span dangerouslySetInnerHTML={{ __html: this.highLightRender(sub, 'name') }}></span>
                         </Link>
                     </div>
@@ -97,7 +97,7 @@ class AclueItem extends React.Component {
                 {
                     isCollect ? (<div className="flex flex-between align-item-center" styleName="collect">
                         <div styleName="left-part">
-                            <span>收录时间：{sub.createdTime}</span>
+                            <span>收录时间：{sub.includeTime}</span>
                         </div>
                         <div className="flex flex-1 flex-end" styleName="right-part">
                             <div onClick={this.toggleModalNew}>新建处置线索</div>

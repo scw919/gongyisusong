@@ -21,6 +21,13 @@
         background: $hoverBg;
     }
 }
+// 自定义多行省略 （webkit 内核）
+@mixin line-clamp($line: 1) {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $line;
+    overflow: hidden;
+}
 :global {
     // 重置样式
     p {
@@ -179,6 +186,9 @@
         }
         &.just-con-center {
             justify-content: center;
+        }
+        &.flex-start {
+            justify-content: flex-start;
         }
         &.flex-end {
             justify-content: flex-end;
@@ -351,9 +361,9 @@
             background: #f0f2f5;
             .z-layout-body {
                 .z-body-scroll {
-                    >div,>div>section{
-                    height: 100%;
-
+                    > div,
+                    > div > section {
+                        height: 100%;
                     }
                 }
                 .main-rt-div1 {
@@ -390,9 +400,9 @@
         }
     }
     // loading
-    .z-loading{
-        &.is-hide{
-            display:  none;
+    .z-loading {
+        &.is-hide {
+            display: none;
         }
     }
 }

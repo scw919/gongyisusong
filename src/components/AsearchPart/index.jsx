@@ -58,7 +58,8 @@ export const AsearchPart = (props) => {
 	}
 	// 获取条件筛选列表数据
 	async function getClueParamsInit() {
-		await apis.main.clueParams().then(res => {
+		const { isMyClue } = props;
+		await apis.main.clueParams({ me: isMyClue }).then(res => {
 
 			let data = res.data;
 			data.forEach((item, index) => {

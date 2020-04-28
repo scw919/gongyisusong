@@ -8,22 +8,41 @@
     }
     .result-box {
         overflow: hidden;
-        >div{
+        > div {
             margin-left: -10px;
-            width: calc( 100% + 20px );
+            width: calc(100% + 20px);
         }
     }
     :global {
         .ant-form-item {
             margin-bottom: 12px;
-            .ant-form-item-label > label {
-                color: #565a60;
+            display: flex;
+            .ant-form-item-label {
+                line-height: 22px;
+                padding-right: 8px;
+                display: flex;
+                // text-align: right;
+                align-items: center;
+                justify-content: flex-end;
+
+                > label {
+                    color: #565a60;
+                    white-space: pre-wrap;
+                    white-space: -moz-pre-wrap;
+                    white-space: -pre-wrap;
+                    white-space: -o-pre-wrap;
+                    word-wrap: break-word;
+                    &:after{
+                        margin-right: 0;
+                    }
+                }
             }
         }
-        .ant-pagination{
-            .ant-select-selection,.ant-pagination-options-quick-jumper input{
+        .ant-pagination {
+            .ant-select-selection,
+            .ant-pagination-options-quick-jumper input {
                 background: #fff;
-                border: 1px solid rgba(0,0,0,0.15);
+                border: 1px solid rgba(0, 0, 0, 0.15);
             }
         }
     }

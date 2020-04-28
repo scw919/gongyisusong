@@ -1,7 +1,7 @@
 .item-box {
     cursor: pointer;
-    height: 230px;
-    padding: 15px 15px 10px 15px;
+    min-height: 220px;
+    padding: 15px 15px 1px 15px;
     background: rgba(255, 255, 255, 1);
     border-radius: 2px;
     border: 1px solid rgba(215, 219, 230, 1);
@@ -10,19 +10,21 @@
     color: #565a60;
     &:hover{
         border: 2px solid #3587FF;
-        padding: 14px 14px 9px 14px;
+        padding: 14px 14px 0 14px;
         .status-icon{
             right: 16px;
-            bottom: 36px;
+            bottom: 37px;
         }
     }
     > p {
-        margin-bottom: 10px;
+        margin-bottom: 8px;
         &.title {
+            margin-bottom: 5px;
             font-size: 16px;
+            font-weight: 600;
         }
         &.tags {
-            margin-bottom: 19px;
+            margin-bottom: 18px;
             height: 24px;
         }
     }
@@ -33,18 +35,31 @@
         width: 75px;
         height: 75px;
         right: 17px;
-        bottom: 37px;
+        bottom: 38px;
         &.apply-build{
-            background: url(../../../../assets/images/status/apply_build.png) center / contain no-repeat;
+            background: url(../../../../assets/images/status/apply_build.svg) center / contain no-repeat;
         }
         &.apply-builded{
-            background: url(../../../../assets/images/status/build_ed.png) center / contain no-repeat;
+            background: url(../../../../assets/images/status/build_ed.svg) center / contain no-repeat;
         }
         &.apply-unpass{
-            background: url(../../../../assets/images/status/apply_unpass.png) center / contain no-repeat;
+            background: url(../../../../assets/images/status/apply_unpass.svg) center / contain no-repeat;
         }
         &.apply-searching{
-            background: url(../../../../assets/images/status/search_ing.png) center / contain no-repeat;
+            background: url(../../../../assets/images/status/search_ing.svg) center / contain no-repeat;
+        }
+    }
+    .bottom-btn-box{
+        margin-top: 15px;
+        height: 36px;
+        border-top: 1px solid rgba(245,245,245,1);
+        :global{
+            .ant-btn{
+                padding: 0;
+                &+.ant-btn{
+                    margin-left: 16px;
+                }
+            }
         }
     }
 }

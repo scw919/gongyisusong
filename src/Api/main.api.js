@@ -10,10 +10,10 @@ export default {
             return httpAjax('post', main_base+'/clue/suggestion', query);
         },
         // 搜索条件数据列表获取 /clue/param
-        clueParams() {
-            return httpAjax('get', main_base+'/clue/param');
+        clueParams(query) {
+            return httpAjax('get', main_base+'/clue/param', query);
         },
-        //线索发现 - 搜索
+        // 线索发现 - 搜索
         clueSearch(query) {
             return httpAjax('post', main_base+'/clue/search', query);
         },

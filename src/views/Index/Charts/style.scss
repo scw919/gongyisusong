@@ -106,12 +106,14 @@
             .col-div {
                 width: 570px;
                 height: 470px;
+                overflow: hidden;
                 flex-flow: column;
                 // &:nth-of-type(4)
                 .col-div-head {
                     padding-top: 20px;
                 }
                 .col-div-content {
+                    overflow: hidden;
                     padding-top: 10px;
                     .data-type {
                         // position: relative;
@@ -140,7 +142,7 @@
                     }
                     .data-charts {
                         width: 100%;
-                        height: 100%;
+                        height: 336px;
                     }
                 }
             }
@@ -156,11 +158,12 @@
                     padding-bottom: 20px;
                 }
                 .col-div-content {
+                    overflow: hidden;
                     position: relative;
                     padding-top: 10px;
                     .data-charts {
                         width: 100%;
-                        height: 100%;
+                        height: 342px;
                     }
                 }
             }

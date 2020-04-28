@@ -1,6 +1,7 @@
 import React from 'react';
 // import { Icon } from 'antd';
 import PropTypes from 'prop-types';
+import { zTool } from 'zerod';
 import './style.scss';
 // import apis from '@/App.api.js';
 // import store from '@/store';
@@ -13,15 +14,8 @@ export class AlabelTags extends React.PureComponent {
     static defaultProps = {
         labels: {}
     }
-    componentDidMount() {
-    }
     render() {
-        // const { labels } = this.props;
-        const labels = {
-            domain: "其他",
-            PenaltyCategoryOne: "罚金",
-            clueType: "行政处罚"
-        }
+        const { labels } = this.props;
         let newLabels = {};
         // console.log(hasCollected, 'acollected');
         const sortType = ['domain', 'clueType', 'PenaltyCategoryOne', 'PenaltyCategoryTwo'];
@@ -32,7 +26,16 @@ export class AlabelTags extends React.PureComponent {
             <div className="ft-16 inline-block">
                 {
                     Object.keys(newLabels).map(key => {
-                        return <span key={key} className={`tags-self ${key}`}>{newLabels[key]}</span>
+                        let type = zTool.dataTypeTest(newLabels[key]);
+                        return type === 'string' ? (
+                            <span key={key} className={`tags-self ${key}`}>{newLabels[key]}</span>
+                        ) : (
+                                type === 'array' ? (
+                                    newLabels[key].map((item, index) => {
+                                        return <span key={index} className={`tags-self ${key}`}>{item}</span>
+                                    })
+                                ) : null
+                            )
                     })
                 }
             </div>

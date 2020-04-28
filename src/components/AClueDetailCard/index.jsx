@@ -108,16 +108,14 @@ class AClueDetailCard extends React.PureComponent {
                             <p>行政处罚机关：{punishmentOrganization}</p>
                         </div>
                         <div>
-                            <p>
-                                {
-                                    source && source.code == 0 ? (<p>&nbsp;</p>) : (
-                                        <p>
-                                            网站链接：
-                                            <a href={siteLink}>{siteLink}</a>
-                                        </p>
-                                    )
-                                }
-                            </p>
+                            {
+                                source && source.code == 0 ? (<p>&nbsp;</p>) : (
+                                    <p>
+                                        网站链接：
+                                        <a href={siteLink}>{siteLink}</a>
+                                    </p>
+                                )
+                            }
                             <p>涉事主体类型：{typesSubjectsInvolved && typesSubjectsInvolved.desc || null}</p>
                             <p>处罚类别二：{penaltyCategory2 && penaltyCategory2.desc || null}</p>
                             <p>统一社会信用代码：{unifiedSocialCreditCode}</p>

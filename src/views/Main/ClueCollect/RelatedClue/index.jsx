@@ -195,11 +195,12 @@ class NewDealClue extends React.PureComponent {
     // lables 解析
     subLables = (lables) => {
         let newLables = "";
-        if (lables) {
-            Object.keys(lables).map(key => {
-                // return <span key={key} className={`tags-self ${sub.lables[key]}`}>{key}</span>
-                newLables += ` ${key}`
-            })
+        if (lables && lables.clueType) {
+            // Object.keys(lables).map(key => {
+            //     // return <span key={key} className={`tags-self ${sub.lables[key]}`}>{key}</span>
+            //     newLables += ` ${key}`
+            // })
+            newLables = lables.clueType
         }
         return newLables;
     }

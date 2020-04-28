@@ -29,7 +29,7 @@ class ListItem extends React.Component {
         } = this.props;
         const iconName = this.renderIcon(collStage.code);
         return (
-            <div onClick={(e) => { this.checkDetail(e, id) }} className="ft-16 relative" styleName="item-box">
+            <div onClick={(e) => { this.checkDetail(e, id) }} className="relative" styleName="item-box">
                 <div className="absolute" styleName={iconName}></div>
                 <p className="ellipsis" styleName="title" title={collectionName}>{collectionName}</p>
                 <p styleName="tags">
@@ -42,7 +42,7 @@ class ListItem extends React.Component {
                 <p className="ellipsis">涉事主体：{this.renderArrayString(typesSubjectsInvolved)}</p>
                 <p className="ellipsis">涉及公益诉讼领域：{this.renderArrayString(doMains)}</p>
                 <p className="ellipsis">创建时间：{createdTime}</p>
-                <div className="flex flex-between align-item-center">
+                <div styleName="bottom-btn-box" className="flex flex-between align-item-center">
                     <div styleName="update-time">更新时间：{updateTime}</div>
                     <div>
                         <Button onClick={(e) => { this.delete(e, id) }} type="link" className="warning">删除</Button>

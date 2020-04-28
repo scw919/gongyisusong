@@ -28,7 +28,7 @@ class SelectItem extends React.Component {
                             return (<span key={index} onClick={() => { this.handleChangeArea(tag, index) }} styleName={`radio-tag ${index === this.state.selectedAreaIndex ? 'selected' : ''}`}>
                                 <i>{tag.label}</i>
                                 {
-                                    tag.count ? <i>({tag.count})</i> : null
+                                    tag.count ? <i>（{tag.count}）</i> : null
                                 }
                             </span>)
                         }) : null
