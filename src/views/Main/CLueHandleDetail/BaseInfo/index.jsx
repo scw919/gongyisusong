@@ -12,6 +12,8 @@ const BaseInfo = Form.create({ name: 'form_in_modal' })(
                 soluClueDes, //基本概况-线所描述 
                 soluClueDomain, //基本概况-线索领域
                 soluClueType, //基本概况-线索类型
+                clueTypes,
+                doMains,
                 form
             } = this.props;
             const { getFieldDecorator } = form;
@@ -30,7 +32,7 @@ const BaseInfo = Form.create({ name: 'form_in_modal' })(
                             >
                                 {getFieldDecorator('soluClueType', {
                                     // rules: [{ required: true, message: '请输入线索类型' }],
-                                    initialValue: soluClueType||"",
+                                    initialValue: soluClueType||clueTypes&&clueTypes[0]||"",
                                 })(
                                     <Input
                                         placeholder="请输入"
@@ -47,7 +49,7 @@ const BaseInfo = Form.create({ name: 'form_in_modal' })(
                             >
                                 {getFieldDecorator('soluClueDomain', {
                                     // rules: [{ required: true, message: '请输入线索领域' }],
-                                    initialValue: soluClueDomain||"",
+                                    initialValue: soluClueDomain||doMains&&doMains[0]||"",
                                 })(
                                     <Input
                                         placeholder="请输入"

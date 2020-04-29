@@ -59,7 +59,7 @@ export const getCollectedClues = async (value) => {
         payload: collectClues,
     };
 };
-// 用户信息存储 
+// 用户信息存储
 export const setToken = (value) => {
     localStorage.setItem('token', value);
     return {
@@ -69,4 +69,15 @@ export const setToken = (value) => {
         },
     };
 };
-
+// 筛选条件数据
+export const getConditions = async (query) => {
+    const conditionsList = await apis.main.clueParams(query).then((res) => {
+        return res && res.data;
+    });
+    return {
+        type: query && query.me ? 'find.getConditionsMy' : 'find.getConditions',
+        payload: {
+            conditionsList,
+        },
+    };
+};

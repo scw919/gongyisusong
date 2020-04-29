@@ -8,7 +8,7 @@ import logo from '@/assets/images/login/logo.png';
 // import com_const from '@/zTool/commonConsts.js';
 // actions
 import store from '@/store';
-import { setToken, getCollectedClues } from '@/store/actions';
+import { setToken, getCollectedClues, getConditions, getConditionsMy } from '@/store/actions';
 // 接口
 import apis from '@/App.api.js';
 const baseURL = "http://172.16.121.73:8765/user";
@@ -113,6 +113,8 @@ class LoginMain extends React.PureComponent {
                     history.push('/index');
                     // 获取用户已收录列表
                     store.dispatch(getCollectedClues());
+                    store.dispatch(getConditions());
+                    store.dispatch(getConditions({ me: 1 }));
                     // history.go(0)
                 }).catch(res => {
                     // console.log(res, 'login_err')

@@ -25,10 +25,10 @@
                         margin-left: 10px;
                     }
                     &:nth-child(1) {
-                        @include radius-btn();
+                        @include radius-btn($height: 36px);
                     }
                     &:nth-child(2) {
-                        @include radius-btn($bg: #fff, $color: #3988ff, $hoverBg: #fff);
+                        @include radius-btn($bg: #fff, $height: 36px, $color: #3988ff, $hoverBg: #fff);
                     }
                 }
             }
@@ -38,6 +38,7 @@
         .title {
             color: #24272c;
             width: 1000px;
+            font-weight: 600;
             .item-check {
                 margin-right: 8px;
                 padding-top: 2px;

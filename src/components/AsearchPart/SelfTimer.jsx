@@ -13,19 +13,23 @@ class SelfTimer extends React.Component {
         loading: false,
         visible: this.props.visible,
         title: '自定义时间段',
+        timeRanger: {
+            startTime: null,
+            endTime: null
+        }
     }
-    timeRanger = {
+    timeRanger={
         startTime: '',
         endTime: ''
-    };
-    dateFormat = 'YYYY-MM-DD hh:mm:ss';
-    componentWillReceiveProps(props, nextProps) {
+    }
+    dateFormat = 'YYYY-MM-DD';
+    componentWillReceiveProps(nextProps, prevProps) {
         this.setState({
-            visible: props.visible
+            visible: nextProps.visible
         })
     }
     render() {
-        const { visible, loading, title, isRelate } = this.state;
+        const { visible, loading, title, isRelate, timeRanger } = this.state;
         return (
             <div>
                 <Modal
@@ -48,18 +52,18 @@ class SelfTimer extends React.Component {
                     <div className="flex align-item-center just-con-center" styleName="timer-item">
                         开始时间：
                         <DatePicker
+                            value={timeRanger['startTime']}
                             styleName="time-picker"
                             format={this.dateFormat}
-                            showTime
                             onChange={this.onChangeStart}
                         />
                     </div>
                     <div className="flex align-item-center just-con-center" styleName="timer-item">
                         结束时间：
                         <DatePicker
+                            value={timeRanger['endTime']}
                             styleName="time-picker"
                             format={this.dateFormat}
-                            showTime
                             onChange={this.onChangeEnd}
                         />
                     </div>
@@ -70,9 +74,19 @@ class SelfTimer extends React.Component {
     // 日期选择
     onChangeStart = (value, dateString) => {
         this.timeRanger['startTime'] = dateString;
+        let timeRanger = this.state.timeRanger;
+        timeRanger['startTime'] = value;
+        this.setState({
+            timeRanger: timeRanger
+        })
     }
     onChangeEnd = (value, dateString) => {
         this.timeRanger['endTime'] = dateString;
+        let timeRanger = this.state.timeRanger;
+        timeRanger['endTime'] = value;
+        this.setState({
+            timeRanger: timeRanger
+        })
     }
     // 弹窗底部按钮
     handleOk = () => {
@@ -88,10 +102,18 @@ class SelfTimer extends React.Component {
             message.warning(messages);
             return;
         }
-        this.setState({
-            visible: false
-        });
         this.props.onOk(`${startTime}--${endTime}`);
+        this.setState({
+            visible: false,
+            timeRanger: {
+                startTime: '',
+                endTime: ''
+            }
+        });
+        this.timeRanger={
+            startTime: '',
+            endTime: ''
+        }
     };
     handleCancel = () => {
         this.setState({ visible: false });

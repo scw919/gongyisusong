@@ -8,7 +8,7 @@ import RelatedClue from './RelatedClue';
 import { Checkbox } from 'antd';
 const CheckboxGroup = Checkbox.Group;
 // actions
-import { getCollectedClues } from '@/store/actions';
+import { getCollectedClues, getConditions } from '@/store/actions';
 // import { Zlayout } from 'zerod';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -25,8 +25,9 @@ const mapStateToProps = (state, ownProps) =>
         userName: state.userName,
         collapsed: state.collapsed
     });
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch) => ({//getConditions
     getCollectedClues: (...args) => dispatch(getCollectedClues(...args)),
+    getConditions: (...args) => dispatch(getConditions(...args)),
 });
 let isLoading = false;
 class ClueDiscovery extends React.Component {
@@ -44,7 +45,7 @@ class ClueDiscovery extends React.Component {
         dataList: [
 
         ],
-        sortByFilter: 'desc', //默认筛选时间
+        sortByFilter: null, //默认筛选时间
         sortByCollect: 'desc', //默认采集时间
         collectClues: [],//已收录的线索
         newVisible: false, //新建处置 弹窗
@@ -68,7 +69,7 @@ class ClueDiscovery extends React.Component {
                                             onChange={this.onCheckAllChange}
                                             checked={this.state.checkAll}
                                         />
-                                        <span onClick={() => { this.includeAll() }} type="button" style={{ marginLeft: '10px' }}>取消收录</span>
+                                        <button className="ant-btn-deep-blue" onClick={() => { this.includeAll() }} style={{ marginLeft: '10px' }}>取消收录</button>
                                         <span styleName="total-counts">共收录{this.state.query.total}个案件</span>
                                     </div>
                                     <div className="flex">
@@ -237,18 +238,21 @@ class ClueDiscovery extends React.Component {
         checkedList.map(item => {
             query['clueIds'].push(item.id);
         })
-        apis.main.includedClue(query).then(_ => {
-            this.props.getCollectedClues();
-            // this.props.getCollectedClues().then(action => {
-            this.setState({
-                // collectClues: action.payload.collectClues,
-                checkedList: [],
-                indeterminate: false,
-                checkAll: false,
+        if (query['clueIds'].length > 0) {
+            apis.main.includedClue(query).then(_ => {
+                this.props.getCollectedClues();
+                this.props.getConditions({ me: 1 });
+                // this.props.getCollectedClues().then(action => {
+                this.setState({
+                    // collectClues: action.payload.collectClues,
+                    checkedList: [],
+                    indeterminate: false,
+                    checkAll: false,
+                })
+                this.getData(true);
+                // })
             })
-            this.getData(true);
-            // })
-        })
+        }
     }
     // 收录 / 取消收录
     handleCollected = (value) => {
@@ -266,7 +270,8 @@ class ClueDiscovery extends React.Component {
             newType = 'desc'
         }
         this.setState({
-            sortByFilter: newType
+            sortByFilter: newType,
+            sortByCollect: null
         }, () => { this.getData(true) })
     }
     changeSortType2 = () => {
@@ -279,6 +284,7 @@ class ClueDiscovery extends React.Component {
             newType = 'desc'
         }
         this.setState({
+            sortByFilter: null,
             sortByCollect: newType
         }, () => { this.getData(true) })
     }

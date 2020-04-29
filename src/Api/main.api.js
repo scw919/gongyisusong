@@ -64,7 +64,7 @@ export default {
         },
         // 线索集合 - 废弃 /ClueCollection/disabled/{id}
         disabledClueCollection(query) {
-            return httpAjax('post', `/${main_base}/ClueCollection/disabled/${query.id}`);
+            return httpAjax('post', `${main_base}/ClueCollection/disabled/${query.id}`);
         },
         // 线索集合 - 启用 /ClueCollection/enabled/{id}
         enabledClueCollection(query) {

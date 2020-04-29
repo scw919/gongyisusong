@@ -5,7 +5,7 @@ const { AsortButton, AclueItem, AsearchPart, AscrollContent } = compnents;
 import { Checkbox } from 'antd';
 const CheckboxGroup = Checkbox.Group;
 // actions
-import { getCollectedClues } from '@/store/actions';
+import { getCollectedClues, getConditions } from '@/store/actions';
 import { Zlayout } from 'zerod';
 import { connect } from 'react-redux';
 // 样式类
@@ -24,6 +24,7 @@ const mapStateToProps = (state, ownProps) =>
     });
 const mapDispatchToProps = (dispatch) => ({
     getCollectedClues: (...args) => dispatch(getCollectedClues(...args)),
+    getConditions: (...args) => dispatch(getConditions(...args)),
 });
 let isLoading = false;
 class ClueDiscovery extends React.Component {
@@ -75,7 +76,7 @@ class ClueDiscovery extends React.Component {
                                                 onChange={this.onCheckAllChange}
                                                 checked={this.state.checkAll}
                                             />
-                                            <span onClick={() => { this.includeAll() }} type="button" style={{ marginLeft: '10px' }}>全部收录</span>
+                                            <button className="ant-btn-deep-blue" onClick={() => { this.includeAll() }} style={{ marginLeft: '10px' }}>批量收录</button>
                                             <span styleName="total-counts">共找到{this.state.query.total}个结果</span>
                                         </div>
                                         <div className="flex">
@@ -201,21 +202,25 @@ class ClueDiscovery extends React.Component {
     };
     // 全部收录
     includeAll = () => {
+        const { getConditions } = this.props;
         const { checkedList } = this.state;
         let query = { flag: true, clueIds: [] };
         checkedList.map(item => {
             query['clueIds'].push(item.id);
         })
-        apis.main.includedClue(query).then(_ => {
-            this.props.getCollectedClues().then(action => {
-                this.setState({
-                    // collectClues: action.payload.collectClues,
-                    checkedList: [],
-                    indeterminate: false,
-                    checkAll: false,
+        if (query['clueIds'].length > 0) {
+            apis.main.includedClue(query).then(_ => {
+                this.props.getCollectedClues().then(action => {
+                    this.setState({
+                        // collectClues: action.payload.collectClues,
+                        checkedList: [],
+                        indeterminate: false,
+                        checkAll: false,
+                    })
+                    getConditions({ me: 1 });
                 })
             })
-        })
+        }
     }
     // 重置复选框
     resetCheckAll = () => {
@@ -246,7 +251,8 @@ class ClueDiscovery extends React.Component {
             newType = 'desc'
         }
         this.setState({
-            sortByFilter: newType
+            sortByFilter: newType,
+            sortByCollect: null
         }, () => { this.getData(true) })
     }
     changeSortType2 = () => {
@@ -259,6 +265,7 @@ class ClueDiscovery extends React.Component {
             newType = 'desc'
         }
         this.setState({
+            sortByFilter: null,
             sortByCollect: newType
         }, () => { this.getData(true) })
     }

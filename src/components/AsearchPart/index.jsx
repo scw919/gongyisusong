@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { connect } from 'react-redux';
 // import compnents from '@/components/load-components.js';
 import { Input, Tag, Icon, Button, Tooltip } from 'antd';
 const { Search } = Input;
@@ -10,7 +11,12 @@ import './style.scss';
 import apis from '@/App.api.js';
 // 通用工具
 import { zTool } from "zerod";
-export const AsearchPart = (props) => {
+const mapStateToProps = (state, ownProps) => ({
+	conditionsList: state.conditionsList,
+	conditionsListMy: state.conditionsListMy,
+});
+
+export const AsearchPart = connect(mapStateToProps)((props) => {
 	let childDiyu = useRef(null), childLingyu = useRef(null), childLeibie = useRef(null), childTimer = useRef(null);
 	// 已选条件数组
 	const [tags, setTags] = useState([
@@ -59,33 +65,37 @@ export const AsearchPart = (props) => {
 	// 获取条件筛选列表数据
 	async function getClueParamsInit() {
 		const { isMyClue } = props;
-		await apis.main.clueParams({ me: isMyClue }).then(res => {
+		let data = isMyClue ? props.conditionsListMy : props.conditionsList;
+		// await apis.main.clueParams({ me: isMyClue }).then(res => {
+		// let data = res.data;
 
-			let data = res.data;
-			data.forEach((item, index) => {
-				switch (item.dimension) {
-					case 'region':
-						!unmount ? setAreaDiyu(item) : null;
-						break;
-					case 'domain':
-						!unmount ? setAreaLingyu(item) : null;
-						break;
-					case 'clue_type':
-						!unmount ? setAreaLeibie(item) : null;
-						break;
-					case 'time':
-						!unmount ? setAreaTime(item) : null;
-						break;
-				}
-			})
-		});
+		data.forEach((item, index) => {
+			switch (item.dimension) {
+				case 'region':
+					!unmount ? setAreaDiyu(item) : null;
+					break;
+				case 'domain':
+					!unmount ? setAreaLingyu(item) : null;
+					break;
+				case 'clue_type':
+					!unmount ? setAreaLeibie(item) : null;
+					break;
+				case 'time':
+					!unmount ? setAreaTime(item) : null;
+					break;
+			}
+		})
+		// });
 		// 初始化搜索
 		// props.searchResult([])
 	}
 	useEffect(() => {
-		// getClueSuggestion();
-		console.log('getClueParamsInit 111111111111111111111111')
 		getClueParamsInit();
+	},[props.conditionsListMy,props.conditionsList])
+	useEffect(() => {
+		// getClueSuggestion();
+		// console.log('getClueParamsInit 111111111111111111111111')
+		// getClueParamsInit();
 		document.onclick = () => {
 			setClueSuggestionVisible(false)
 		};
@@ -119,7 +129,7 @@ export const AsearchPart = (props) => {
 	// 清除所有已选条件
 	function clearTags() {
 		setTags([]);
-		// childDiyu.current.setSelectedAreaIndex(null);
+		childDiyu.current.setSelectedAreaIndex(null);
 		childLingyu.current.setSelectedAreaIndex(null);
 		childLeibie.current.setSelectedAreaIndex(null);
 		childTimer.current.setSelectedAreaIndex(null);
@@ -202,7 +212,7 @@ export const AsearchPart = (props) => {
 			</div>
 			<div className="flex flex-between" styleName="border-box search-center-check">
 				<div className="flex align-item-center">
-					已选条件<span className="separator"></span>
+					检索条件<span className="separator"></span>
 					<div>
 						{tags.map((tagObj, index) => {
 							const tag = `${tagObj.label}${tagObj.count ? (tagObj.count) : ''} `;
@@ -222,7 +232,7 @@ export const AsearchPart = (props) => {
 						})}
 					</div>
 				</div>
-				<div>
+				<div styleName="link-btn">
 					<Button type="link" icon="delete" block onClick={clearTags}>
 						清空全部
                     </Button>
@@ -230,7 +240,7 @@ export const AsearchPart = (props) => {
 			</div>
 			<div styleName="border-box search-bottom-check" styleName={isCollapse ? 'collapse' : 'extend'}>
 				<div styleName="slide-box">
-					{/* <SelectItem ref={childDiyu} {...areaDiyu} selectedChange={changeSel} /> */}
+					<SelectItem ref={childDiyu} {...areaDiyu} selectedChange={changeSel} />
 					<SelectItem ref={childLingyu} {...areaLingyu} selectedChange={changeSel} />
 					<SelectItem ref={childLeibie} {...areaLeibie} selectedChange={changeSel} />
 					<SelectItem ref={childTimer} {...areaTime} selectedChange={changeSel}>
@@ -248,7 +258,7 @@ export const AsearchPart = (props) => {
 			<SelfTimer visible={modalVisible} onOk={onOk} onCancel={onCancel} />
 		</div>
 	)
-};
+});
 export default {
 	name: 'AsearchPart',
 	component: AsearchPart

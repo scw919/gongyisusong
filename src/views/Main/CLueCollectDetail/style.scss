@@ -2,6 +2,7 @@
     padding: 20px;
     .main-module {
         > p.title {
+            font-weight: 600;
             font-size: 16px;
             color: #14305a;
             padding: 10px 13px;
@@ -17,6 +18,7 @@
             margin-bottom: 30px;
             padding-top: 10px;
             p.title {
+                font-weight: 600;
                 color: rgba(36, 39, 44, 1);
             }
             p.content {

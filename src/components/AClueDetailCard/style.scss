@@ -1,5 +1,5 @@
 .card-box {
-    height: 430px;
+    min-height: 430px;
     padding: 20px 30px;
     border: 1px solid rgba(215, 219, 230, 1);
     .card-box-left {
@@ -58,7 +58,7 @@
                     height: 50px;
                     margin: 0 15px;
                     &.active {
-                        border: 1px solid #FF4F69;
+                        border: 1px solid #ff4f69;
                     }
                     > img {
                         width: 100%;
@@ -69,13 +69,15 @@
         }
     }
     .card-box-right {
-        padding: 22px 30px;
+        padding: 0 30px 22px;
         .collect-btn {
             right: -30px;
-            top: -20px;
+            top: -2px;
         }
         .title {
             p {
+                font-weight: 600;
+                width: 750px;
                 color: rgba(36, 39, 44, 1);
                 line-height: 33px;
                 margin-bottom: 15px;
@@ -83,8 +85,12 @@
         }
         .info {
             margin-top: 40px;
-            > div + div {
-                margin-left: 70px;
+            > div {
+                width: 350px;
+                & + div {
+                    flex: 1;
+                    margin-left: 70px;
+                }
             }
             p {
                 color: #565a60;

@@ -56,11 +56,13 @@ class AddClue extends React.Component {
             console.log(nextProps.relateClues)
             this.setState({
                 visible: nextProps.visible,
+                relateClues: nextProps.relateClues
             })
             this.getData(true);
         }
     }
     render() {
+        console.log(this.props.relateClues, 'addclues relateClues');
         const { visible, loading, title, isRelate, dataList } = this.state;
         return (
             <div>
@@ -124,7 +126,6 @@ class AddClue extends React.Component {
     // 搜索
     clueSearch = async (query) => {
         const { relateClues } = this.props;
-        console.log(relateClues)
         return apis.main.clueSearch(query).then(res => {
             // return res.data;
             let dataList = res.data.list.map(item => {
@@ -137,7 +138,7 @@ class AddClue extends React.Component {
                 return item;
             })
             res.data.list = dataList;
-            console.log(res.data.list);
+            // console.log(res.data.list);
             return res.data
         }).catch(err => {
             // console.log(err)
@@ -215,15 +216,21 @@ class AddClue extends React.Component {
     }
     // 确定
     handleOk = () => {
-        const { history } = this.props;
+        const { history, relateClues } = this.props;
         const { collectionID, checkedList } = this.state;
         this.setState({ loading: true });
         let data = {
             clueId: [],
             clueCollectionIds: [collectionID],
-        }
+        },
+            relateIds = [];
+        relateClues.map(relateItem => {
+            relateIds.push(relateItem.id);
+        })
         checkedList.map(item => {
-            data['clueId'].push(item.id);
+            if(relateIds.indexOf(item.id)==-1){
+                data['clueId'].push(item.id);
+            }
         })
         apis.main.addClueToColl(data).then(res => {
             let query = {

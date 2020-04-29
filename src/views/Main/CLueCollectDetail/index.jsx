@@ -101,7 +101,7 @@ class ClueDiscoveryDetail extends React.Component {
                                 <p className="title-line-before" styleName="title bt-line">其他材料上传</p>
                                 <Aupload filePath={this.clueUploadFile} updateFilePath={this.updateFilePath} />
                             </div>
-                            <div className="flex just-con-center" style={{ padding: '45px 0' }}>
+                            <div className="flex just-con-center primary_self" style={{ padding: '45px 0' }}>
                                 <Button onClick={() => { this.saveBaseInfo() }} type="primary" style={{ marginRight: '24px' }}>保存</Button>
                                 {/* <Button onClick={() => { history.goBack() }}>返回</Button> */}
                             </div>

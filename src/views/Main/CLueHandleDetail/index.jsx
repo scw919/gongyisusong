@@ -42,7 +42,7 @@ class ClueDiscoveryDetail extends React.Component {
         }
         apis.main.getClueCltDetail(query).then(res => {
             if (res.data) {
-                this.collUploadFile = this.collUploadFile?this.collUploadFile:res.data.collUploadFile;
+                this.collUploadFile = this.collUploadFile ? this.collUploadFile : res.data.collUploadFile;
                 let details = res.data;
                 details.labels = this.filterLabels(details);
                 this.setState({
@@ -94,9 +94,9 @@ class ClueDiscoveryDetail extends React.Component {
                             <div className="ft-16" styleName="main-module">
                                 <p className="title-line-before" styleName="title bt-line">线索详情</p>
                                 <div className="primary_self mar-t-10">
-                                    <Button onClick={() => { this.toggleModal(true) }} type="deepBlue">
+                                    <Button onClick={() => { this.toggleModal(true) }} type="deep-blue">
                                         添加其他线索
-                            </Button>
+                                    </Button>
                                 </div>
                                 <div styleName="other-clue">
                                     {
@@ -118,16 +118,16 @@ class ClueDiscoveryDetail extends React.Component {
                                 <p className="title-line-before" styleName="title bt-line">其他材料上传</p>
                                 <Aupload filePath={this.collUploadFile} updateFilePath={this.updateFilePath} />
                             </div>
-                            <div className="text-center" styleName="handle-btn-box">
-                                <Button className="primary_self" disabled type="primary">
+                            <div className="text-center primary_self" styleName="handle-btn-box">
+                                <Button disabled type="deep-blue">
                                     呈请立案
-                        </Button>
+                                </Button>
                                 <Button onClick={this.saveBaseInfo} ghost type="primary">
                                     保存
-                        </Button>
+                                </Button>
                                 {/* <Button onClick={}>
-                            返回
-                        </Button> */}
+                                    返回
+                                </Button> */}
                             </div>
                             {/* 添加其他线索 */}
                             <AddClue {...addClueOpt} />

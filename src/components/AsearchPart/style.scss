@@ -6,11 +6,15 @@
         margin: 40px 0;
         :global {
             .search-ipt {
-                box-shadow: 0px 0px 10px 0px rgba(4, 24, 72, 0.13);
+                // box-shadow: 0px 0px 10px 0px rgba(4, 24, 72, 0.13);
             }
             .ant-input {
+                box-shadow: 0px 0px 10px 0px rgba(4, 24, 72, 0.13);
                 height: 48px;
                 padding-left: 20px;
+            }
+            .ant-btn-primary {
+                border-color: transparent;
             }
         }
         button {
@@ -27,6 +31,13 @@
         width: 100%;
         padding: 13px 23px;
         color: #3988ff;
+        .link-btn {
+            :global {
+                .ant-btn-link {
+                    color: #3988ff;
+                }
+            }
+        }
     }
     .search-bottom-check {
         width: 100%;
@@ -137,25 +148,24 @@
             }
         }
     }
-    :global{
-        .ant-modal-body{
+    :global {
+        .ant-modal-body {
             padding: 32px 24px;
         }
     }
-    .timer-item{
-        color: #565A60;
-        .time-picker{
+    .timer-item {
+        color: #565a60;
+        .time-picker {
             width: 220px;
             height: 36px;
         }
-        +.timer-item{
+        + .timer-item {
             margin-top: 50px;
         }
-        :global{
-            .ant-input{
+        :global {
+            .ant-input {
                 height: 36px;
             }
         }
     }
 }
-

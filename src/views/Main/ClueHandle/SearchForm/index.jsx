@@ -218,7 +218,7 @@ class SearchForm extends React.Component {
                 <Row>
                     <Col offset={18} span={6}>
                         <Row>
-                            <Col className="text-right" span={23}>
+                            <Col className="text-right primary_self" span={23}>
                                 <Button style={{ marginRight: '15px' }} type="primary" htmlType="submit">
                                     搜索
                                 </Button>

@@ -9,6 +9,7 @@ import './style.scss';
 // 接口
 import apis from '@/App.api.js';
 
+
 const linkTypes = {
     collectDetail: '/main/myClue/clueCollect/clueCollectDetail',
     discoveryDetail: '/main/clueDiscovery/byClue/clueDiscoveryDetail',
@@ -99,7 +100,7 @@ class AclueItem extends React.Component {
                         <div styleName="left-part">
                             <span>收录时间：{sub.includeTime}</span>
                         </div>
-                        <div className="flex flex-1 flex-end" styleName="right-part">
+                        <div className="flex flex-1 flex-end ft-14" styleName="right-part">
                             <div onClick={this.toggleModalNew}>新建处置线索</div>
                             <div onClick={this.toggleModalRel}>关联处置线索</div>
                         </div>
@@ -110,7 +111,7 @@ class AclueItem extends React.Component {
                                     <div styleName="left-part">
                                         <span>采集时间：{sub.createdTime}</span>
                                     </div>
-                                    <div className="flex flex-1 flex-end" styleName="right-part">
+                                    <div className="flex flex-1 flex-end primary_self" styleName="right-part">
                                         <Link to={`${linkUrl}/${sub.id}`} target="_blank">
                                             <Button type="primary" style={{ marginRight: '8px' }}>查看</Button>
                                         </Link>

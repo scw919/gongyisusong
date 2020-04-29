@@ -1,10 +1,17 @@
 import React from 'react';
-import { Icon } from 'antd';
+import { connect } from 'react-redux';
+
+// import { Icon } from 'antd';
 import PropTypes from 'prop-types';
 import './style.scss';
 import apis from '@/App.api.js';
 import store from '@/store';
-import { getCollectedClues } from '@/store/actions';
+import { getCollectedClues, getConditions } from '@/store/actions';
+
+// const mapDispatchToProps = (dispatch) => ({
+//     getConditions: (...args) => dispatch(getConditions(...args)),
+// });
+
 // //at.alicdn.com/t/font_1740380_epha2kuvmm.js
 export class Acollect extends React.PureComponent {
     static propTypes = {
@@ -62,6 +69,7 @@ export class Acollect extends React.PureComponent {
                 clickEvent && clickEvent(flag);
             });
             store.dispatch(getCollectedClues());
+            store.dispatch(getConditions({ me: 1 }));
         })
     }
     handleCollected = (e, id) => {

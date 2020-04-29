@@ -1,7 +1,7 @@
 // 自定义按钮样式
 @mixin radius-btn(
     $radius: 19px,
-    $height: 36px,
+    $height: 34px,
     $padding: 0 15px,
     $color: #fff,
     $bg: #3988ff,
@@ -10,7 +10,7 @@
 ) {
     box-sizing: border-box;
     border-radius: $radius;
-    height: $height;
+    // height: $height;
     line-height: $height;
     padding: $padding;
     color: $color;
@@ -89,6 +89,12 @@
     }
     .pad-0-80 {
         padding: 0 80px;
+    }
+    .ft-14 {
+        font-size: 14px;
+    }
+    .ft-16 {
+        font-size: 16px;
     }
     .ft-16 {
         font-size: 16px;
@@ -223,8 +229,8 @@
         .ant-btn-link {
             color: #3988ff;
         }
-        [type='button'],
-        &[type='button'] {
+        .ant-btn-deep-blue {
+            cursor: pointer;
             display: inline-block;
             height: 32px;
             line-height: 32px;
@@ -233,8 +239,23 @@
             background: rgba(35, 87, 161, 1);
             border-radius: 2px;
             border: none;
+            outline: 0;
             &:hover {
                 background: #386ab3;
+                color: #fff;
+            }
+        }
+        :global {
+            .ant-btn-background-ghost {
+                color: #1B52A1;
+                border-color: #1B52A1;
+            }
+            .ant-btn-primary {
+                background: #3988ff;
+                
+            }
+            .ant-btn-danger{
+                background: #ff4f69;
             }
         }
     }
