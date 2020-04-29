@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import { Icon, Button, Upload } from 'antd';
 import { AfileShow } from '../AfileShow';
@@ -25,8 +26,8 @@ class Aupload extends React.Component {
         fileList: [],
     }
     componentWillReceiveProps(nextProps) {
-        if (nextProps.filePath && 
-            nextProps.filePath != "null"&&
+        if (nextProps.filePath &&
+            nextProps.filePath != "null" &&
             (this.props.filePath != nextProps.filePath)) {
             let fileList = this.getFileList(nextProps.filePath, true);
             this.setState({
@@ -53,6 +54,7 @@ class Aupload extends React.Component {
                 })}
                 <Upload
                     action=""
+                    accept=".doc,.docx,.pdf,.jpg"
                     customRequest={this.customRequest}
                     showUploadList={false}
                     fileList={fileList}
@@ -99,11 +101,21 @@ class Aupload extends React.Component {
     }
     // 自定义上传文件
     customRequest = (params) => {
+        let CancelToken = axios.CancelToken;
+        let cancel = new CancelToken(function executor(c) {
+            params.file.cancel = c
+            // 这个参数 c 就是CancelToken构造函数里面自带的取消请求的函数，这里把该函数当参数用
+        })
         const file = params.file;
         let formData = new FormData();
         formData.append("fName", file);
         console.log(params);
-        apis.upload.upload(formData, {}).then((res) => {
+        apis.upload.upload(formData, (progressEvent) => {
+            let percent = (progressEvent.loaded / progressEvent.total * 100) | 0
+            console.log(percent, 'upload percent 1111111111111111')
+            //调用onProgress方法来显示进度条，需要传递个对象 percent为进度值
+            // params.onProgress({ percent: percent })
+        },cancel).then((res) => {
             // console.log(res.success)
             // let fileList = this.state.fileList;
             this.getNewFileList(file.name, file.uid, file.size, res.data);

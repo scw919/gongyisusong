@@ -5,11 +5,13 @@ export default {
     name: 'upload',
     apis: {
         //上传文件
-        upload(query) {
+        upload(query, onPrograss, cancel) {
             return httpAjax('post', index_base + '/file/upload', query, {
                 headers: {
                     'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundarymS7TlCNHkMnROj3Y',
                 },
+                onUploadProgress: onPrograss,
+                cancelToken: cancel
             });
         },
     },
