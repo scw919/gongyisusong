@@ -30,7 +30,7 @@ class CarouselSelf extends React.PureComponent {
         }
     }
     render() {
-        const { files } = this.props;
+        const { files, defaultFiles } = this.props;
         return (
             <div styleName="card-box-left">
                 <Carousel
@@ -40,25 +40,38 @@ class CarouselSelf extends React.PureComponent {
                     initialSlide={this.state.initialIndex}
                     dots={false}>
                     {
-                        files.map((item, index) => {
-                            return (
-                                <div key={index} className="flex align-item-center" styleName="carousel-img-box">
-                                    <img src={item} alt={item} />
+                        files.length > 0 ? (
+                            files.map((item, index) => {
+                                return (
+                                    <div key={index} className="flex align-item-center" styleName="carousel-img-box">
+                                        <img src={item} alt={item} />
+                                    </div>
+                                )
+                            })
+                        ) : (
+                                <div className="flex align-item-center" styleName="carousel-img-box">
+                                    <img src={defaultFiles[0]} alt={defaultFiles[0]} />
                                 </div>
                             )
-                        })
                     }
                 </Carousel>
                 <section styleName="carousel-dots-box" ref={el => (this.bodyEl = el)}>
                     <div ref={el => (this._contentEl = el)} styleName="carousel-dots">
                         {
-                            files.map((item, index) => {
-                                return (
-                                    <div styleName={this.state.initialIndex == index ? 'active' : ''} key={index} onClick={() => { this.changeCurImg(index) }}>
-                                        <img src={item} alt="" />
+                            files.length > 0 ? (
+                                files.map((item, index) => {
+                                    return (
+                                        <div styleName={this.state.initialIndex == index ? 'active' : ''} key={index} onClick={() => { this.changeCurImg(index) }}>
+                                            <img src={item} alt="" />
+                                        </div>
+                                    )
+                                })
+                            ) : (
+                                    <div>
+                                        <img src={defaultFiles[1]} alt="" />
                                     </div>
                                 )
-                            })
+
                         }
                     </div>
                 </section>

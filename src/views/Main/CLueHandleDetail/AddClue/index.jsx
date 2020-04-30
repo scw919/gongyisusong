@@ -62,7 +62,6 @@ class AddClue extends React.Component {
         }
     }
     render() {
-        console.log(this.props.relateClues, 'addclues relateClues');
         const { visible, loading, title, isRelate, dataList } = this.state;
         return (
             <div>

@@ -43,7 +43,7 @@ class Main extends React.Component {
     });
     location = null;
     componentDidUpdate() {
-        console.log(this.location, this.props.location.pathname, 'componentDidUpdate    ');
+        // console.log(this.location, this.props.location.pathname, 'componentDidUpdate    ');
         if (this.location && (this.location.pathname == this.props.location.pathname)) {
             return;
         }

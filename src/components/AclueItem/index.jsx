@@ -46,14 +46,14 @@ class AclueItem extends React.Component {
             history
         } = this.props;
         sub.lables = sub.lables ? sub.lables : sub.labels;
-        const linkUrl = isCollect || isHandle ? linkTypes['collectDetail'] : linkTypes['discoveryDetail'];
+        const linkUrl = isCollect || isHandle ? `${linkTypes['collectDetail']}/${sub.id}${isHandle?'/hideFile':'/showFile'}` : `${linkTypes['discoveryDetail']}/${sub.id}`;
         return (
             <div styleName="search-list-item">
                 <div styleName="search-list-item-title" className="flex flex-between">
                     <div className="ft-18 flex flex-start" styleName="title">
                         {hasChecked ? <Checkbox styleName="item-check" disabled={hasCollected && !isCollect} value={sub} id={`${sub.id}`} ></Checkbox > : null}
                         {/* <span onClick={(e) => { this.checkDetail(e, linkUrl) }}>番禺南丰塑料有限公司行政处罚案</span> */}
-                        <Link styleName="item-link" to={`${linkUrl}/${sub.id}`} target="_blank">
+                        <Link styleName="item-link" to={linkUrl} target="_blank">
                             <span dangerouslySetInnerHTML={{ __html: this.highLightRender(sub, 'name') }}></span>
                         </Link>
                     </div>

@@ -40,6 +40,7 @@ class NewDealClue extends React.PureComponent {
         },
         dataList: []
     }
+    checkedList = [];
     componentWillReceiveProps(nextProps, prevProps) {
         if (nextProps.visible) {
             this.setState({
@@ -108,7 +109,7 @@ class NewDealClue extends React.PureComponent {
                                                     dataList.map((sub, subKey) => {
                                                         return (
                                                             <div key={subKey} className="flex" styleName="search-clue-item">
-                                                                <Checkbox value={sub} onChange={this.onChangeSelClue} />
+                                                                <Checkbox value={sub} disabled={sub.checked} onChange={this.onChangeSelClue} />
                                                                 <div className="flex" styleName="clue-name">
                                                                     <div className="ellipsis" title={sub.caseName}>{sub.caseName}</div>
                                                                     <div className="flex-1 text-right ellipsis" title={this.subLables(sub.lables)}>
@@ -162,6 +163,12 @@ class NewDealClue extends React.PureComponent {
     // 搜索
     clueSearch = async (query) => {
         return apis.main.clueSearch(query).then(res => {
+            res.data.list&&res.data.list.forEach(item => {
+                if (item.id == this.props.clueID) {
+                    item.checked = true;
+                    this.checkedList.push(item)
+                }
+            })
             return res.data;
         }).catch(err => {
             // console.log(err)
@@ -191,7 +198,7 @@ class NewDealClue extends React.PureComponent {
                 query: newQuery,
                 dataList: data.list,
                 checkAll: false,
-                checkedList: [],
+                checkedList: this.checkedList,
                 indeterminate: false,
             })
             isLoading = false;
@@ -209,7 +216,8 @@ class NewDealClue extends React.PureComponent {
             new_dataList = old_dataList.concat(data.list);
             this.setState({
                 query: newQuery,
-                dataList: new_dataList
+                dataList: new_dataList,
+                checkedList: this.checkedList
             })
             isLoading = false;
         }
@@ -242,7 +250,7 @@ class NewDealClue extends React.PureComponent {
         this.setState({ loading: true });
         let data = {
             collectionName: this.state.clueName,
-            ids: [this.props.clueID]
+            ids: []
         }
         checkedList.map(item => {
             data['ids'].push(item.id);

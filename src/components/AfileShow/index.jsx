@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Modal } from 'antd';
+import { Icon, Modal, Progress } from 'antd';
 import './style.scss';
 import commonMethods from '@/zTool/commonMethods.js';
-const { downloadFile } = commonMethods;
+const { downloadFile, fileSizeChange } = commonMethods;
 import pngIcon from '@/assets/images/detail/picture.png';
 import pdfIcon from '@/assets/images/detail/pdf.png';
 import videoIcon from '@/assets/images/detail/video.png';
@@ -23,7 +23,15 @@ export class AfileShow extends React.Component {
     }
     state = {
         previewVisible: false,
-        previewImage: null
+        previewImage: null,
+        percent: 0
+    }
+    componentWillReceiveProps(nextProps, prevProps) {
+        if (nextProps != prevProps) {
+            this.setState({
+                percent: nextProps.percent
+            })
+        }
     }
     render() {
         const {
@@ -32,18 +40,20 @@ export class AfileShow extends React.Component {
             size,
             url,
             uid,
+            status,
+            cancel,
             disabled
         } = this.props;
-        console.log(name, size, url);
+        // console.log(this.props);
         // console.log(this.props)
-        const { previewVisible, previewImage } = this.state;
+        const { previewVisible, previewImage, percent } = this.state;
         return (
             <div className="relative" styleName="file-box">
                 {/* handleIcon */}
                 <div className="absolute" styleName="handle-modal">
                     <div className="flex align-item-center just-con-center">
                         {
-                            this.getFileType(name, 'docx') ? null
+                            this.getFileType(name, 'docx') || percent ? null
                                 : <Icon onClick={(e) => {
                                     e.stopPropagation();
                                     e.nativeEvent.stopImmediatePropagation();
@@ -51,7 +61,7 @@ export class AfileShow extends React.Component {
                                 }} type="eye" />
                         }
                         {
-                            disabled || this.getFileType(name, 'docx') ?
+                            (disabled || this.getFileType(name, 'docx'))&&!percent?
                                 <Icon onClick={(e) => {
                                     e.stopPropagation();
                                     e.nativeEvent.stopImmediatePropagation();
@@ -63,16 +73,24 @@ export class AfileShow extends React.Component {
                                 <Icon onClick={(e) => {
                                     e.stopPropagation();
                                     e.nativeEvent.stopImmediatePropagation();
-                                    this.props.delete(uid)
+                                    this.props.delete(uid, percent, cancel)
                                 }} type="delete" /> : null
                         }
                     </div>
                 </div>
                 {this.renderImg(name)}
-                <div>
-                    <p title={name} className="ellipsis">{name}</p>
-                    <p>({size})</p>
-                </div>
+                {
+                    (percent && percent < 100) ? (
+                        <div>
+                            <Progress type="circle" percent={percent} width={40} />
+                        </div>
+                    ) : (
+                            <div>
+                                <p title={name} className="ellipsis">{name}</p>
+                                <p>({fileSizeChange(size)})</p>
+                            </div>
+                        )
+                }
                 <Modal width={768} visible={previewVisible} footer={null} onCancel={this.handleCancel}>
                     {
                         this.renderPreview((this.getFileType(name)), url)

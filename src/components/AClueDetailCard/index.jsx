@@ -79,14 +79,16 @@ class AClueDetailCard extends React.PureComponent {
             punishmentOrganization, //处罚机关
             penaltyDecisionDate, //处罚决定日期
             snapshot, //快照
+            snapshotDefault, //快照默认
             isIncluded, //是否收录
         } = this.props;
         const snapShots = snapshot && snapshot.length > 0 && snapshot.split(',') || [];
+        const snapshotsDefault = snapshotDefault && snapshotDefault.length > 0 && snapshotDefault.split(',') || [];
         const hasCollected = Boolean(isIncluded);
         // console.log(hasCollected, snapShots, 'AclueDetailCard');
         return (
             <div className="flex" styleName="card-box">
-                <SelfCarousel files={snapShots} />
+                <SelfCarousel files={snapShots} defaultFiles={snapshotsDefault} />
                 <div className="flex-1" styleName="card-box-right">
                     {/* 标题 */}
                     <div className="relative" styleName="title">

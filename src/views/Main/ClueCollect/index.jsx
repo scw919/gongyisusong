@@ -5,7 +5,7 @@ const { AsortButton, AclueItem, AsearchPart, AscrollContent } = compnents;
 // import SearchList from '../ClueDiscovery/Children/SearchList';
 import NewDealClue from './NewDealClue';
 import RelatedClue from './RelatedClue';
-import { Checkbox } from 'antd';
+import { Checkbox, message } from 'antd';
 const CheckboxGroup = Checkbox.Group;
 // actions
 import { getCollectedClues, getConditions } from '@/store/actions';
@@ -252,6 +252,8 @@ class ClueDiscovery extends React.Component {
                 this.getData(true);
                 // })
             })
+        }else{
+            message.info('请选择取消收录的线索')
         }
     }
     // 收录 / 取消收录

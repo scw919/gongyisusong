@@ -21,7 +21,7 @@ class EventProcedure extends React.Component {
                     }
                     return (
                         <Timeline.Item key={index} dot={<span styleName="time-line-dot"></span>}>
-                            <Link to={`/main/myClue/clueCollect/clueCollectDetail/${event.id}`} target="_blank">
+                            <Link to={`/main/myClue/clueCollect/clueCollectDetail/${event.id}/hideFile`} target="_blank">
                                 <div className="pointer">
                                     <p styleName="name">{event.caseName}</p>
                                     <p styleName="unit">{event.partyName}</p>

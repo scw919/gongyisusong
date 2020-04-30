@@ -534,7 +534,7 @@ class ClueDiscovery extends React.Component {
         // console.log(part_2_tabs);
         // const {  } = this.state;
         return (
-            <div styleName="index-container" style={{ height: '100%',}}>
+            <div styleName="index-container" style={{ height: '100%', }}>
                 {/* part-1 */}
                 <div styleName="col-div-box part-1">
                     <div styleName="col-div-box-child">
@@ -605,7 +605,7 @@ class ClueDiscovery extends React.Component {
                             <span className="relative" styleName="head-tit">线索处置情况</span>
                             <Button type="link" icon="upload">
                                 导出
-                                </Button>
+                            </Button>
                         </div>
                         <div className="flex-1" styleName="col-div-content">
                             <div className="flex flex-end" styleName="data-type">

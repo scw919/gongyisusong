@@ -2,12 +2,15 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import store from '@/store';
 import { zTool } from 'zerod';
+// 正则
+import commonConsts from './commonConsts.js';
+const { reg_file_path } = commonConsts;
 // actions
 import { changeMenuIndex, changeBreadCrumb } from '@/store/actions';
 const matchUrlToMenu = function (match) {
     let newMenuIndex,
         cur_url = match.url;
-    console.log(cur_url, 'cur_url');
+    // console.log(cur_url, 'cur_url');
     switch (cur_url) {
         case '/index':
             newMenuIndex = 0;
@@ -16,15 +19,19 @@ const matchUrlToMenu = function (match) {
             newMenuIndex = 1;
             break;
     }
-    console.log(newMenuIndex);
+    // console.log(newMenuIndex);
     store.dispatch(changeMenuIndex(newMenuIndex));
 };
 const createBreadCrumb = function (main, location, mainRoutes) {
-    console.log('createBreadCrumb   commonMethods111111111111111111111');
+    // console.log('createBreadCrumb   commonMethods111111111111111111111');
     const IndexRoute = { path: main.path, pathName: '线索管理', index: 0 };
     let curPath = location.pathname,
         matchRoutes = [];
-    curPath = curPath.indexOf('Detail/') > -1 ? curPath.split('Detail/')[0] + 'Detail/:id' : curPath;
+    if (curPath.match(/^.*Detail\/\d+\/.*?/g)) {
+        curPath = curPath.match(/^.*Detail\//g)[0]+':id/:type';
+    } else if (curPath.match(/^.*Detail\/\d+/g)) {
+        curPath = curPath.match(/^.*Detail\//g)[0]+':id';
+    }
     mainRoutes.map((item) => {
         let index = curPath.lastIndexOf(item.path);
         if (index > -1) {
@@ -125,11 +132,13 @@ const getFileList = (path, isSlefUpload) => {
     //isSelfUpload 判断是否是自己上传的 不是 不包含 uid size
     let fileList = [];
     if (path && path.length > 0) {
-        let pathList = path.split(',');
+        // let pathList = path.split(',');
         let nameReg = '?fileName=',
             uidReg = '?uid=',
             sizeReg = '?size=';
         if (isSlefUpload) {
+            let pathList = path.match(reg_file_path);
+            // console.log(reg_file_path, pathList);
             pathList.map((item, index) => {
                 fileList.push({
                     url: item.split(nameReg)[0],
@@ -140,6 +149,7 @@ const getFileList = (path, isSlefUpload) => {
             });
             return fileList;
         } else {
+            let pathList = path.split(',');
             pathList.map((item, index) => {
                 fileList.push({
                     url: item.split(nameReg)[0],
@@ -159,7 +169,7 @@ const getFileList = (path, isSlefUpload) => {
 const redict_path = '/login';
 const redirectDeal = (options) => {
     let isLogin = Boolean(localStorage.getItem('token') && localStorage.getItem('token') != 'null');
-    console.log(isLogin, 'isLogin status');
+    // console.log(isLogin, 'isLogin status');
     return isLogin
         ? options
         : Object.assign(options, {

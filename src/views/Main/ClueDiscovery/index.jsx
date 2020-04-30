@@ -2,7 +2,7 @@ import React from 'react';
 import compnents from '@/components/load-components.js';
 const { AsortButton, AclueItem, AsearchPart, AscrollContent } = compnents;
 // import SearchList from './Children/SearchList';
-import { Checkbox } from 'antd';
+import { Checkbox, message } from 'antd';
 const CheckboxGroup = Checkbox.Group;
 // actions
 import { getCollectedClues, getConditions } from '@/store/actions';
@@ -220,6 +220,8 @@ class ClueDiscovery extends React.Component {
                     getConditions({ me: 1 });
                 })
             })
+        } else {
+            message.info('请选择需要收录的线索')
         }
     }
     // 重置复选框

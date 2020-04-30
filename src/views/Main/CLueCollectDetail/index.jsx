@@ -30,8 +30,9 @@ class ClueDiscoveryDetail extends React.Component {
         // 爬取资源
         punishmentFileList: [],
     }
-    clueUploadFile = ""; //文件路径字符串
+    clueUploadFile = null; //文件路径字符串
     componentDidMount() {
+        this.type = this.props.match.params.type;
         let query = {
             id: this.props.match.params.id
         }
@@ -97,14 +98,15 @@ class ClueDiscoveryDetail extends React.Component {
                                 </div>
                             </div>
                             {/* 其他材料 上传 */}
-                            <div styleName="main-module">
-                                <p className="title-line-before" styleName="title bt-line">其他材料上传</p>
-                                <Aupload filePath={this.clueUploadFile} updateFilePath={this.updateFilePath} />
-                            </div>
-                            <div className="flex just-con-center primary_self" style={{ padding: '45px 0' }}>
-                                <Button onClick={() => { this.saveBaseInfo() }} type="primary" style={{ marginRight: '24px' }}>保存</Button>
-                                {/* <Button onClick={() => { history.goBack() }}>返回</Button> */}
-                            </div>
+                            <section style={{ display: this.type == 'showFile' ? 'block' : 'none' }}>
+                                <div styleName="main-module">
+                                    <p className="title-line-before" styleName="title bt-line">其他材料上传</p>
+                                    <Aupload filePath={this.clueUploadFile} updateFilePath={this.updateFilePath} />
+                                </div>
+                                <div className="flex just-con-center primary_self" style={{ padding: '45px 0' }}>
+                                    <Button onClick={() => { this.saveBaseInfo() }} type="primary" style={{ marginRight: '24px' }}>保存</Button>
+                                </div>
+                            </section>
                         </div>
                     </div>
                 </div>
@@ -118,7 +120,7 @@ class ClueDiscoveryDetail extends React.Component {
     // 获取文件路径字符串
     updateFilePath = (clueUploadFile) => {
         this.clueUploadFile = clueUploadFile;
-        console.log(this.clueUploadFile, 'clueUploadFile');
+        // console.log(this.clueUploadFile, 'clueUploadFile');
     }
     // 保存提交
     saveBaseInfo = () => {
