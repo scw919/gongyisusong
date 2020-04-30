@@ -5,6 +5,7 @@ import { zTool } from 'zerod';
 // 正则
 import commonConsts from './commonConsts.js';
 const { reg_file_path } = commonConsts;
+let top_menu = '';
 // actions
 import { changeMenuIndex, changeBreadCrumb } from '@/store/actions';
 const matchUrlToMenu = function (match) {
@@ -14,23 +15,29 @@ const matchUrlToMenu = function (match) {
     switch (cur_url) {
         case '/index':
             newMenuIndex = 0;
+            top_menu = { path: cur_url, pathName: '首页', index: 0 };
             break;
         case '/main':
             newMenuIndex = 1;
+            top_menu = { path: cur_url, pathName: '线索管理', index: 0 };
+            break;
+        case '/sys':
+            newMenuIndex = 2;
+            top_menu = { path: cur_url, pathName: '系统管理', index: 0 };
             break;
     }
     // console.log(newMenuIndex);
     store.dispatch(changeMenuIndex(newMenuIndex));
 };
 const createBreadCrumb = function (main, location, mainRoutes) {
-    // console.log('createBreadCrumb   commonMethods111111111111111111111');
-    const IndexRoute = { path: main.path, pathName: '线索管理', index: 0 };
+    // console.log(main.path, 'createBreadCrumb   commonMethods111111111111111111111');
+    const IndexRoute = top_menu;
     let curPath = location.pathname,
         matchRoutes = [];
     if (curPath.match(/^.*Detail\/\d+\/.*?/g)) {
-        curPath = curPath.match(/^.*Detail\//g)[0]+':id/:type';
+        curPath = curPath.match(/^.*Detail\//g)[0] + ':id/:type';
     } else if (curPath.match(/^.*Detail\/\d+/g)) {
-        curPath = curPath.match(/^.*Detail\//g)[0]+':id';
+        curPath = curPath.match(/^.*Detail\//g)[0] + ':id';
     }
     mainRoutes.map((item) => {
         let index = curPath.lastIndexOf(item.path);

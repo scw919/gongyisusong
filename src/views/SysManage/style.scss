@@ -1,0 +1,16 @@
+@import '~zerod/scssMixin/generateClassName';
+@import '~zerod/scss/common/z-flex.scss';
+// @import '../../ant-theme-vars.scss';
+
+@include z('main-user-menu') {
+    min-width: 180px;
+}
+
+@include z('drop-down') {
+    background: transparent !important;
+    color: #fff;
+}
+@include z('bg-white') {
+    background: transparent !important;
+    color: #fff;
+}

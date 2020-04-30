@@ -132,6 +132,9 @@
                     &.ant-menu-item-selected {
                         background: #132e59;
                         border-left: 4px solid #3988ff;
+                        .anticon {
+                            color: #3988ff;
+                        }
                     }
                 }
                 .ant-menu-dark {
@@ -247,14 +250,13 @@
         }
         :global {
             .ant-btn-background-ghost {
-                color: #1B52A1;
-                border-color: #1B52A1;
+                color: #1b52a1;
+                border-color: #1b52a1;
             }
             .ant-btn-primary {
                 background: #3988ff;
-                
             }
-            .ant-btn-danger{
+            .ant-btn-danger {
                 background: #ff4f69;
             }
         }

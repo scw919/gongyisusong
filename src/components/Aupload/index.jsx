@@ -13,11 +13,11 @@ import apis from '@/App.api.js';
 
 class Aupload extends React.Component {
     static propTypes = {
-        updateFilePath: PropTypes.func,
-        disabled: PropTypes.bool,
-        accept: PropTypes.string,
-        fileList: PropTypes.array,
-        filePath: PropTypes.string,
+        updateFilePath: PropTypes.func, // 更新父组件的文件路径拼接字符串
+        disabled: PropTypes.bool,  // 是否禁用
+        accept: PropTypes.string,  // 上传文件格式
+        fileList: PropTypes.array,   // 文件列表
+        filePath: PropTypes.string, // 文件路径 ’,‘ 号拼接的字符串
     };
     static defaultProps = {
         accept: '.jpg,.doc,.docx,.pdf',

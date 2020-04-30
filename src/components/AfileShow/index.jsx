@@ -12,11 +12,11 @@ import wordIcon from '@/assets/images/detail/word.png';
 
 export class AfileShow extends React.Component {
     static propTypes = {
-        type: PropTypes.string,
-        size: PropTypes.string,
-        name: PropTypes.string,
-        url: PropTypes.any,
-        disabled: PropTypes.bool
+        type: PropTypes.string,  // 文件类型
+        size: PropTypes.string,  // 文件大小
+        name: PropTypes.string,  // 文件名
+        url: PropTypes.any,      // 文件路径
+        disabled: PropTypes.bool // 是否禁用 （文件上传组件含有的状态  控制icon操作显示）
     };
     static defaultProps = {
         disabled: false

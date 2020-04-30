@@ -6,6 +6,8 @@ import lazyLoad from '@/lazyLoad/lazyLoad';
 const LoginMain = lazyLoad(() => import('@/views/Login/'));
 const Index = lazyLoad(() => import('@/views/Index/'));
 const Main = lazyLoad(() => import('@/views/Main/'));
+// System
+const System = lazyLoad(() => import('@/views/SysManage/'));
 const pageConfig = {
     rootRoutes: [
         {
@@ -32,6 +34,15 @@ const pageConfig = {
             redirect: true,
             path: '/main',
             to: '/main/clueDiscovery/byClue',
+        },
+        {
+            path: '/sys',
+            component: System
+        },
+        {
+            redirect: true,
+            path: '/sys',
+            to: '/sys/user',
         },
         {
             path: '/login',
