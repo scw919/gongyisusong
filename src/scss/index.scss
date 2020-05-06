@@ -428,4 +428,17 @@
             display: none;
         }
     }
+    // a 标签hover
+    a:hover {
+        color: #3988ff;
+    }
+    // grid 布局自定义
+    @media (min-width: 1600px) {
+        .ant-col-xxl-5 {
+            display: block;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            width: 20%;
+        }
+    }
 }

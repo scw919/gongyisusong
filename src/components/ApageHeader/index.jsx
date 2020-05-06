@@ -30,7 +30,7 @@ class ApageHeader extends React.Component {
     menuItems = [
         { name: '首页', index: 0, path: '/index' },
         { name: '线索管理', index: 1, path: '/main' },
-        { name: '系统管理', index: 2, path: '/sys' },
+        // { name: '系统管理', index: 2, path: '/sys' },
         // { name: '参考案例', index: 2, path: '' },
         // { name: '系统管理', index: 3, path: '' },
     ]

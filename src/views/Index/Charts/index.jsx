@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 // const { AseamlessScroll } = compnents;
 // actions
 import { changetabs_part_2 } from '@/store/actions';
-import { Icon, Button, Radio, Select } from 'antd';
+import { Icon, Button, Radio, Select, Col, Row } from 'antd';
 const { Option } = Select;
 // const { Search } = Input;
 //引入基本模板
@@ -536,11 +536,13 @@ class ClueDiscovery extends React.Component {
         return (
             <div styleName="index-container" style={{ height: '100%', }}>
                 {/* part-1 */}
-                <div styleName="col-div-box part-1">
-                    <div styleName="col-div-box-child">
-                        {
-                            this.iconLists.map((item, index) => {
-                                return (
+                {/* <div styleName="col-div-box part-1"> */}
+                {/* <div styleName="col-div-box-child"> */}
+                <Row styleName="col-div-box part-1" gutter={20}>
+                    {
+                        this.iconLists.map((item, index) => {
+                            return (
+                                <Col key={index} className="ant-col-sm-12 ant-col-md-8 ant-col-xxl-5" styleName="col-box-6">
                                     <div key={index} className="flex align-item-center ft-16" styleName="col-div">
                                         <div styleName={this.renderIcon(item.type)}></div>
                                         <div className="flex" styleName="desc">
@@ -551,19 +553,93 @@ class ClueDiscovery extends React.Component {
                                             </p>
                                         </div>
                                     </div>
-                                )
-                            })
-                        }
-                    </div>
-                </div>
+                                </Col>
+
+                            )
+                        })
+                    }
+                </Row>
+                {/* </div> */}
+                {/* </div> */}
                 {/* part-2 */}
-                <div className="flex ft-16" styleName="col-div-box part-2">
-                    <div className="flex flex-col" styleName="col-div">
+                {/* <div className="flex ft-16" styleName="col-div-box part-2"> */}
+                <Row gutter={20,20} className="ft-16" styleName="col-div-box part-2">
+                    <Col className="ant-col-sm-24 ant-col-md-12 ant-col-xxl-8">
+                        <div className="flex flex-col" styleName="col-div">
+                            <div className="flex align-item-center flex-between" styleName="col-div-head">
+                                <span className="relative" styleName="head-tit">检察建议情况</span>
+                                <Button type="link" icon="upload">
+                                    导出
+                            </Button>
+                            </div>
+                            <div className="flex-1" styleName="col-div-content">
+                                <div className="flex flex-end" styleName="data-type">
+                                    <div styleName="data-type-handle">
+                                        <Radio.Group onChange={(e) => { this.changeTabs(e, 'proAdvise') }} defaultValue={part_2_tabs.proAdvise} size="small" buttonStyle="solid">
+                                            <Radio.Button value="0">行政机关</Radio.Button>
+                                            <Radio.Button value="1">领域</Radio.Button>
+                                        </Radio.Group>
+                                    </div>
+                                </div>
+                                <div id="data-charts-1" className="flex" styleName="data-charts">
+
+                                </div>
+                            </div>
+                        </div>
+                    </Col>
+                    <Col className="ant-col-sm-24 ant-col-md-12 ant-col-xxl-8">
+                        <div className="flex flex-col" styleName="col-div">
+                            <div className="flex align-item-center flex-between" styleName="col-div-head">
+                                <span className="relative" styleName="head-tit">线索收录情况</span>
+                                <Button type="link" icon="upload">
+                                    导出
+                                </Button>
+                            </div>
+                            <div className="flex-1" styleName="col-div-content">
+                                <div className="flex flex-end" styleName="data-type">
+                                    <div styleName="data-type-handle">
+                                        <Radio.Group onChange={(e) => { this.changeTabs(e, 'clueIncluded') }} defaultValue={part_2_tabs.clueIncluded} size="small" buttonStyle="solid">
+                                            <Radio.Button value="domainVos">领域</Radio.Button>
+                                            <Radio.Button value="sourceVos">来源</Radio.Button>
+                                        </Radio.Group>
+                                    </div>
+                                </div>
+                                <div id="data-charts-2" className="flex" styleName="data-charts">
+
+                                </div>
+                            </div>
+                        </div>
+                    </Col>
+                    <Col className="ant-col-sm-24 ant-col-md-12 ant-col-xxl-8">
+                        <div className="flex flex-col" styleName="col-div">
+                            <div className="flex align-item-center flex-between" styleName="col-div-head">
+                                <span className="relative" styleName="head-tit">线索处置情况</span>
+                                <Button type="link" icon="upload">
+                                    导出
+                            </Button>
+                            </div>
+                            <div className="flex-1" styleName="col-div-content">
+                                <div className="flex flex-end" styleName="data-type">
+                                    <div styleName="data-type-handle">
+                                        <Radio.Group onChange={(e) => { this.changeTabs(e, 'clueDispose') }} defaultValue={part_2_tabs.clueDispose} size="small" buttonStyle="solid">
+                                            <Radio.Button value="stageVos">处置阶段</Radio.Button>
+                                            <Radio.Button value="domainVos">领域</Radio.Button>
+                                        </Radio.Group>
+                                    </div>
+                                </div>
+                                <div id="data-charts-3" className="flex" styleName="data-charts">
+
+                                </div>
+                            </div>
+                        </div>
+                    </Col>
+                </Row>
+                {/* <div className="flex flex-col" styleName="col-div">
                         <div className="flex align-item-center flex-between" styleName="col-div-head">
                             <span className="relative" styleName="head-tit">检察建议情况</span>
                             <Button type="link" icon="upload">
                                 导出
-                                </Button>
+                            </Button>
                         </div>
                         <div className="flex-1" styleName="col-div-content">
                             <div className="flex flex-end" styleName="data-type">
@@ -620,8 +696,8 @@ class ClueDiscovery extends React.Component {
 
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </div> */}
+                {/* </div> */}
                 {/* part-3 */}
                 <div className="ft-16 relative" styleName="col-div-box part-3">
                     <div className="flex flex-col" styleName="col-div">
@@ -660,6 +736,7 @@ class ClueDiscovery extends React.Component {
     }
     // 页面缩放导致鼠标悬停错位处理
     reset_echarts_size = (container, scale) => {
+        return false;
         let container_height = container.offsetHeight;
         let container_width = container.offsetWidth;
         container.style.zoom = 1 / scale;

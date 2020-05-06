@@ -79,19 +79,19 @@ class AclueItem extends React.Component {
                         isHandle ? (
                             <div styleName="left-part">
                                 <Icon className="mar-r-5" type="clock-circle" />
-                                <span>处罚决定日期: </span>
+                                <span>处罚决定日期：</span>
                                 <span>{sub.penaltyDecisionDate}</span>
                             </div>) : (
                                 <div styleName="left-part">
                                     <Icon className="mar-r-5" type="clock-circle" />
-                                    <span>{sub.timeLabel}: </span>
+                                    <span>{sub.timeLabel}：</span>
                                     <span>{sub.showDateTime}</span>
                                 </div>
                             )
                     }
                     {
                         !isCollect && !isHandle ? (<div styleName="right-part">
-                            采集时间: {sub.createdTime}
+                            采集时间：{sub.createdTime}
                         </div>) : null
                     }
                 </div>

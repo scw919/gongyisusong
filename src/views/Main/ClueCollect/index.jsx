@@ -28,6 +28,7 @@ const mapStateToProps = (state, ownProps) =>
 const mapDispatchToProps = (dispatch) => ({//getConditions
     getCollectedClues: (...args) => dispatch(getCollectedClues(...args)),
     getConditions: (...args) => dispatch(getConditions(...args)),
+
 });
 let isLoading = false;
 class ClueDiscovery extends React.Component {
@@ -50,6 +51,9 @@ class ClueDiscovery extends React.Component {
         collectClues: [],//已收录的线索
         newVisible: false, //新建处置 弹窗
         relatedVisible: false, //关联线索 弹窗
+    }
+    componentWillMount() {
+        this.props.getConditions({ me: 1 })
     }
     render() {
         const { history, routes } = this.props;
@@ -252,7 +256,7 @@ class ClueDiscovery extends React.Component {
                 this.getData(true);
                 // })
             })
-        }else{
+        } else {
             message.info('请选择取消收录的线索')
         }
     }

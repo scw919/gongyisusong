@@ -104,7 +104,9 @@ class ClueDiscoveryDetail extends React.Component {
                                     <Aupload filePath={this.clueUploadFile} updateFilePath={this.updateFilePath} />
                                 </div>
                                 <div className="flex just-con-center primary_self" style={{ padding: '45px 0' }}>
-                                    <Button onClick={() => { this.saveBaseInfo() }} type="primary" style={{ marginRight: '24px' }}>保存</Button>
+                                    <Button onClick={() => { this.saveBaseInfo() }} style={{ marginRight: '24px' }} type="deep-blue">
+                                        保存
+                                    </Button>
                                 </div>
                             </section>
                         </div>
