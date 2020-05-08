@@ -35,64 +35,68 @@
         }
         &.part-1 {
             // flex-wrap: wrap;
-            .col-box-6 {
-                // padding: 0 10px 20px !important;
-                .col-div {
-                    // float: left;
-                    // width: 335px;
-                    height: 170px;
-                    padding-left: 40px;
-                    margin-bottom: 20px;
-                    color: #565a60;
-                    // margin: 0 10px 20px;
-                    > div {
-                        height: 70px;
+            .col-div {
+                float: left;
+                width: 335px;
+                // width: calc((100% - 80px) / 5);
+                height: 170px;
+                padding-left: 40px;
+                margin-bottom: 20px;
+                color: #565a60;
+                // + .col-div {
+                //     margin-left: 20px;
+                // }
+                // &:nth-of-type(6) {
+                //     margin-left: 0;
+                // }
+                margin: 0 10px 20px;
+                > div {
+                    height: 70px;
+                }
+                .icon {
+                    width: 60px;
+                    height: 60px;
+                    margin-right: 32px;
+                    background-position: center;
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    &.allClue {
+                        background-image: url(../../../assets/images/index/find.png);
                     }
-                    .icon {
-                        width: 60px;
-                        height: 60px;
-                        margin-right: 32px;
-                        background-position: center;
-                        background-size: contain;
-                        background-repeat: no-repeat;
-                        &.allClue {
-                            background-image: url(../../../assets/images/index/find.png);
-                        }
-                        &.subjectInvolved {
-                            background-image: url(../../../assets/images/index/main_body.png);
-                        }
-                        &.administrativeOrgan {
-                            background-image: url(../../../assets/images/index/unit.png);
-                        }
-                        &.clueIncluded {
-                            background-image: url(../../../assets/images/index/collect_counts.png);
-                        }
-                        &.clueDisposal {
-                            background-image: url(../../../assets/images/index/deal_counts.png);
-                        }
-                        &.evidenceColl {
-                            background-image: url(../../../assets/images/index/check.png);
-                        }
-                        &.filing {
-                            background-image: url(../../../assets/images/index/register_ing.png);
-                        }
-                        &.registered {
-                            background-image: url(../../../assets/images/index/register_ed.png);
-                        }
-                        &.failedFiling {
-                            background-image: url(../../../assets/images/index/unpass.png);
-                        }
+                    &.subjectInvolved {
+                        background-image: url(../../../assets/images/index/main_body.png);
                     }
-                    .desc {
-                        flex-direction: column;
-                        align-items: flex-start;
-                        justify-content: space-between;
-                        .counts {
-                            color: #24272c;
-                        }
-                        .unit {
-                            color: #a2aab5;
-                        }
+                    &.administrativeOrgan {
+                        background-image: url(../../../assets/images/index/unit.png);
+                    }
+                    &.clueIncluded {
+                        background-image: url(../../../assets/images/index/collect_counts.png);
+                    }
+                    &.clueDisposal {
+                        background-image: url(../../../assets/images/index/deal_counts.png);
+                    }
+                    &.evidenceColl {
+                        background-image: url(../../../assets/images/index/check.png);
+                    }
+                    &.filing {
+                        background-image: url(../../../assets/images/index/register_ing.png);
+                    }
+                    &.registered {
+                        background-image: url(../../../assets/images/index/register_ed.png);
+                    }
+                    &.failedFiling {
+                        background-image: url(../../../assets/images/index/unpass.png);
+                    }
+                }
+                .desc {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    justify-content: space-between;
+                    .counts {
+                        color: #24272c;
+                    }
+                    .unit {
+                        color: #a2aab5;
                     }
                 }
             }
@@ -100,11 +104,10 @@
         &.part-2 {
             justify-content: space-between;
             .col-div {
-                // width: 570px;
+                width: 570px;
                 height: 470px;
                 overflow: hidden;
                 flex-flow: column;
-                margin-bottom: 20px;
                 // &:nth-of-type(4)
                 .col-div-head {
                     padding-top: 20px;
@@ -149,7 +152,7 @@
                 height: 438px;
                 background: #fff;
                 border-radius: 4px;
-                // margin-top: 20px;
+                margin-top: 20px;
                 .col-div-head {
                     padding-top: 20px;
                     padding-bottom: 20px;

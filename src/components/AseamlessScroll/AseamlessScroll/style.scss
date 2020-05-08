@@ -1,0 +1,41 @@
+.demo{
+    overflow:hidden;
+    height:80px;
+    width:280px;
+    // margin:90px auto;
+    position:relative;
+   }
+   .demo1{
+    height:auto;
+    text-align:left;
+   }
+   .demo2{
+    height:auto;
+    text-align:left;
+   }
+   .demo1 li{
+    list-style-type:none;
+    height:22px;
+    text-align:left;
+    text-indent:15px;
+   }
+   .demo1 li span{
+     display: inline-block;
+     max-width:250px;
+     white-space: nowrap;
+     text-overflow: ellipsis;
+     overflow: hidden;
+   }
+   .demo2 li{
+    list-style-type:none;
+    height:22px;
+    text-align:left;
+    text-indent:15px;
+   }
+   .demo2 li span{
+     display: inline-block;
+     max-width:250px;
+     white-space: nowrap;
+     text-overflow: ellipsis;
+     overflow: hidden;
+   }

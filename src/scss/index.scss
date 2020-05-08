@@ -150,6 +150,80 @@
                     }
                 }
             }
+            &.is-light {
+                background-color: rgba(233, 237, 245, 1);
+                .ant-menu-submenu {
+                    &.ant-menu-submenu-inline > .ant-menu-submenu-title {
+                        .ant-menu-submenu-arrow {
+                            &:before {
+                                background: #565a60;
+                                height: 1px;
+                                -webkit-transform: rotate(-45deg) translateX(2.5px);
+                                transform: rotate(-45deg) translateX(2.5px);
+                            }
+                            &:after {
+                                background: #565a60;
+                                height: 1px;
+                                -webkit-transform: rotate(45deg) translateX(-2.5px);
+                                transform: rotate(45deg) translateX(-2.5px);
+                            }
+                        }
+                    }
+                    .ant-menu-item {
+                        background: transparent;
+                        > span > i {
+                            display: none;
+                        }
+                    }
+                    &.ant-menu-submenu-open {
+                        .ant-menu-submenu-title {
+                            color: #565a60;
+                            .ant-menu-submenu-arrow {
+                                &:before {
+                                    -webkit-transform: rotate(45deg) translateX(2.5px);
+                                    transform: rotate(45deg) translateX(2.5px);
+                                }
+                                &:after {
+                                    -webkit-transform: rotate(-45deg) translateX(-2.5px);
+                                    transform: rotate(-45deg) translateX(-2.5px);
+                                }
+                            }
+                        }
+                    }
+                    &.ant-menu-submenu-selected,
+                    &:hover {
+                        .ant-menu-submenu-title {
+                            color: #1b52a1;
+                        }
+                        &.ant-menu-submenu-inline {
+                            > .ant-menu-submenu-title {
+                                .ant-menu-submenu-arrow {
+                                    &:before,
+                                    &:after {
+                                        color: #1b52a1;
+                                        background: #1b52a1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+                .z-side-menu .ant-menu {
+                    padding: 0;
+                    background: transparent;
+                    .ant-menu-inline {
+                        .ant-menu-item-selected {
+                            background: #1b52a1;
+                            color: #fff;
+                            border-radius: 0;
+                            &:after {
+                                display: none;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
     .ant-menu {

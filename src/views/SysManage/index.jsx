@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 // import { withRouter } from 'react-router'
 import { matchPath } from 'react-router-dom';
 // zerod
-import { Zlayout, ZmainHOC} from 'zerod';
+import { Zlayout, ZmainHOC } from 'zerod';
 // import GlobalLoading from 'zerod/lazyLoad/Loading.jsx';
 // actions
 import { changeMenuIndex } from '@/store/actions';
@@ -70,7 +70,7 @@ class Main extends React.Component {
                                 </Breadcrumb.Item> */}
                                 {
                                     breadCrumbData.map((item, index) => {
-                                        return <Breadcrumb.Item onClick={() => { index<breadCrumbData.length-1&&history.push(item.path) }} key={item.path}>{item.pathName}</Breadcrumb.Item>
+                                        return <Breadcrumb.Item onClick={() => { index < breadCrumbData.length - 1 && history.push(item.path) }} key={item.path}>{item.pathName}</Breadcrumb.Item>
                                     })
                                 }
                             </Breadcrumb>
@@ -107,9 +107,14 @@ export default ZmainHOC(connect(mapStateToProps, mapDispatchToProps)(Main),
             {},
             //侧边导航数据
             [
+                // {
+                //     permUrl: 'user',
+                //     permName: '用户管理',
+                //     permIconUrl: 'compass',
+                // },
                 {
-                    permUrl: 'user',
-                    permName: '用户管理',
+                    permUrl: 'transform',
+                    permName: '穿梭框',
                     permIconUrl: 'compass',
                 }
             ],

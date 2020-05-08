@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 // import { withRouter } from 'react-router'
 import { matchPath } from 'react-router-dom';
 // zerod
-import { Zlayout, ZmainHOC} from 'zerod';
+import { Zlayout, ZmainHOC } from 'zerod';
 // import GlobalLoading from 'zerod/lazyLoad/Loading.jsx';
 // actions
 import { changeMenuIndex } from '@/store/actions';
@@ -70,7 +70,7 @@ class Main extends React.Component {
                                 </Breadcrumb.Item> */}
                                 {
                                     breadCrumbData.map((item, index) => {
-                                        return <Breadcrumb.Item onClick={() => { index<breadCrumbData.length-1&&history.push(item.path) }} key={item.path}>{item.pathName}</Breadcrumb.Item>
+                                        return <Breadcrumb.Item onClick={() => { index < breadCrumbData.length - 1 && history.push(item.path) }} key={item.path}>{item.pathName}</Breadcrumb.Item>
                                     })
                                 }
                             </Breadcrumb>
@@ -80,7 +80,7 @@ class Main extends React.Component {
                                 {userName !== 1
                                     ? (<Zlayout width={this.ToggleSiderWidth()}>
                                         {this.props.getSideMenuTemplate({
-                                            theme: 'dark',
+                                            theme: 'light',
                                             isCollapse: collapsed,
                                             openAllSubmenu: true,
                                         })}
@@ -110,9 +110,7 @@ export default ZmainHOC(connect(mapStateToProps, mapDispatchToProps)(Main),
                 {
                     permUrl: 'clueDiscovery',
                     permName: '线索发现',
-                    permIconUrl: () => {
-                        return (<IconFont className="icon-font" type="icon-integral" />)
-                    },
+                    permIconUrl: 'compass',
                     children: [
                         {
                             permUrl: 'byClue',
@@ -124,7 +122,9 @@ export default ZmainHOC(connect(mapStateToProps, mapDispatchToProps)(Main),
                 {
                     permUrl: 'myClue',
                     permName: '我的线索',
-                    permIconUrl: 'compass',
+                    permIconUrl: () => {
+                        return (<IconFont className="icon-font" type="icon-integral" />)
+                    },
                     children: [
                         {
                             permUrl: 'clueCollect',

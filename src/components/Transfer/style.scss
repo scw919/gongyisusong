@@ -1,0 +1,58 @@
+.transfer-box {
+    width: 875px;
+    padding: 10px;
+    border-radius: 4px;
+    background: #fff;
+    .transfer-box-cont {
+        padding: 10px 30px;
+        .transfer-box-cont {
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            padding: 5px 5px 20px;
+            flex: 1;
+        }
+        .search {
+            margin-top: 8px;
+        }
+        .transfer-box-cont-lt {
+            .clue-list {
+                height: 320px;
+                overflow-y: auto;
+                margin-top: 10px;
+                padding: 0 10px;
+                .clue-item {
+                    + .clue-item {
+                        margin-top: 8px;
+                    }
+                }
+            }
+        }
+        .transfer-box-cont-rt {
+            .collection-list {
+                height: 320px;
+                overflow-y: auto;
+                margin-top: 10px;
+                .colection-item {
+                    .c-i-title {
+                    }
+                    .c-i-clues {
+                        padding-left: 20px;
+                    }
+                }
+            }
+        }
+        .transfer-box-handle {
+            width: 100px;
+            text-align: center;
+            > div + div {
+                margin-top: 5px;
+            }
+            .icon-left {
+                transform: rotate(-90deg);
+            }
+            .icon-right {
+                transform: rotate(90deg);
+            }
+        }
+    }
+}

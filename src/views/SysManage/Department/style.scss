@@ -1,0 +1,19 @@
+.main-rt-container {
+    padding: 40px 80px;
+    :global {
+        .ant-table-bordered .ant-table-tbody td {
+            border-color: #ddd;
+        }
+        .ant-table-bordered .ant-table-thead > tr > th {
+            border-color: #ddd;
+        }
+        .ant-table-bordered .ant-table-body > table {
+            border-color: #ddd;
+        }
+    }
+}
+:global {
+    .ant-transfer-list {
+        background: #fff;
+    }
+}
