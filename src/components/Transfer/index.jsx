@@ -19,7 +19,7 @@ export class Atransfer extends React.PureComponent {
     static propTypes = {
     };
     state = {
-        type: '1', //0-新建  1-关联
+        type: '0', //0-新建  1-关联
     }
     clues = [
         {
@@ -75,6 +75,13 @@ export class Atransfer extends React.PureComponent {
             "clues": [{ "id": 61409, "caseName": "广州市曾本五金工业有限公司行政处罚案件", "addressConcerned": "海珠区", "addressConcernedLongitude": null, "addressConcernedLatitude": null, "domain": null, "labels": { "clueType": "行政处罚", "domain": "其他", "PenaltyCategoryOne": "罚金" }, "partyName": "广州市曾本五金工业有限公司", "typesSubjectsInvolved": { "desc": "企业", "code": 0 }, "clueType": { "desc": "行政处罚", "code": 1 }, "penaltyDecisionDate": "2018-08-28", "createdTime": "2020-04-25", "addTime": "2020-05-07 17:01:40" }, { "id": 91296, "caseName": "建设单位未取得建设工程施工许可证开工", "addressConcerned": "海珠区", "addressConcernedLongitude": null, "addressConcernedLatitude": null, "domain": null, "labels": { "clueType": "行政处罚", "domain": "其他", "PenaltyCategoryOne": "罚金" }, "partyName": "广州市番海互联网科技有限公司", "typesSubjectsInvolved": { "desc": "企业", "code": 0 }, "clueType": { "desc": "行政处罚", "code": 1 }, "penaltyDecisionDate": "2018-07-04", "createdTime": "2020-04-24", "addTime": "2020-05-07 11:47:58" }, { "id": 61509, "caseName": "广州市曾本五金工业有限公司行政处罚案件", "addressConcerned": "海珠区", "addressConcernedLongitude": null, "addressConcernedLatitude": null, "domain": null, "labels": { "clueType": "行政处罚", "domain": "其他", "PenaltyCategoryOne": "罚金" }, "partyName": "广州市曾本五金工业有限公司", "typesSubjectsInvolved": { "desc": "企业", "code": 0 }, "clueType": { "desc": "行政处罚", "code": 1 }, "penaltyDecisionDate": "2018-08-28", "createdTime": "2020-04-25", "addTime": "2020-05-07 11:47:58" }, { "id": 61609, "caseName": "广州市曾本五金工业有限公司行政处罚案件", "addressConcerned": "海珠区", "addressConcernedLongitude": null, "addressConcernedLatitude": null, "domain": null, "labels": { "clueType": "行政处罚", "domain": "其他", "PenaltyCategoryOne": "罚金" }, "partyName": "广州市曾本五金工业有限公司", "typesSubjectsInvolved": { "desc": "企业", "code": 0 }, "clueType": { "desc": "行政处罚", "code": 1 }, "penaltyDecisionDate": "2018-08-28", "createdTime": "2020-04-25", "addTime": "2020-05-07 11:47:58" }, { "id": 61109, "caseName": "广州市曾本五金工业有限公司行政处罚案件", "addressConcerned": "海珠区", "addressConcernedLongitude": null, "addressConcernedLatitude": null, "domain": null, "labels": { "clueType": "行政处罚", "domain": "其他", "PenaltyCategoryOne": "罚金" }, "partyName": "广州市曾本五金工业有限公司", "typesSubjectsInvolved": { "desc": "企业", "code": 0 }, "clueType": { "desc": "行政处罚", "code": 1 }, "penaltyDecisionDate": "2018-08-28", "createdTime": "2020-04-25", "addTime": "2020-05-07 11:47:58" }]
         }
     ]
+    newCollection = { //创建新集合
+        id: 0,
+        collectionName: "自定义线索集",
+        clues: []
+    };
+    newCheckedCluesDeleteKeys = [0];
+
     checkedCollections = [];
     checkedCluesAdd = [];
     checkedCluesDelete = [];
@@ -91,6 +98,12 @@ export class Atransfer extends React.PureComponent {
         return (
             <div styleName="transfer-box">
                 <h3>穿梭框</h3>
+                <div styleName="type-tabs">
+                    <Radio.Group value={type} onChange={this.onChangeType}>
+                        <Radio.Button value="0">创建新集合</Radio.Button>
+                        <Radio.Button value="1">关联其他集合</Radio.Button>
+                    </Radio.Group>
+                </div>
                 <div className="flex align-item-center" styleName="transfer-box-cont">
                     <div styleName="transfer-box-cont transfer-box-cont-lt">
                         <p>待处理线索</p>
@@ -126,12 +139,7 @@ export class Atransfer extends React.PureComponent {
                     <div styleName="transfer-box-cont transfer-box-cont-rt">
                         <div className="flex align-item-center flex-between">
                             <div>线索集合</div>
-                            <div>
-                                <Radio.Group value={type} onChange={this.onChangeType}>
-                                    <Radio.Button value="0">创建新集合</Radio.Button>
-                                    <Radio.Button value="1">关联其他集合</Radio.Button>
-                                </Radio.Group>
-                            </div>
+
                         </div>
                         {
                             type == 1 ? <div styleName="search">
@@ -140,7 +148,7 @@ export class Atransfer extends React.PureComponent {
                         }
                         <div styleName="collection-list">
                             {
-                                this.collections.map((item, index) => {
+                                type == 1 ? this.collections.map((item, index) => {
                                     return (
                                         <div key={index} styleName="colection-item">
                                             <Tree
@@ -154,7 +162,19 @@ export class Atransfer extends React.PureComponent {
                                             </Tree>
                                         </div>
                                     )
-                                })
+                                }) : (
+                                        <div styleName="colection-item">
+                                            <Tree
+                                                checkStrictly
+                                                checkable
+                                                checkedKeys={this.newCheckedCluesDeleteKeys}
+                                                onCheck={this.onCheck}
+                                                onSelect={this.onSelect}
+                                            >
+                                                {this.renderTreeNodes(this.newCollection)}
+                                            </Tree>
+                                        </div>
+                                    )
                             }
 
                         </div>
@@ -182,10 +202,10 @@ export class Atransfer extends React.PureComponent {
         console.log(item, e.target.checked);
         if (e.target.checked) {
             this.checkedCluesAdd.push(item);
-            this.clues = this.clues.filter(clueItem => clueItem.id != item.id);
+            // this.clues = this.clues.filter(clueItem => clueItem.id != item.id);
         } else {
             this.checkedCluesAdd = this.checkedCluesAdd.filter(itemAdd => itemAdd.id != item.id);
-            this.clues.push(item);
+            // this.clues.push(item);
         }
         console.log(this.checkedCluesAdd, 'checkedCluesAdd')
     }
@@ -195,7 +215,9 @@ export class Atransfer extends React.PureComponent {
     }
     // 集合勾选
     onCheck = (checkedKeys, info) => {
-        console.log('onCheck', checkedKeys, info);
+        console.log(checkedKeys);
+        const { type } = this.state;
+
         let checked = info.checked;
         let node = info.node,
             collectionId,
@@ -211,6 +233,7 @@ export class Atransfer extends React.PureComponent {
                 collectionId = checkedId = node.props.eventKey;
                 this.checkedCollections = this.checkedCollections.filter(item => item != checkedId);
             }
+
             console.log(this.checkedCollections, 'this.checkedCollections')
         } else { //否则是线索
             let clue = node.props; collectionId = clue.parentId;
@@ -221,7 +244,11 @@ export class Atransfer extends React.PureComponent {
             }
             console.log(this.checkedCluesDelete, 'checkedCluesDelete')
         }
-        this.checkedCluesDeleteKeys[collectionId] = checkedKeys;
+        if (type === "0") { //新建
+            this.newCheckedCluesDeleteKeys = checkedKeys;
+        } else {
+            this.checkedCluesDeleteKeys[collectionId] = checkedKeys;
+        }
         this.setState({
             update: new Date()
         })
@@ -232,19 +259,28 @@ export class Atransfer extends React.PureComponent {
     }
     // moveLeft checkedCollections checkedCluesAdd checkedCluesDelete
     moveLeft = () => {
+        const { type } = this.state;
         if (this.checkedCluesDelete.length > 0) {
             this.clues = this.clues.concat(this.checkedCluesDelete);
             this.clues = unique(this.clues);
             console.log(this.clues);
-            this.checkedCluesDelete.map(item => {
-                let parentId = item.parentId;
-                console.log(parentId)
-                this.collections.forEach(collection => {
-                    if (collection.id == parentId) {
-                        collection.clues = collection.clues.filter(clue => clue.id != item.id)
-                    }
+            if (type === "0") {
+                this.checkedCluesDelete.map(item => {
+                    this.newCollection.clues = this.newCollection.clues.filter(clue => clue.id != item.id)
+                    this.newCheckedCluesDeleteKeys.checked = this.newCheckedCluesDeleteKeys.checked.filter(itemChecked => itemChecked != item.id)
                 })
-            })
+            } else {
+                this.checkedCluesDelete.map(item => {
+                    let parentId = item.parentId;
+                    this.collections.forEach(collection => {
+                        if (collection.id == parentId) {
+                            collection.clues = collection.clues.filter(clue => clue.id != item.id)
+                        }
+                    })
+                    console.log(this.checkedCluesDeleteKeys[parentId])
+                    this.checkedCluesDeleteKeys[parentId].checked = this.checkedCluesDeleteKeys[parentId].checked.filter(itemChecked => itemChecked != item.id)
+                })
+            }
             this.checkedCluesDelete = [];
             this.setState({
                 update: new Date()
@@ -256,26 +292,37 @@ export class Atransfer extends React.PureComponent {
     // moveRight
     moveRight = () => {
         // this.checkedCluesAdd
-        if (this.checkedCollections.length > 0) {
-            this.checkedCollections.forEach(key => {
-                this.collections.forEach(item => {
-                    let itemCluesKeys = item.clues.map(clue => clue.id);
-                    if (item.id == key) {
-                        // item.clues = item.clues.concat(this.checkedCluesAdd);
-                        this.checkedCluesAdd.map(itemAdd => {
-                            if (itemCluesKeys.includes(itemAdd.id)) return;
-                            item.clues.push(itemAdd);
-                        })
-                    }
-                })
-            })
-            this.checkedCluesAdd = [];
-            this.setState({
-                update: new Date()
+        const { type } = this.state;
+        if (type === "0") {
+            let itemCluesKeys = this.newCollection.clues.map(clue => clue.id);
+            // item.clues = item.clues.concat(this.checkedCluesAdd);
+            this.checkedCluesAdd.map(itemAdd => {
+                if (itemCluesKeys.includes(itemAdd.id)) return;
+                this.newCollection.clues.push(itemAdd);
             })
         } else {
-            Message.warning('请选择关联集合');
+            if (this.checkedCollections.length > 0) {
+                this.checkedCollections.forEach(key => {
+                    this.collections.forEach(item => {
+                        let itemCluesKeys = item.clues.map(clue => clue.id);
+                        if (item.id == key) {
+                            // item.clues = item.clues.concat(this.checkedCluesAdd);
+                            this.checkedCluesAdd.map(itemAdd => {
+                                if (itemCluesKeys.includes(itemAdd.id)) return;
+                                item.clues.push(itemAdd);
+                            })
+                        }
+                    })
+                })
+                // this.checkedCluesAdd = [];
+
+            } else {
+                Message.warning('请选择关联集合');
+            }
         }
+        this.setState({
+            update: new Date()
+        })
         console.log(this.collections, 'this.collections');
     }
     //发起请求
