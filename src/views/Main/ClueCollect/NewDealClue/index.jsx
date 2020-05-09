@@ -100,7 +100,7 @@ class NewDealClue extends React.PureComponent {
                                 </div>
                                 <div styleName="search-clue-list">
                                     <Zlayout flexRow>
-                                        <AscrollContent scroll={true} ref_component={this} loadmore={'ref_component'}>
+                                        <AscrollContent scroll={true} ref_component={this} loadmore={'getData'}>
                                             <CheckboxGroup
                                                 value={this.state.checkedList}
                                                 onChange={this.onChangeSelClue}

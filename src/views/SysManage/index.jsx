@@ -80,7 +80,7 @@ class Main extends React.Component {
                                 {userName !== 1
                                     ? (<Zlayout width={this.ToggleSiderWidth()}>
                                         {this.props.getSideMenuTemplate({
-                                            theme: 'dark',
+                                            theme: 'light',
                                             isCollapse: collapsed,
                                             openAllSubmenu: true,
                                         })}
@@ -107,16 +107,25 @@ export default ZmainHOC(connect(mapStateToProps, mapDispatchToProps)(Main),
             {},
             //侧边导航数据
             [
-                // {
-                //     permUrl: 'user',
-                //     permName: '用户管理',
-                //     permIconUrl: 'compass',
-                // },
                 {
-                    permUrl: 'transform',
-                    permName: '穿梭框',
+                    permUrl: 'sys',
+                    permName: '系统管理',
                     permIconUrl: 'compass',
+                    children: [
+                        {
+                            permUrl: 'user',
+                            permName: '用户管理',
+                            permIconUrl: 'compass',
+                        },
+                        {
+                            permUrl: 'transform',
+                            permName: '穿梭框',
+                            permIconUrl: 'compass',
+                        }
+                    ]
                 }
+
+
             ],
             //mapKeys
             { iconClass: 'permIconUrl', path: 'permUrl', name: 'permName', children: 'children' },

@@ -77,9 +77,6 @@ class ClueHandle extends React.Component {
             query: query
         })
         this.submit();
-        // this.query.pageNum = page;
-        // this.query.pageSize = pageSize;
-        // this.submit();
     }
     onShowSizeChange = (current, size) => {
         let query = this.state.query;

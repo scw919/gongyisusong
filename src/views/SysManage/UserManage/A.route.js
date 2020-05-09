@@ -5,7 +5,7 @@ const UserManage = lazyLoad(() => import('.'));
 
 export default [
     redirectDeal({
-        path: '/user',
+        path: '/sys/user',
         pathName: '用户管理',
         component: UserManage,
     }),

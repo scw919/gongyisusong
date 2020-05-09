@@ -5,7 +5,7 @@ const { AsortButton, AclueItem, AsearchPart, AscrollContent } = compnents;
 // import SearchList from '../ClueDiscovery/Children/SearchList';
 import NewDealClue from './NewDealClue';
 import RelatedClue from './RelatedClue';
-import { Checkbox, message } from 'antd';
+import { Checkbox, message, Pagination } from 'antd';
 const CheckboxGroup = Checkbox.Group;
 // actions
 import { getCollectedClues, getConditions } from '@/store/actions';
@@ -40,7 +40,7 @@ class ClueDiscovery extends React.Component {
             pageSize: 10,
             pages: 1,
             total: 0,
-            sortList: []
+            sortList: [],
         },
         checkedList: [],
         dataList: [
@@ -57,9 +57,9 @@ class ClueDiscovery extends React.Component {
     }
     render() {
         const { history, routes } = this.props;
-        const { newVisible, relatedVisible } = this.state;
+        const { newVisible, relatedVisible, query } = this.state;
         return (
-            <AscrollContent scroll={true} ref_component={this} loadmore={'ref_component'}>
+            <AscrollContent scroll={true} ref={ref => this.scroll = ref}>
                 <div className="main-rt-div1">
                     <div className="main-rt-div2">
                         <div className="main-rt-container" style={{ height: '100%' }}>
@@ -105,6 +105,9 @@ class ClueDiscovery extends React.Component {
                                     }
 
                                 </div>
+                                <div className="text-right" style={{ marginTop: '10px' }}>
+                                    <Pagination size="small" defaultPageSize={10} pageSizeOptions={["5", "10", "15"]} current={query.pageNum} showSizeChanger showQuickJumper total={query.total} onShowSizeChange={this.onShowSizeChange} onChange={this.pageChange} />
+                                </div>
                             </div>
                             {/* <SearchList toggleModalNew={this.toggleModalNew} toggleModalRel={this.toggleModalRel} data={this.state.dataList} isCollect={true} history={history} /> */}
                             {/* 新建 线索收录 */}
@@ -138,10 +141,6 @@ class ClueDiscovery extends React.Component {
     }
     // 获取查询数据
     getData = async (initData) => { //initData true: 初始化第一页 false 页数自加1
-        if (isLoading) {
-            return;
-        }
-        isLoading = true;
         const { sortByCollect, sortByFilter } = this.state;
         let sortList = [
             sortByCollect ? {
@@ -158,35 +157,20 @@ class ClueDiscovery extends React.Component {
         newQuery.sortList = sortList;
         if (initData) {
             newQuery.pageNum = 1;
-            const data = await this.clueSearch(newQuery);
-            newQuery.pages = data.pages;
-            newQuery.total = data.total;
-            this.setState({
-                query: newQuery,
-                dataList: data.list,
-                checkAll: false,
-                checkedList: [],
-                indeterminate: false,
-            })
-            isLoading = false;
-        } else {
-            newQuery.pageNum += 1;
-            console.log(newQuery.pageNum, newQuery.pages, '222222222222222222222222222222')
-            if (newQuery.pageNum > newQuery.pages) {
-                isLoading = false;
-                return false;
-            }
-            const data = await this.clueSearch(newQuery);
-            newQuery.pages = data.pages;
-            newQuery.total = data.total;
-            let old_dataList = this.state.dataList;
-            old_dataList = old_dataList.concat(data.list);
-            this.setState({
-                query: newQuery,
-                dataList: old_dataList
-            })
-            isLoading = false;
+            newQuery.pages = 0;
+            newQuery.total = 0;
         }
+        const data = await this.clueSearch(newQuery);
+        newQuery.pages = data.pages;
+        newQuery.total = data.total;
+        this.setState({
+            query: newQuery,
+            dataList: data.list,
+            checkAll: false,
+            checkedList: [],
+            indeterminate: false,
+        })
+        this.scroll.backToTop()
     }
     // 列表组件 点击 新建 处置线索
     toggleModalNew = (status, sub) => {
@@ -237,13 +221,19 @@ class ClueDiscovery extends React.Component {
     };
     // 全部取消收录
     includeAll = () => {
-        const { checkedList, dataList } = this.state;
-        let query = { flag: false, clueIds: [] };
+        const { checkedList, dataList, query } = this.state;
+        let req_query = { flag: false, clueIds: [] }, newQuery = zTool.deepCopy(query);;
         checkedList.map(item => {
-            query['clueIds'].push(item.id);
+            req_query['clueIds'].push(item.id);
         })
-        if (query['clueIds'].length > 0) {
-            apis.main.includedClue(query).then(_ => {
+        if (req_query['clueIds'].length > 0) {
+            apis.main.includedClue(req_query).then(_ => {
+                if (checkedList.length >= dataList.length) {
+                    if (query.pages > 1) {
+                        newQuery.pageNum -= 1;
+                    }
+                }
+                console.log(newQuery, 'newQuery');
                 this.props.getCollectedClues();
                 this.props.getConditions({ me: 1 });
                 // this.props.getCollectedClues().then(action => {
@@ -252,8 +242,9 @@ class ClueDiscovery extends React.Component {
                     checkedList: [],
                     indeterminate: false,
                     checkAll: false,
+                    query: newQuery
                 })
-                this.getData(true);
+                this.getData();
                 // })
             })
         } else {
@@ -293,6 +284,21 @@ class ClueDiscovery extends React.Component {
             sortByFilter: null,
             sortByCollect: newType
         }, () => { this.getData(true) })
+    }
+    // 分页
+    pageChange = (page, pageSize) => {
+        let query = this.state.query;
+        query.pageNum = page;
+        query.pageSize = pageSize;
+        this.setState({
+            query: query
+        })
+        this.getData();
+    }
+    onShowSizeChange = (current, size) => {
+        let query = this.state.query;
+        query.pageSize = size;
+        this.getData(true);
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ClueDiscovery));

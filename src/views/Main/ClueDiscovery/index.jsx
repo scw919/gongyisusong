@@ -2,7 +2,7 @@ import React from 'react';
 import compnents from '@/components/load-components.js';
 const { AsortButton, AclueItem, AsearchPart, AscrollContent } = compnents;
 // import SearchList from './Children/SearchList';
-import { Checkbox, message } from 'antd';
+import { Checkbox, message, Pagination } from 'antd';
 const CheckboxGroup = Checkbox.Group;
 // actions
 import { getCollectedClues, getConditions } from '@/store/actions';
@@ -59,10 +59,10 @@ class ClueDiscovery extends React.Component {
     }
     render() {
         const { history } = this.props;
-        const { dataList, } = this.state;
+        const { dataList, query } = this.state;
         return (
             <div>
-                <AscrollContent scroll={true} ref_component={this} loadmore={'ref_component'}>
+                <AscrollContent scroll={true} ref={ref => this.scroll = ref}>
                     <div className="main-rt-div1">
                         <div className="main-rt-div2">
                             <div className="main-rt-container">
@@ -105,11 +105,14 @@ class ClueDiscovery extends React.Component {
                                         }
                                     </div>
                                 </div>
-                                {/* <SearchList data={this.state.dataList} history={history} /> */}
+                                <div className="text-right" style={{ marginTop: '10px' }}>
+                                    <Pagination size="small" defaultPageSize={10} pageSizeOptions={["5", "10", "15"]} current={query.pageNum} showSizeChanger showQuickJumper total={query.total} onShowSizeChange={this.onShowSizeChange} onChange={this.pageChange} />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </AscrollContent>
+
             </div>
 
         )
@@ -133,10 +136,6 @@ class ClueDiscovery extends React.Component {
     }
     // 获取查询数据
     getData = async (initData) => { //initData true: 初始化第一页 false 页数自加1
-        if (isLoading) {
-            return;
-        }
-        isLoading = true;
         const { sortByCollect, sortByFilter } = this.state;
         let sortList = [
             sortByCollect ? {
@@ -151,36 +150,17 @@ class ClueDiscovery extends React.Component {
 
         let newQuery = zTool.deepCopy(this.state.query);
         newQuery.sortList = sortList;
-        if (initData) {
-            newQuery.pageNum = 1;
-            const data = await this.clueSearch(newQuery);
-            newQuery.pages = data.pages;
-            newQuery.total = data.total;
-            this.setState({
-                query: newQuery,
-                dataList: data.list,
-                checkAll: false,
-                checkedList: [],
-                indeterminate: false,
-            })
-            isLoading = false;
-        } else {
-            newQuery.pageNum += 1;
-            if (newQuery.pageNum > newQuery.pages) {
-                isLoading = false;
-                return false;
-            }
-            const data = await this.clueSearch(newQuery);
-            newQuery.pages = data.pages;
-            newQuery.total = data.total;
-            let old_dataList = this.state.dataList;
-            old_dataList = old_dataList.concat(data.list);
-            this.setState({
-                query: newQuery,
-                dataList: old_dataList
-            })
-            isLoading = false;
-        }
+        const data = await this.clueSearch(newQuery);
+        newQuery.pages = data.pages;
+        newQuery.total = data.total;
+        this.setState({
+            query: newQuery,
+            dataList: data.list,
+            checkAll: false,
+            checkedList: [],
+            indeterminate: false,
+        })
+        this.scroll.backToTop()
     }
     // 复选框 勾选
     onChange = newCheckedList => {
@@ -270,6 +250,21 @@ class ClueDiscovery extends React.Component {
             sortByFilter: null,
             sortByCollect: newType
         }, () => { this.getData(true) })
+    }
+    // 分页
+    pageChange = (page, pageSize) => {
+        let query = this.state.query;
+        query.pageNum = page;
+        query.pageSize = pageSize;
+        this.setState({
+            query: query
+        })
+        this.getData();
+    }
+    onShowSizeChange = (current, size) => {
+        let query = this.state.query;
+        query.pageSize = size;
+        this.getData(true);
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ClueDiscovery);

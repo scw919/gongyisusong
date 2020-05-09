@@ -5,8 +5,9 @@ import { Spin } from 'antd';
 import 'zerod/zero-icon/iconfont.css';
 import { BuildScroll, listenDivSizeChange, addClass, removeClass, once } from './create.js';
 import debounce from 'lodash/debounce';
-class AscrollContent extends ZpureComponent {
+export class AscrollContent extends ZpureComponent {
     static propTypes = {
+        showBack: PropTypes.bool, //是否展示返回顶部
         className: PropTypes.string,
         scroll: PropTypes.bool,
         getScrollInstance: PropTypes.func,
@@ -15,6 +16,9 @@ class AscrollContent extends ZpureComponent {
         useCustomScroll: PropTypes.bool,
         hideLoading: PropTypes.func, // 加载完隐藏loading
     };
+    static defaultProps = {
+        showBack: true
+    }
     state = {
         scrollAreaStyle: {},
         scrollAreaClassName: ''
@@ -27,7 +31,7 @@ class AscrollContent extends ZpureComponent {
     };
     showIsLoading = () => {
         if (Math.abs(this.scroollInstance.scroll.y) > this.scroollInstance.scroll.maxScrollY - 50) {
-            this.props.loadmore && typeof (this.props[this.props.loadmore].getData) == 'function' && this.props[this.props.loadmore].getData();
+            this.props.loadmore && typeof (this.props.ref_component[this.props.loadmore]) == 'function' && this.props.ref_component[this.props.loadmore]();
             // if (!this.isLoading && this.hasNext) {
             //     addClass(this.loadingEl, 'is-animate-start');
             //     removeClass(this.loadingEl, 'is-hide');
@@ -42,27 +46,30 @@ class AscrollContent extends ZpureComponent {
             //         }
             //     });
             // }
-        } 
+        }
     }
     showBackToTop = () => {
-        if (this.scroollInstance.scroll && this.scroollInstance.scroll.y < -100) {
-            if (!this.hasShowToTop) {
-                addClass(this.toTopBtnEl, 'is-animate-start');
-                removeClass(this.toTopBtnEl, 'is-hide');
-                this.hasShowToTop = true;
-                setTimeout(() => {
-                    addClass(this.toTopBtnEl, `fadeIn-to-down-enter`);
-                    once(this.toTopBtnEl, 'animationend', () => {
-                        addClass(this.toTopBtnEl, 'is-opacity');
-                        removeClass(this.toTopBtnEl, `fadeIn-to-down-enter is-animate-start`);
-                    });
-                }, 10);
-            }
-        } else {
-            if (this.hasShowToTop) {
-                removeClass(this.toTopBtnEl, 'is-opacity');
-                addClass(this.toTopBtnEl, 'is-hide');
-                this.hasShowToTop = false;
+        const { showBack } = this.props;
+        if (showBack) {
+            if (this.scroollInstance.scroll && this.scroollInstance.scroll.y < -100) {
+                if (!this.hasShowToTop) {
+                    addClass(this.toTopBtnEl, 'is-animate-start');
+                    removeClass(this.toTopBtnEl, 'is-hide');
+                    this.hasShowToTop = true;
+                    setTimeout(() => {
+                        addClass(this.toTopBtnEl, `fadeIn-to-down-enter`);
+                        once(this.toTopBtnEl, 'animationend', () => {
+                            addClass(this.toTopBtnEl, 'is-opacity');
+                            removeClass(this.toTopBtnEl, `fadeIn-to-down-enter is-animate-start`);
+                        });
+                    }, 10);
+                }
+            } else {
+                if (this.hasShowToTop) {
+                    removeClass(this.toTopBtnEl, 'is-opacity');
+                    addClass(this.toTopBtnEl, 'is-hide');
+                    this.hasShowToTop = false;
+                }
             }
         }
     };
@@ -189,6 +196,7 @@ class AscrollContent extends ZpureComponent {
             getScrollInstance,
             getWrapperEl,
             useCustomScroll,
+            showBack,
             ...others
         } = this.props;
         return (
@@ -214,7 +222,7 @@ class AscrollContent extends ZpureComponent {
                 </section>
                 {typeof insertToScrollWraper === 'function' ? insertToScrollWraper() : insertToScrollWraper}
                 <i
-                    className={`z-to-top ${this.hasShowToTop ? '' : 'is-hide'} z-toTop-btn zero-icon zerod-top`}
+                    className={`z-to-top ${this.hasShowToTop && showBack ? '' : 'is-hide'} z-toTop-btn zero-icon zerod-top`}
                     ref={(el) => (this.toTopBtnEl = el)}
                     onClick={this.backToTop}
                 />

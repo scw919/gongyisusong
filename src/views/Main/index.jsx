@@ -115,7 +115,7 @@ export default ZmainHOC(connect(mapStateToProps, mapDispatchToProps)(Main),
                         {
                             permUrl: 'byClue',
                             permName: '按线索',
-                            permIconUrl: '11',
+                            permIconUrl: '',
                         }
                     ]
                 },
@@ -129,12 +129,12 @@ export default ZmainHOC(connect(mapStateToProps, mapDispatchToProps)(Main),
                         {
                             permUrl: 'clueCollect',
                             permName: '线索收录',
-                            permIconUrl: '11',
+                            permIconUrl: '',
                         },
                         {
                             permUrl: 'clueHandle',
                             permName: '线索处置',
-                            permIconUrl: '11',
+                            permIconUrl: '',
                         }
                     ]
                 }

@@ -41,3 +41,7 @@ export { default as DownloadOutline } from '@ant-design/icons/lib/outline/Downlo
 export { default as DoubleLeftOutline } from '@ant-design/icons/lib/outline/DoubleLeftOutline';
 // 加减
 export { default as MinusOutline } from '@ant-design/icons/lib/outline/MinusOutline';
+// 右方向图标
+export { default as RightOutline } from '@ant-design/icons/lib/outline/RightOutline';
+// 左方向图标
+export { default as LeftOutline } from '@ant-design/icons/lib/outline/LeftOutline';

@@ -5,7 +5,7 @@ const UserManage = lazyLoad(() => import('.'));
 
 export default [
     redirectDeal({
-        path: '/transform',
+        path: '/sys/transform',
         pathName: '穿梭框',
         component: UserManage,
     }),
